@@ -7,10 +7,6 @@
 		{
 			"path": "MovieKnight",
 			"name": "server"
-		},
-		{
-			"name": "MovieKnight",
-			"path": "."
 		}
 	],
 	"settings": {
