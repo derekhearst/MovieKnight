@@ -13,7 +13,7 @@ Overall, the Movie Knight project aims to provide a convenient and social platfo
 Overall, the target audience for the Movie Knight project would likely be anyone who enjoys watching movies with their friends and is looking for an easy and social way to coordinate these movie nights.
   
 ## Technologies
-Vue.js, Express.js, TheMovieDB
+Vue.js, Express.js, TheMovieDB, Firebase
 
   
 ## Contributers
