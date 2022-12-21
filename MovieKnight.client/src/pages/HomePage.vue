@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <section class="row justify-content-evenly mt-3">
       <!-- SECTION movies -->
-      <div class="col-8 p-1 overflow-auto">
+      <div class="col-8 p-1">
         <section class="row justify-content-evenly p-1">
           <!-- TODO v-for over this col-3 -->
           <div class="col-3 p-3" v-for="m in movies">
@@ -18,15 +18,14 @@
             <h1 class="fw-bold">My Groups</h1>
             <button class="btn maroon fw-bold fs-4">Make Group</button>
           </div>
-          <div class="col-10 card my-3">
-            <section class="row text-dark">
-              <div class="col-4">
-                <img src="http://thiscatdoesnotexist.com" class="img-fluid" alt="">
+          <div class="col-11">
+            <div class="d-flex justify-content-start bg-black my-4 rounded elevation-7">
+              <img class="img-style" src="https://thiscatdoesnotexist.com" alt="">
+              <div class="ps-3">
+                <h4>Title</h4>
+                <p>description</p>
               </div>
-              <div class="col-7">
-                <h6>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos magni fugit cum eveniet commodi suscipit! Ipsam dicta eveniet quo atque corrupti ipsa possimus at quaerat aliquam. Nostrum dolores nam quia.</h6>
-              </div>
-            </section>
+            </div>
           </div>
         </section>
         <!-- SECTION events -->
@@ -77,5 +76,15 @@ export default {
 .border-style{
   // border-color:#fbcf33;
   border-left: 2px solid #fbcf33;
+}
+.img-style{
+  height: 20vh;
+  width: 40%;
+  object-fit: cover;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.elevation-7{
+  box-shadow: 3px 3px 3px #fbd033a2;
 }
 </style>

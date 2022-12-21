@@ -1,7 +1,7 @@
 <template>
   <div class="bg-style">
-    <div class="container-fluid p-5 align-content-center d-flex">
-      <section class="row justify-content-evenly bg-smokey p-2">
+    <div class="container-fluid p-5 align-content-center">
+      <section class="row justify-content-evenly bg-smokey py-4">
         <div class="col-12 col-md-3 d-flex align-items-center">
           <img class="rounded elevation-5" :src="movie.posterImg" alt="">
         </div>
@@ -13,8 +13,8 @@
             </div>
           </section>
           <section class="row">
-            <div class="col-12 col-md-8 p-2 mt-3 bg-dark card elevation-3">
-              <h1 class="text-warning"><u>
+            <div class="col-12 col-md-9 p-2 mt-3 bg-dark card elevation-3">
+              <h1 class="text-danger"><u>
                 {{ movie.title }}
               </u></h1>
               <h2 class="mt-5">Movie Overview:</h2>
@@ -22,7 +22,41 @@
             </div>
           </section>
           <section class="row">
-
+            <div v-if="movie.rating >= 90" class="col-12 col-md-9 p-2 mt-3 bg-dark card elevation-3">
+              <h3>Rating: <i class="mdi mdi-star text-warning"></i>
+                <i class="mdi mdi-star text-warning"></i>
+                <i class="mdi mdi-star text-warning"></i>
+                <i class="mdi mdi-star text-warning"></i>
+                <i class="mdi mdi-star text-warning"></i></h3>
+            </div>
+            <div v-if="movie.rating >= 80 && movie.rating <90" class="col-12 col-md-9 p-2 mt-3 bg-dark card elevation-3">
+              <h3>Rating: <i class="mdi mdi-star text-warning"></i>
+                <i class="mdi mdi-star text-warning"></i>
+                <i class="mdi mdi-star text-warning"></i>
+                <i class="mdi mdi-star text-warning"></i>
+                <i class="mdi mdi-star-outline text-warning"></i></h3>
+            </div>
+            <div v-if="movie.rating >= 60 && movie.rating <80" class="col-12 col-md-9 p-2 mt-3 bg-dark card elevation-3">
+              <h3>Rating: <i class="mdi mdi-star text-warning"></i>
+                <i class="mdi mdi-star text-warning"></i>
+                <i class="mdi mdi-star text-warning"></i>
+                <i class="mdi mdi-star-outline text-warning"></i>
+                <i class="mdi mdi-star-outline text-warning"></i></h3>
+            </div>
+            <div v-if="movie.rating >= 40 && movie.rating <60" class="col-12 col-md-9 p-2 mt-3 bg-dark card elevation-3">
+              <h3>Rating: <i class="mdi mdi-star text-warning"></i>
+                <i class="mdi mdi-star text-warning"></i>
+                <i class="mdi mdi-star-outline text-warning"></i>
+                <i class="mdi mdi-star-outline text-warning"></i>
+                <i class="mdi mdi-star-outline text-warning"></i></h3>
+            </div>
+            <div v-if="movie.rating >= 20 && movie.rating <40" class="col-12 col-md-9 p-2 mt-3 bg-dark card elevation-3">
+              <h3>Rating: <i class="mdi mdi-star text-warning"></i>
+                <i class="mdi mdi-star-outline text-warning"></i>
+                <i class="mdi mdi-star-outline text-warning"></i>
+                <i class="mdi mdi-star-outline text-warning"></i>
+                <i class="mdi mdi-star-outline text-warning"></i></h3>
+            </div>
           </section>
         </div>
       </section>
@@ -80,7 +114,7 @@ background-image: url('https://images.unsplash.com/photo-1489599849927-2ee91cede
   min-height: 92vh;
 }
 .bg-smokey{
-  background-color: rgba(245, 245, 245, 0.418);
+  background-color: rgba(146, 146, 146, 0.418);
 }
 .maroon{
   background-color: #fbcf33;
