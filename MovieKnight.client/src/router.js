@@ -12,16 +12,35 @@ const routes = [
     component: loadPage('HomePage')
   },
   {
-    path: '/about',
-    name: 'About',
-    component: loadPage('AboutPage')
-  },
-  {
     path: '/account',
     name: 'Account',
     component: loadPage('AccountPage'),
     beforeEnter: authGuard
-  }
+  },
+  {
+    path: '/group/:id',
+    name: 'Group',
+    component: loadPage('GroupPage'),
+    beforeEnter: authGuard
+  },
+  {
+    path: '/event/:id',
+    name: 'Event',
+    component: loadPage('EventPage'),
+    beforeEnter: authGuard
+  },
+  {
+    path: '/search',
+    name: 'Search',
+    component: loadPage('SearchPage'),
+    beforeEnter: authGuard
+  },
+  {
+    path: '/movieDetails/:id',
+    name: 'MovieDetails',
+    component: loadPage('MovieDetailsPage'),
+    beforeEnter: authGuard
+  },
 ]
 
 export const router = createRouter({

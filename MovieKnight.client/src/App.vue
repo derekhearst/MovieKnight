@@ -2,11 +2,11 @@
   <header>
     <Navbar />
   </header>
-  <main>
+  <main class="bg-dark">
     <router-view />
   </main>
    <footer class="bg-dark text-light">
-    Made with 💖 by CodeWorks
+    Watch Now!
   </footer>
 </template>
 
