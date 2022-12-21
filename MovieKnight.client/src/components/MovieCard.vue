@@ -21,7 +21,7 @@ export default {
 <style lang="scss" scoped>
 .movie-elv{
   box-shadow: 3pt 3pt 3pt whitesmoke;
-  height: 33vh;
+  height: 42vh;
   width: 100%;
   object-fit: cover;
 }

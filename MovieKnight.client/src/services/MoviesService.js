@@ -9,6 +9,7 @@ class MoviesService{
  async getMovies(page = 1){
    const res = await movieApi.get('discover/movie?page=' + page)
    AppState.movies = res.data.results.map(m => new Movie(m))
+   logger.log(res.data.results)
    logger.log(AppState.movies)
  }
  async getMovieById(id){
@@ -16,6 +17,10 @@ class MoviesService{
   AppState.activeMovie = new Movie(res.data)
   logger.log(AppState.activeMovie)
  }
+// async getStreams(id){
+//   const res = await streamingApi.get('' + id)
+//   logger.log(res.data)
+// }
 }
 
 export const moviesService = new MoviesService()
