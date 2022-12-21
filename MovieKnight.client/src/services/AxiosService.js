@@ -14,3 +14,12 @@ export const movieApi = Axios.create({
     "certification.lt":'r'
   }
 })
+
+// export const streamingApi = Axios.create({
+//   baseURL: 'https://streaming-availability.p.rapidapi.com/get/basic',
+//   params: {
+//     api_key: '868b336456msh6ca45ebe74a7adcp177b1fjsna40d8b3a7a6e',
+//     host: 'streaming-availability.p.rapidapi.com'
+//   }
+//   })
+  
