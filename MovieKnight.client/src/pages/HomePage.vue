@@ -16,7 +16,8 @@
         <section class="row justify-content-center">
           <div class="col-10 d-flex justify-content-between">
             <h1 class="fw-bold">My Groups</h1>
-            <button class="btn maroon fw-bold fs-4">Make Group</button>
+            <!-- TODO offcanvas form -->
+            <button class="btn maroon fw-bold fs-4"  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">Make Group</button>
           </div>
           <div class="col-11">
             <div class="d-flex justify-content-start bg-black my-4 rounded elevation-7">
@@ -44,10 +45,15 @@ import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";
 import { moviesService } from "../services/MoviesService.js";
 import MovieCard from "../components/MovieCard.vue";
+import { groupsService } from "../services/GroupsService.js";
+import { useRouter } from "vue-router";
+import { group } from "console";
 
 
 export default {
     setup() {
+      const editable = ref({})
+      const router = useRouter()
         onMounted(() => {
             getMovies();
         });
@@ -61,7 +67,16 @@ export default {
             }
         }
         return {
-            movies: computed(() => AppState.movies)
+            movies: computed(() => AppState.movies),
+            async createGroup(){
+              try {
+                await groupsService.createGroup(editable.value)
+                router.push({name: 'Group', params: {id: group.id}})
+              } catch (error) {
+                Pop.error(error)
+                logger.log(error)
+              }
+            }
         };
     },
     components: { MovieCard }
