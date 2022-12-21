@@ -6,8 +6,8 @@ export const GroupSchema = new Schema(
 		description: { type: String, required: true },
 		creatorId: { type: Schema.Types.ObjectId, required: true },
 		coverImg: { type: String, required: true },
-		visibility: { type: Boolean, required: true },
-		archived: { type: Boolean, required: true },
+		visibility: { type: Boolean, required: true, default: true },
+		archived: { type: Boolean, required: true, default: false },
 	},
 	{ timestamps: true, toJSON: { virtuals: true } }
 )

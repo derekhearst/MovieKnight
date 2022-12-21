@@ -21,7 +21,7 @@ export class GroupsController extends BaseController {
 			.delete("/:id", this.deleteGroup) //
 
 			.post("/:id/members", this.addMember) //
-			.delete("/:id/members/:memberId", this.removeMember) //
+			.delete("/:id/members/:groupMemberId", this.removeMember) //
 
 			.post("/:id/movies", this.addMovie) //
 			.delete("/:id/movies/:movieId", this.removeMovie) //
@@ -36,7 +36,7 @@ export class GroupsController extends BaseController {
 
 	async getById(req, res, next) {
 		try {
-			const group = groupsService.getById(req.params.id)
+			const group = await groupsService.getById(req.params.id)
 			res.send(group)
 		} catch (error) {
 			next(error)
@@ -44,8 +44,9 @@ export class GroupsController extends BaseController {
 	}
 	async createGroup(req, res, next) {
 		try {
+			console.log(req.userInfo)
 			req.body.creatorId = req.userInfo.id
-			const group = groupsService.create(req.body)
+			const group = await groupsService.create(req.body)
 			res.send(group)
 		} catch (error) {
 			next(error)
@@ -54,7 +55,7 @@ export class GroupsController extends BaseController {
 	async editGroup(req, res, next) {
 		try {
 			req.body.creatorId = req.userInfo.id
-			const group = groupsService.edit(req.params.id, req.body)
+			const group = await groupsService.edit(req.params.id, req.body)
 			res.send(group)
 		} catch (error) {
 			next(error)
@@ -62,7 +63,7 @@ export class GroupsController extends BaseController {
 	}
 	async deleteGroup(req, res, next) {
 		try {
-			const group = groupsService.delete(req.params.id, req.userInfo.id)
+			const group = await groupsService.delete(req.params.id, req.userInfo.id)
 			res.send(group)
 		} catch (error) {
 			next(error)
@@ -70,7 +71,7 @@ export class GroupsController extends BaseController {
 	}
 	async getMembers(req, res, next) {
 		try {
-			const members = groupsService.getMembers(req.params.id)
+			const members = await groupsService.getMembers(req.params.id)
 			res.send(members)
 		} catch (error) {
 			next(error)
@@ -78,7 +79,7 @@ export class GroupsController extends BaseController {
 	}
 	async addMember(req, res, next) {
 		try {
-			const member = groupsService.addMember(req.params.id, req.userInfo.id)
+			const member = await groupsService.addMember(req.params.id, req.userInfo.id)
 			res.send(member)
 		} catch (error) {
 			next(error)
@@ -86,7 +87,7 @@ export class GroupsController extends BaseController {
 	}
 	async removeMember(req, res, next) {
 		try {
-			const member = groupsService.removeMember(req.params.id, req.params.memberId, req.userInfo.id)
+			const member = await groupsService.removeMember(req.params.id, req.params.groupMemberId, req.userInfo.id)
 			res.send(member)
 		} catch (error) {
 			next(error)
@@ -94,7 +95,7 @@ export class GroupsController extends BaseController {
 	}
 	async getMovies(req, res, next) {
 		try {
-			const movies = moviesService.getMoviesByGroupId(req.params.id)
+			const movies = await moviesService.getGroupMovies(req.params.id)
 			res.send(movies)
 		} catch (error) {
 			next(error)
@@ -102,7 +103,7 @@ export class GroupsController extends BaseController {
 	}
 	async addMovie(req, res, next) {
 		try {
-			const movie = moviesService.addMovieToGroup(req.params.id, req.body, req.userInfo.id)
+			const movie = await moviesService.addGroupMovie(req.params.id, req.body, req.userInfo.id)
 			res.send(movie)
 		} catch (error) {
 			next(error)
@@ -110,7 +111,7 @@ export class GroupsController extends BaseController {
 	}
 	async removeMovie(req, res, next) {
 		try {
-			const movie = moviesService.removeMovieFromGroup(req.params.id, req.params.movieId, req.userInfo.id)
+			const movie = await moviesService.removeGroupMovie(req.params.id, req.params.movieId, req.userInfo.id)
 			res.send(movie)
 		} catch (error) {
 			next(error)
@@ -118,7 +119,7 @@ export class GroupsController extends BaseController {
 	}
 	async getComments(req, res, next) {
 		try {
-			const comments = commentsService.getCommentsByGroupId(req.params.id)
+			const comments = await commentsService.getCommentsByGroupId(req.params.id)
 			res.send(comments)
 		} catch (error) {
 			next(error)
@@ -127,7 +128,7 @@ export class GroupsController extends BaseController {
 	async addComment(req, res, next) {
 		try {
 			req.body.creatorId = req.userInfo.id
-			const comment = commentsService.addCommentByGroupId(req.params.id, req.body)
+			const comment = await commentsService.addCommentByGroupId(req.params.id, req.body)
 			res.send(comment)
 		} catch (error) {
 			next(error)
@@ -135,7 +136,7 @@ export class GroupsController extends BaseController {
 	}
 	async removeComment(req, res, next) {
 		try {
-			const comment = commentsService.removeCommentByGroupId(req.params.id, req.params.commentId, req.userInfo.id)
+			const comment = await commentsService.removeCommentByGroupId(req.params.id, req.params.commentId, req.userInfo.id)
 			res.send(comment)
 		} catch (error) {
 			next(error)
@@ -144,7 +145,7 @@ export class GroupsController extends BaseController {
 
 	async getEvents(req, res, next) {
 		try {
-			const events = eventsService.getEventsByGroupId(req.params.id)
+			const events = await eventsService.getEventsByGroupId(req.params.id)
 			res.send(events)
 		} catch (error) {
 			next(error)

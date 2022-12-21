@@ -1,7 +1,8 @@
 import BaseController from "../utils/BaseController.js"
 import { Auth0Provider } from "@bcwdev/auth0provider"
 import { eventsService } from "../services/EventsService.js"
-class EventsController extends BaseController {
+import { moviesService } from "../services/MoviesService.js"
+export class EventsController extends BaseController {
 	constructor() {
 		super("api/events")
 		this.router
@@ -30,7 +31,7 @@ class EventsController extends BaseController {
 	}
 	async getMovies(req, res, next) {
 		try {
-			const movies = await eventsService.getMovies(req.params.id)
+			const movies = await moviesService.getEventMovies(req.params.id)
 			res.send(movies)
 		} catch (error) {
 			next(error)
@@ -65,7 +66,7 @@ class EventsController extends BaseController {
 	async addMovie(req, res, next) {
 		try {
 			req.body.creatorId = req.userInfo.id
-			const movie = await eventsService.addMovie(req.params.id, req.body)
+			const movie = await moviesService.addEventMovie(req.params.id, req.body)
 			res.send(movie)
 		} catch (error) {
 			next(error)
@@ -100,7 +101,7 @@ class EventsController extends BaseController {
 	}
 	async removeMovie(req, res, next) {
 		try {
-			const movie = await eventsService.removeMovie(req.params.movieId, req.userInfo.id)
+			const movie = await moviesService.removeEventMovie(req.params.movieId, req.userInfo.id)
 			res.send(movie)
 		} catch (error) {
 			next(error)

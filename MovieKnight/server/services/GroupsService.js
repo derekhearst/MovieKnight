@@ -6,19 +6,24 @@ class GroupsService {
 		return await dbContext.GroupMembers.find({ accountId: id }).populate("group")
 	}
 
-	async removeMember(groupId, memberId, userId) {
-		let member = await dbContext.GroupMembers.findOne({ groupId: groupId, memberId: memberId }).populate("group")
-		if (!member) {
+	async removeMember(groupId, groupMemberId, userId) {
+		let groupMember = await dbContext.GroupMembers.findById(groupMemberId).populate("group")
+		if (!groupMember) {
 			throw new BadRequest("No Member Found")
 		}
-		if (member.accountId != userId || groupId.creatorId != userId) {
+		let group = await dbContext.Groups.findById(groupId)
+		if (!group) {
+			throw new BadRequest("No Group Found")
+		}
+
+		if (groupMember.accountId != userId || group.creatorId != userId) {
 			throw new Forbidden("You cannot remove this member.")
 		}
-		await dbContext.GroupMembers.findByIdAndDelete(memberId)
+		await dbContext.GroupMembers.findByIdAndDelete(groupMemberId)
 		return "Successfully Removed"
 	}
 	async addMember(groupId, memberId) {
-		return await (await dbContext.GroupMembers.create({ groupId: groupId, memberId: memberId })).populate("account")
+		return await (await dbContext.GroupMembers.create({ groupId: groupId, accountId: memberId })).populate("account")
 	}
 	async getMembers(groupId) {
 		return await dbContext.GroupMembers.find({ groupId: groupId }).populate("account")
@@ -78,9 +83,13 @@ class GroupsService {
 		if (foundGroup.creatorId != body.creatorId) {
 			throw new Forbidden("You are not the creator of this group.")
 		}
+		body.creatorId = foundGroup.creatorId
+		await foundGroup.update(body)
+		return await dbContext.Groups.findById(id)
 	}
 	async create(body) {
 		let group = await dbContext.Groups.create(body)
+		await group.populate("creator")
 		await this.addMember(group._id, group.creatorId)
 		return group
 	}

@@ -74,28 +74,7 @@ class EventsService {
 	async getMembers(eventId) {
 		return await dbContext.EventMembers.find({ eventId: eventId }).populate("account", "name picture")
 	}
-	async removeMovie(movieId, userId) {
-		let movie = await dbContext.EventMovies.findById(movieId)
-		if (!movie) {
-			throw new BadRequest("No movie found")
-		}
-		let eventMembers = await dbContext.EventMembers.find({ eventId: movie.eventId })
-		if (!eventMembers.find(m => m.accountId == userId)) {
-			throw new BadRequest("You are not a member of this event")
-		}
-		await movie.delete()
-		return "Successfully Removed Movie"
-	}
-	async addMovie(eventId, body) {
-		let eventMembers = await dbContext.EventMembers.find({ eventId: eventId })
-		if (!eventMembers.find(m => m.accountId == body.creatorId)) {
-			throw new BadRequest("You are not a member of this event")
-		}
-		return await dbContext.EventMovies.create({ ...body, eventId: eventId })
-	}
-	async getMovies(eventId) {
-		return await dbContext.EventMovies.find({ eventId: eventId }).populate("movie")
-	}
+
 	async removeItem(itemId, userId) {
 		let item = await dbContext.EventItems.findById(itemId)
 		if (!item) {

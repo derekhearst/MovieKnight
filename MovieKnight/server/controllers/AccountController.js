@@ -38,7 +38,8 @@ export class AccountController extends BaseController {
 
 	async getMyGroups(req, res, next) {
 		try {
-			groupsService.getGroupsByUserId(req.userInfo.id)
+			let groups = await groupsService.getGroupsByUserId(req.userInfo.id)
+			res.send(groups)
 		} catch (error) {
 			next(error)
 		}
@@ -46,7 +47,8 @@ export class AccountController extends BaseController {
 
 	async getMyComments(req, res, next) {
 		try {
-			commentsService.getCommentsByUserId(req.userInfo.id)
+			let comment = await commentsService.getCommentsByUserId(req.userInfo.id)
+			res.send(comment)
 		} catch (error) {
 			next(error)
 		}
