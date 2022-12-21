@@ -40,14 +40,13 @@
 
 <script>
 import { AppState } from "../AppState.js";
-import { computed, reactive, onMounted } from 'vue';
+import { computed, reactive, onMounted, ref } from 'vue';
 import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";
 import { moviesService } from "../services/MoviesService.js";
 import MovieCard from "../components/MovieCard.vue";
 import { groupsService } from "../services/GroupsService.js";
 import { useRouter } from "vue-router";
-import { group } from "console";
 
 
 export default {
@@ -78,8 +77,7 @@ export default {
               }
             }
         };
-    },
-    components: { MovieCard }
+    }
 }
 </script>
 
