@@ -19,14 +19,8 @@
             <!-- TODO offcanvas form -->
             <button class="btn maroon fw-bold fs-4"  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">Make Group</button>
           </div>
-          <div class="col-11">
-            <div class="d-flex justify-content-start bg-black my-4 rounded elevation-7">
-              <img class="img-style" src="https://thiscatdoesnotexist.com" alt="">
-              <div class="ps-3">
-                <h4>Title</h4>
-                <p>description</p>
-              </div>
-            </div>
+          <div v-if="myGroups" v-for="g in myGroups" class="col-11">
+            <GroupCard :group="g.group"/>
           </div>
         </section>
         <!-- SECTION events -->
@@ -47,15 +41,25 @@ import { moviesService } from "../services/MoviesService.js";
 import MovieCard from "../components/MovieCard.vue";
 import { groupsService } from "../services/GroupsService.js";
 import { useRouter } from "vue-router";
+import GroupCard from "../components/GroupCard.vue";
 
 
 export default {
     setup() {
-      const editable = ref({})
-      const router = useRouter()
+        const editable = ref({});
+        const router = useRouter();
         onMounted(() => {
             getMovies();
+            // getMyGroups()
         });
+        // async function getMyGroups(){
+        //   try {
+        //     await groupsService.getMyGroups()
+        //   } catch (error) {
+        //     Pop.error(error)
+        //     logger.log(error)
+        //   }
+        // }
         async function getMovies() {
             try {
                 await moviesService.getMovies();
@@ -67,17 +71,20 @@ export default {
         }
         return {
             movies: computed(() => AppState.movies),
-            async createGroup(){
-              try {
-                await groupsService.createGroup(editable.value)
-                router.push({name: 'Group', params: {id: group.id}})
-              } catch (error) {
-                Pop.error(error)
-                logger.log(error)
-              }
+            myGroups: computed(() => AppState.myGroups),
+            async createGroup() {
+                try {
+                    await groupsService.createGroup(editable.value);
+                    router.push({ name: "Group", params: { id: group.id } });
+                }
+                catch (error) {
+                    Pop.error(error);
+                    logger.log(error);
+                }
             }
         };
-    }
+    },
+    // components: { GroupCard }
 }
 </script>
 
