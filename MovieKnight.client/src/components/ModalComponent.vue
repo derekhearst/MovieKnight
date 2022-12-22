@@ -1,18 +1,18 @@
 <template>
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
   <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Make Group</h5>
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Form Guild</h5>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
     <form @submit.prevent="createGroup()">
       <div class="form-group my-2">
         <label for="title">Title</label>
-        <input v-model="editable.title" type="text" class="form-control" aria-describedby="emailHelp" id="title" placeholder="Place group title here...">
+        <input v-model="editable.title" type="text" class="form-control" aria-describedby="emailHelp" minlength="3" maxlength="20" id="title" placeholder="Place group title here...">
       </div>
       <div class="form-group my-2">
         <label for="description">Description</label>
-        <input v-model="editable.description" type="text" class="form-control" aria-describedby="emailHelp" id="description" placeholder="Place group description here...">
+        <input v-model="editable.description" type="text" class="form-control" aria-describedby="emailHelp" maxlength="200" id="description" placeholder="Place group description here...">
       </div>
       <div class="form-group my-2">
         <label for="coverImg">Cover Image</label>

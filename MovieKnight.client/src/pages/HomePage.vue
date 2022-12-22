@@ -15,9 +15,9 @@
         <!-- SECTION groups -->
         <section class="row justify-content-center">
           <div class="col-10 d-flex justify-content-between">
-            <h1 class="fw-bold">My Groups</h1>
+            <h1 class="fw-bold">My Guilds</h1>
             <!-- TODO offcanvas form -->
-            <button class="btn maroon fw-bold fs-4"  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">Make Group</button>
+            <button class="btn maroon fw-bold fs-4"  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">Form Guild</button>
           </div>
           <div v-if="myGroups" v-for="g in myGroups" class="col-11">
             <GroupCard :group="g.group"/>

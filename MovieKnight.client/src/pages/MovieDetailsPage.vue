@@ -8,8 +8,8 @@
         <div class="col-12 col-md-7 p-2 mt-2">
           <section class="row justify-content-end">
             <div class="col-12 col-md-3 d-flex justify-content-between">
-              <button class="btn maroon fw-bold fs-5">Add to group</button>
-              <button class="btn maroon fw-bold fs-5">Make Event</button>
+              <button class="btn maroon fw-bold fs-5 mx-2">Add to guild</button>
+              <button class="btn maroon fw-bold fs-5 mx-2">Make Event</button>
             </div>
           </section>
           <section class="row">
@@ -98,7 +98,17 @@ export default {
     //   }
     // }
   return {
-    movie: computed(()=> AppState.activeMovie)
+    movie: computed(()=> AppState.activeMovie),
+    // TODO finish function
+    // FIXME button must choose guild before posting
+    // async postMovieToGroup(){
+    //   try {
+    //     await moviesService.postMovieToGroup()
+    //   } catch (error) {
+    //     Pop.error(error)
+    //     logger.log(error)
+    //   }
+    // }
   }
   }
 };

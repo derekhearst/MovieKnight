@@ -2,9 +2,9 @@
   <router-link :to="{name: 'Group', params: {id: group.id}}">
   <div class="d-flex justify-content-start bg-black text-white my-4 rounded elevation-7">
       <img class="img-style" :src="group.coverImg" alt="">
-      <div class="ps-3">
+      <div class="pt-3 px-2">
         <h4>{{group.title}}</h4>
-        <p>{{group.description}}</p>
+        <p>{{group.description.slice(0,200)}}</p>
       </div>
     </div>
   </router-link>
@@ -15,10 +15,13 @@
 import { AppState } from '../AppState';
 import { computed, reactive, onMounted } from 'vue';
 import { Group } from "../models/Group.js";
+// import { group } from "console";
 export default {
   props: {group:{type: Object, required: true}},
   setup(){
-  return {  }
+    
+  return {
+  }
   }
 };
 </script>
