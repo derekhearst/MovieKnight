@@ -16,6 +16,7 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
+    <SearchBar/>
     <div class="collapse navbar-collapse justify-content-end" id="navbarText">
       <!-- LOGIN COMPONENT HERE -->
       <Login />
@@ -25,11 +26,12 @@
 
 <script>
 import Login from './Login.vue'
+import SearchBar from "./SearchBar.vue";
 export default {
   setup() {
     return {}
   },
-  components: { Login }
+  components: { Login, SearchBar }
 }
 </script>
 
@@ -53,5 +55,8 @@ a:hover {
     height: 64px;
   }
 }
-
+.maroon{
+  background-color: #fbcf33;
+  color: #8f1515;
+}
 </style>
