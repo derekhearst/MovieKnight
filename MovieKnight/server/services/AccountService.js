@@ -43,16 +43,30 @@ function sanitizeBody(body) {
 }
 
 class AccountService {
+	async favMovie(movieId, userId) {
+		let movie = await dbContext.AccountMovies.findOne({ _id: movieId, accountId: userId })
+		if (!movie) {
+			throw new Error("Invalid Id")
+		}
+		movie.isFavorite = !movie.isFavorite
+		await movie.save()
+		return await movie.populate("movie")
+	}
 	async removeMovie(movieId, userId) {
 		let movie = await dbContext.AccountMovies.findOneAndDelete({ _id: movieId, accountId: userId })
+		if (!movie) {
+			throw new Error("Invalid Id")
+		}
+
 		return "successfully removed"
 	}
 	async addMovie(body) {
-		let movie = await dbContext.AccountMovies.create(body)
-		return movie
+		let movie = await getOrCreateMovie(body)
+		let newMovie = await dbContext.AccountMovies.create({ movieId: movie._id, accountId: body.accountId })
+		return await newMovie.populate("movie")
 	}
 	async getMoviesByUserId(userId) {
-		return await dbContext.AccountMovies.find({ accountId: userId })
+		return await dbContext.AccountMovies.find({ accountId: userId }).populate("movie")
 	}
 	/**
 	 * Returns a user account from the Auth0 user object
@@ -83,3 +97,11 @@ class AccountService {
 	}
 }
 export const accountService = new AccountService()
+
+async function getOrCreateMovie(body) {
+	let movie = await dbContext.Movies.findOne({ mDId: body.mDId })
+	if (!movie) {
+		movie = await dbContext.Movies.create(body)
+	}
+	return movie
+}

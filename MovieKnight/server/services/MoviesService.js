@@ -51,9 +51,20 @@ class MoviesService {
 		if (!eventMembers.find(m => m.accountId == body.creatorId)) {
 			throw new BadRequest("You are not a member of this event")
 		}
-		return await dbContext.EventMovies.create({ ...body, eventId: eventId })
+		let newMovie = await getOrCreateMovie(body)
+		let newnewMovie = await dbContext.EventMovies.create({ movieId: newMovie.id, eventId: eventId })
+		await newnewMovie.populate("movie")
+		return newnewMovie
 	}
-	async getEventMovies(eventId) {
+	async getEventMovies(eventId, userId) {
+		let event = await dbContext.Events.findById(eventId)
+		if (!event) {
+			throw new BadRequest("No event found")
+		}
+		let groupMembers = await dbContext.GroupMembers.find({ groupId: event.groupId })
+		if (!groupMembers.find(m => m.accountId == userId)) {
+			throw new BadRequest("You are not a member of this group")
+		}
 		return await dbContext.EventMovies.find({ eventId: eventId }).populate("movie")
 	}
 }

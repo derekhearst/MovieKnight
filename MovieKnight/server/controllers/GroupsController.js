@@ -119,7 +119,7 @@ export class GroupsController extends BaseController {
 	}
 	async getComments(req, res, next) {
 		try {
-			const comments = await commentsService.getCommentsByGroupId(req.params.id)
+			const comments = await commentsService.getGroupComments(req.params.id)
 			res.send(comments)
 		} catch (error) {
 			next(error)
@@ -128,7 +128,7 @@ export class GroupsController extends BaseController {
 	async addComment(req, res, next) {
 		try {
 			req.body.creatorId = req.userInfo.id
-			const comment = await commentsService.addCommentByGroupId(req.params.id, req.body)
+			const comment = await commentsService.addGroupComment(req.params.id, req.body)
 			res.send(comment)
 		} catch (error) {
 			next(error)
@@ -136,7 +136,7 @@ export class GroupsController extends BaseController {
 	}
 	async removeComment(req, res, next) {
 		try {
-			const comment = await commentsService.removeCommentByGroupId(req.params.id, req.params.commentId, req.userInfo.id)
+			const comment = await commentsService.removeGroupComment(req.params.id, req.params.commentId, req.userInfo.id)
 			res.send(comment)
 		} catch (error) {
 			next(error)
@@ -145,7 +145,7 @@ export class GroupsController extends BaseController {
 
 	async getEvents(req, res, next) {
 		try {
-			const events = await eventsService.getEventsByGroupId(req.params.id)
+			const events = await eventsService.getEventsByGroupId(req.params.id, req.query.canceled)
 			res.send(events)
 		} catch (error) {
 			next(error)
@@ -156,7 +156,7 @@ export class GroupsController extends BaseController {
 		try {
 			req.body.creatorId = req.userInfo.id
 			req.body.groupId = req.params.id
-			const event = eventsService.addEventByGroupId(req.params.id, req.body)
+			const event = await eventsService.addEventByGroupId(req.params.id, req.body)
 			res.send(event)
 		} catch (error) {
 			next(error)
@@ -167,7 +167,7 @@ export class GroupsController extends BaseController {
 		try {
 			req.body.creatorId = req.userInfo.id
 			req.body.groupId = req.params.id
-			const event = eventsService.editEventById(req.params.id, req.params.eventId, req.body)
+			const event = await eventsService.editEventById(req.params.id, req.params.eventId, req.body)
 			res.send(event)
 		} catch (error) {
 			next(error)
@@ -176,7 +176,7 @@ export class GroupsController extends BaseController {
 
 	async removeEvent(req, res, next) {
 		try {
-			const event = eventsService.cancelEventById(req.params.id, req.params.eventId, req.userInfo.id)
+			const event = await eventsService.cancelEventById(req.params.id, req.params.eventId, req.userInfo.id)
 			res.send(event)
 		} catch (error) {
 			next(error)
