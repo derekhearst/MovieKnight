@@ -16,6 +16,7 @@ export class AccountController extends BaseController {
 			.get("/comments", this.getMyComments)
 			.get("/movies", this.getMyMovies)
 			.post("/movies", this.addMovie)
+			.post("/movies/:id", this.favMovie)
 			.delete("/movies/:movieId", this.removeMovie)
 	}
 
@@ -72,7 +73,7 @@ export class AccountController extends BaseController {
 	}
 	async addMovie(req, res, next) {
 		try {
-			req.body.creatorId = req.userInfo.id
+			req.body.accountId = req.userInfo.id
 			const movie = await accountService.addMovie(req.body)
 			res.send(movie)
 		} catch (error) {
@@ -82,6 +83,14 @@ export class AccountController extends BaseController {
 	async removeMovie(req, res, next) {
 		try {
 			const movie = await accountService.removeMovie(req.params.movieId, req.userInfo.id)
+			res.send(movie)
+		} catch (error) {
+			next(error)
+		}
+	}
+	async favMovie(req, res, next) {
+		try {
+			const movie = await accountService.favMovie(req.params.id, req.userInfo.id)
 			res.send(movie)
 		} catch (error) {
 			next(error)

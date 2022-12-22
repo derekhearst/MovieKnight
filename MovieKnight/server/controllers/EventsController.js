@@ -2,15 +2,16 @@ import BaseController from "../utils/BaseController.js"
 import { Auth0Provider } from "@bcwdev/auth0provider"
 import { eventsService } from "../services/EventsService.js"
 import { moviesService } from "../services/MoviesService.js"
+import { commentsService } from "../services/CommentsService.js"
 export class EventsController extends BaseController {
 	constructor() {
 		super("api/events")
 		this.router
+			.use(Auth0Provider.getAuthorizedUserInfo) //
 			.get("/:id/items", this.getItems) //
 			.get("/:id/members", this.getMembers) //
 			.get("/:id/movies", this.getMovies) //
 			.get("/:id/comments", this.getComments) //
-			.use(Auth0Provider.getAuthorizedUserInfo) //
 			.post("/:id/items", this.addItem) //
 			.post("/:id/movies", this.addMovie) //
 			.post("/:id/members", this.addMember) //
@@ -23,7 +24,7 @@ export class EventsController extends BaseController {
 
 	async getItems(req, res, next) {
 		try {
-			const items = await eventsService.getItems(req.params.id)
+			const items = await eventsService.getItems(req.params.id, req.userInfo.id)
 			res.send(items)
 		} catch (error) {
 			next(error)
@@ -31,7 +32,7 @@ export class EventsController extends BaseController {
 	}
 	async getMovies(req, res, next) {
 		try {
-			const movies = await moviesService.getEventMovies(req.params.id)
+			const movies = await moviesService.getEventMovies(req.params.id, req.userInfo.id)
 			res.send(movies)
 		} catch (error) {
 			next(error)
@@ -39,7 +40,7 @@ export class EventsController extends BaseController {
 	}
 	async getMembers(req, res, next) {
 		try {
-			const members = await eventsService.getMembers(req.params.id)
+			const members = await eventsService.getMembers(req.params.id, req.userInfo.id)
 			res.send(members)
 		} catch (error) {
 			next(error)
@@ -47,7 +48,7 @@ export class EventsController extends BaseController {
 	}
 	async getComments(req, res, next) {
 		try {
-			const comments = await eventsService.getComments(req.params.id)
+			const comments = await commentsService.getEventComments(req.params.id, req.userInfo.id)
 			res.send(comments)
 		} catch (error) {
 			next(error)
@@ -84,7 +85,7 @@ export class EventsController extends BaseController {
 	async addComment(req, res, next) {
 		try {
 			req.body.creatorId = req.userInfo.id
-			const comment = await eventsService.addComment(req.params.id, req.body)
+			const comment = await commentsService.addEventComment(req.params.id, req.body)
 			res.send(comment)
 		} catch (error) {
 			next(error)
@@ -117,7 +118,7 @@ export class EventsController extends BaseController {
 	}
 	async removeComment(req, res, next) {
 		try {
-			const comment = await eventsService.removeComment(req.params.commentId, req.userInfo.id)
+			const comment = await commentsService.removeEventComment(req.params.commentId, req.userInfo.id)
 			res.send(comment)
 		} catch (error) {
 			next(error)
