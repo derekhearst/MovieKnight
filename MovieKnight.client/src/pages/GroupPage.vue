@@ -28,6 +28,12 @@
             </div>
           </form>
         </div>
+        <section class="row justify-content-evenly p-1">
+          <!-- TODO v-for over this col-3 -->
+          <div class="col-4 p-3" v-for="m in groupMovies">
+            <MovieCard :movie="m.movie"/>
+          </div>
+        </section>
       </div>
       <!-- SECTION rIght side-->
       <div class="col-3 bg-darkish p-3">
@@ -108,4 +114,5 @@ export default {
 .bg-darkish {
   background-color: #1e1e1ea9;
 }
+
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: 'MovieDetails', params: {id: movie.id} }">
+  <router-link :to="{ name: 'MovieDetails', params: {id: movie.mdId} }">
     <img :src="movie.posterImg" alt="" class="movie-elv">
   </router-link>
 </template>
