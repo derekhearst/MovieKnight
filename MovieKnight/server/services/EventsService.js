@@ -40,7 +40,8 @@ class EventsService {
 		event.capacity -= 1
 		await event.save()
 
-		return await dbContext.EventMembers.create({ ...body, eventId: eventId })
+		let newMember = await dbContext.EventMembers.create({ ...body, eventId: eventId })
+		return await newMember.populate("account", "name picture")
 	}
 
 	async getMembers(eventId, userId) {

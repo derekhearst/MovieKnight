@@ -66,7 +66,8 @@ class CommentsService {
 		if (!group.find(m => m.accountId == body.creatorId)) {
 			throw new BadRequest("You are not a member of this group")
 		}
-		return await dbContext.EventComments.create({ ...body, eventId })
+		let newComment = await dbContext.EventComments.create({ ...body, eventId })
+		return await newComment.populate("creator", "name picture")
 	}
 	async getEventComments(eventId, userId) {
 		let event = await dbContext.Events.findById(eventId)
