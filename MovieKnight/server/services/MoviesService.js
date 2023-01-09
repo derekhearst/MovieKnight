@@ -32,10 +32,16 @@ class MoviesService {
 		if (!members.find(m => m.accountId == userId)) {
 			throw new BadRequest("You are not a member of this group")
 		}
+		if (!body.mdId) {
+			throw new BadRequest("No Movie Database Id")
+		}
+		delete body.creatorId
+		delete body._id
+		delete body.id
 
-		let newMovie = await getOrCreateMovie(body)
+		let dbMovie = await getOrCreateMovie(body)
 
-		let movie = await dbContext.GroupMovies.create({ groupId: groupId, movieId: newMovie._id })
+		let movie = await dbContext.GroupMovies.create({ groupId: groupId, movieId: dbMovie._id })
 		await movie.populate("movie")
 		return movie
 	}
@@ -60,10 +66,18 @@ class MoviesService {
 		if (!eventMembers.find(m => m.accountId == body.creatorId)) {
 			throw new BadRequest("You are not a member of this event")
 		}
-		let newMovie = await getOrCreateMovie(body)
-		let newnewMovie = await dbContext.EventMovies.create({ movieId: newMovie.id, eventId: eventId })
-		await newnewMovie.populate("movie")
-		return newnewMovie
+		if (!body.mdId) {
+			throw new BadRequest("No Movie Database Id")
+		}
+		delete body.creatorId
+		delete body._id
+		delete body.id
+
+		let dbMovie = await getOrCreateMovie(body)
+
+		let movie = await dbContext.EventMovies.create({ movieId: dbMovie.id, eventId: eventId })
+		await movie.populate("movie")
+		return movie
 	}
 	async getEventMovies(eventId, userId) {
 		let event = await dbContext.Events.findById(eventId)
@@ -80,7 +94,7 @@ class MoviesService {
 export const moviesService = new MoviesService()
 
 async function getOrCreateMovie(body) {
-	let movie = await dbContext.Movies.findOne({ mDId: body.mDId })
+	let movie = await dbContext.Movies.findOne({ mdId: body.mdId })
 	if (!movie) {
 		movie = await dbContext.Movies.create(body)
 	}
