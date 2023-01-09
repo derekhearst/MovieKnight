@@ -2,6 +2,17 @@ import { dbContext } from "../db/DbContext.js"
 import { BadRequest, UnAuthorized } from "../utils/Errors.js"
 
 class EventsService {
+	async getEventById(eventId, userId) {
+		let event = await dbContext.Events.findById(eventId)
+		if (!event) {
+			throw new BadRequest("No event found")
+		}
+		let groupMembers = await dbContext.GroupMembers.find({ groupId: event.groupId })
+		if (!groupMembers.find(m => m.accountId == userId)) {
+			throw new BadRequest("You are not a member of this group")
+		}
+		return event
+	}
 	async removeMember(memberId, userId) {
 		let member = await dbContext.EventMembers.findById(memberId)
 		if (!member) {
