@@ -16,7 +16,7 @@
             <h1 class="text-white">{{ group.title }}</h1>
           </div>
           <div>
-            <i class="mdi mdi-account-plus fs-2 text-white selectable px-3"></i>
+            <i @click="addMyselfToGroup" class="mdi mdi-account-plus fs-2 text-white selectable px-3"></i>
           </div>
         </div>
         <div class="border my-3 rounded text-end">
@@ -40,11 +40,18 @@
       </div>
       <!-- SECTION rIght side-->
       <div class="col-3 bg-darkish p-3">
-        <div class="bg-light p-2">
-          <h1>Guild Events</h1>
-          <button class="btn"><i class="mdi mdi-shield"><strong>New Guild Event</strong></i><i
+        <section class="row">
+          <div class="bg-light p-2">
+            <h1>Guild Events</h1>
+            <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#event" aria-controls="offcanvasExample"><i class="mdi mdi-shield" ><strong>New Guild Event</strong></i><i
               class="mdi mdi-shield"></i></button>
-        </div>
+            </div>
+          </section>
+          <section class="row">
+            <div v-if="groupEvents" v-for="e in groupEvents" class="col-11">
+            <EventCard :event="e"/>
+          </div>
+          </section>
       </div>
     </section>
   </div>
@@ -59,6 +66,8 @@ import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";
 import { groupsService } from "../services/GroupsService.js";
 import CommentCard from "../components/CommentCard.vue";
+import EventCard from "../components/EventCard.vue";
+import { eventsService } from "../services/EventsService.js";
 
 export default {
   setup() {
@@ -68,7 +77,16 @@ export default {
       getGroupById()
       getMoviesByGroupId()
       getCommentsByGroupId()
+      getEventsByGroupId()
     })
+    async function  getEventsByGroupId(){
+      try {
+        await eventsService.getEventsByGroupId(route.params.id)
+      } catch (error) {
+        Pop.error(error)
+        logger.log(error)
+      }
+    }
     async function getCommentsByGroupId(){
       try {
         await groupsService.getCommentsByGroupId(route.params.id)
@@ -94,6 +112,18 @@ export default {
       }
     }
   return {
+    async makeEvent(){
+
+    },
+    async addMyselfToGroup(){
+      try {
+        await groupsService.addMyselfToGroup(route.params.id)
+      } catch (error) {
+        Pop.error(error)
+        logger.log(error)
+      }
+    },
+    groupEvents: computed(()=> AppState.activeGroupEvents),
     comments: computed(()=> AppState.activeComments),
     editable,
     group: computed(()=> AppState.activeGroup),
@@ -101,6 +131,7 @@ export default {
     async postComment(){
       try {
         await groupsService.postComment(route.params.id,editable.value)
+        editable.value = {}
       } catch (error) {
         Pop.error(error)
         logger.log(error)

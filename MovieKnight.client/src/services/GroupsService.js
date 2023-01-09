@@ -30,11 +30,16 @@ class GroupsService{
  }
  async postComment(id, body){
   const res = await api.post(`api/groups/${id}/comments`, body)
-  logger.log(res.data)
+  AppState.activeComments.push(res.data)
+  logger.log(AppState.activeComments)
  }
  async getCommentsByGroupId(id){
   const res = await api.get(`api/groups/${id}/comments`)
   AppState.activeComments = res.data
+  logger.log(res.data)
+ }
+ async addMyselfToGroup(id){
+  const res = await api.post(`api/groups/${id}/members`)
   logger.log(res.data)
  }
 }

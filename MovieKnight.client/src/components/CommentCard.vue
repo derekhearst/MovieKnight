@@ -1,21 +1,29 @@
 <template>
   <div class="col-12"  v-if="comment.creator.id == account.id">
     <section class="row justify-content-end">
-      <div class="col-7 p-2 comment">
+      <div class="col-6 p-2 comment bg-light">
         <div class="d-flex align-items-center">
           <img :src="comment.creator.picture" class="img" alt="">
-          <h6 class="p-1">{{ comment.creator.name }}</h6>
+          <div class="text-start">
+            <!-- TODO fix date and time -->
+            <p>{{ comment.createdAt }}</p>
+            <h6>{{ comment.creator.name }}</h6>
+          </div>
         </div>
         <p class="text-start">{{ comment.body }}</p>
       </div>
     </section>
   </div>
   <div class="col-12"  v-else>
-    <section class="row justify-content-end">
-  <div class="col-7 p-2 comment">
+    <section class="row justify-content-start">
+  <div class="col-7 p-2 comment bg-light">
     <div class="d-flex align-items-center">
       <img :src="comment.creator.picture" class="img" alt="">
-      <h6 class="p-1">{{ comment.creator.name }}</h6>
+      <div>
+        <p>{{ comment.createdAt }}</p>
+
+        <h6 class="p-1">{{ comment.creator.name }}</h6>
+      </div>
     </div>
     <p class="text-start">{{ comment.body }}</p>
   </div>
@@ -42,8 +50,8 @@ export default {
 
 <style lang="scss" scoped>
 .img{
-  height: 8vh;
-  widows: 8vh;
+  height: 40pt;
+  widows: 40pt;
   border-radius: 45em;
 }
 .comment{

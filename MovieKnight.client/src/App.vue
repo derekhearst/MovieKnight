@@ -10,12 +10,14 @@
   </footer>
   <AddMovieModal/>
   <ModalComponent/>
+  <EventFormOffCanvas/>
 </template>
 
 <script>
 import { computed } from 'vue'
 import { AppState } from './AppState'
 import AddMovieModal from "./components/AddMovieModal.vue"
+import EventFormOffCanvas from "./components/EventFormOffCanvas.vue"
 import ModalComponent from "./components/ModalComponent.vue"
 import Navbar from './components/Navbar.vue'
 
@@ -25,7 +27,7 @@ export default {
       appState: computed(() => AppState)
     }
   },
-  components: { Navbar, ModalComponent, AddMovieModal }
+  components: { Navbar, ModalComponent, AddMovieModal, EventFormOffCanvas }
 }
 </script>
 <style lang="scss">
