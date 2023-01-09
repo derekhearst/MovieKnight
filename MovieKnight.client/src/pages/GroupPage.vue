@@ -28,6 +28,12 @@
           </div>
         </form>
       </div>
+      <section class="row justify-content-evenly p-1">
+          <!-- TODO v-for over this col-3 -->
+          <div class="col-4 p-3" v-for="m in groupMovies">
+            <MovieCard :movie="m.movie"/>
+          </div>
+        </section>
     </div>
     <!-- SECTION rIght side-->
     <div class="col-3 bg-darkish p-3">
@@ -53,18 +59,27 @@ export default {
     const route = useRoute()
     onMounted(()=>{
       getGroupById()
+      getMoviesByGroupId()
     })
     async function getGroupById(){
       try {
-
         await groupsService.getGroupById(route.params.id)
       } catch (error) {
         Pop.error(error)
         logger.log(error)
       }
     }
+    async function getMoviesByGroupId(){
+      try {
+        await groupsService.getMoviesByGroupId(route.params.id)
+      } catch (error) {
+        Pop.error(error)
+        logger.log(error)
+      }
+    }
   return {
-    group: computed(()=> AppState.activeGroup)
+    group: computed(()=> AppState.activeGroup),
+    groupMovies: computed(()=> AppState.groupMovies)
   }
   }
 };

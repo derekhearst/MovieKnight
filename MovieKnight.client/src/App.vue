@@ -8,12 +8,14 @@
    <footer class="bg-dark text-light">
     Watch Now!
   </footer>
+  <AddMovieModal/>
   <ModalComponent/>
 </template>
 
 <script>
 import { computed } from 'vue'
 import { AppState } from './AppState'
+import AddMovieModal from "./components/AddMovieModal.vue"
 import ModalComponent from "./components/ModalComponent.vue"
 import Navbar from './components/Navbar.vue'
 
@@ -23,7 +25,7 @@ export default {
       appState: computed(() => AppState)
     }
   },
-  components: { Navbar, ModalComponent }
+  components: { Navbar, ModalComponent, AddMovieModal }
 }
 </script>
 <style lang="scss">

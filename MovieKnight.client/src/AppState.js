@@ -11,5 +11,6 @@ export const AppState = reactive({
   activeMovie: {},
   // /** @type {import('./models/Group.js').Group[]} */
   myGroups: [],
-  activeGroup: {}
+  activeGroup: {},
+  groupMovies: [],
 })

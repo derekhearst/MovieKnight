@@ -18,6 +18,16 @@ class GroupsService{
   const res = await api.get('api/groups/' + id)
   AppState.activeGroup = res.data
  }
+ async addMovieToGroup(groupId, movieData){
+  delete movieData.id
+  const res = await api.post(`api/groups/${groupId}/movies`, movieData)
+  logger.log(res.data)
+ }
+ async getMoviesByGroupId(id){
+  const res = await api.get(`api/groups/${id}/movies`)
+  AppState.groupMovies = res.data
+  logger.log('getting movies',res.data)
+ }
 }
 
 export const groupsService = new GroupsService()

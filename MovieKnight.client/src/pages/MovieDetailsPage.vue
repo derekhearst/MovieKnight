@@ -8,7 +8,8 @@
         <div class="col-12 col-md-7 p-2 mt-2">
           <section class="row justify-content-end">
             <div class="col-12 col-md-3 d-flex justify-content-between">
-              <button class="btn maroon fw-bold fs-5 mx-2">Add to guild</button>
+              <!-- TODO onclick below me -->
+              <button class="btn maroon fw-bold fs-5 mx-2" data-bs-toggle="modal" data-bs-target="#movieModal" type="button">Add to guild</button>
               <button class="btn maroon fw-bold fs-5 mx-2">Make Event</button>
             </div>
           </section>
@@ -98,6 +99,7 @@ export default {
     //   }
     // }
   return {
+    async addMovieToGroup(){},
     movie: computed(()=> AppState.activeMovie),
     // TODO finish function
     // FIXME button must choose guild before posting
