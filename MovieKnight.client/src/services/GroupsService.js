@@ -28,6 +28,15 @@ class GroupsService{
   AppState.groupMovies = res.data
   logger.log('getting movies',res.data)
  }
+ async postComment(id, body){
+  const res = await api.post(`api/groups/${id}/comments`, body)
+  logger.log(res.data)
+ }
+ async getCommentsByGroupId(id){
+  const res = await api.get(`api/groups/${id}/comments`)
+  AppState.activeComments = res.data
+  logger.log(res.data)
+ }
 }
 
 export const groupsService = new GroupsService()

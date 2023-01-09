@@ -13,4 +13,5 @@ export const AppState = reactive({
   myGroups: [],
   activeGroup: {},
   groupMovies: [],
+  activeComments: [],
 })

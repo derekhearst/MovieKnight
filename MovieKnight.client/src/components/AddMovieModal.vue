@@ -15,7 +15,7 @@
             <option  v-for="g in myGroups" :value="g.group.id">{{ g.group.title }}</option>
           </select>
           <div class="modal-footer">
-            <button class="btn btn-primary">Add to Guild</button>
+            <button class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">Add to Guild</button>
           </div>
         </form>
       </div>
