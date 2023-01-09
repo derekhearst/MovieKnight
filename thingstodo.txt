@@ -1,0 +1,5 @@
+Group Create form doesn't redirect to new group and doesn't give success popup
+Account picture doesn't work
+Shouldn't have to login to see movie details
+Search Bar goes outside header
+

@@ -8,6 +8,7 @@ export class EventsController extends BaseController {
 		super("api/events")
 		this.router
 			.use(Auth0Provider.getAuthorizedUserInfo) //
+			.get("/:id", this.getEventById) //
 			.get("/:id/items", this.getItems) //
 			.get("/:id/members", this.getMembers) //
 			.get("/:id/movies", this.getMovies) //
@@ -22,6 +23,14 @@ export class EventsController extends BaseController {
 			.delete("/:id/comments/:commentId", this.removeComment) //
 	}
 
+	async getEventById(req, res, next) {
+		try {
+			const event = await eventsService.getEventById(req.params.id, req.userInfo.id)
+			res.send(event)
+		} catch (error) {
+			next(error)
+		}
+	}
 	async getItems(req, res, next) {
 		try {
 			const items = await eventsService.getItems(req.params.id, req.userInfo.id)
