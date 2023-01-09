@@ -47,10 +47,8 @@
               class="mdi mdi-shield"></i></button>
             </div>
           </section>
-          <section class="row">
-            <div v-if="groupEvents" v-for="e in groupEvents" class="col-11">
+          <section class="row align-items-center" v-if="groupEvents" v-for="e in groupEvents" >
             <EventCard :event="e"/>
-          </div>
           </section>
       </div>
     </section>

@@ -69,6 +69,7 @@ import { useRoute } from "vue-router";
       async makeEvent(){
         try {
           await eventsService.makeEvent(editable.value)
+          await addMovieToEvent(editable.value)
           editable.value = {}
         } catch (error) {
           Pop.error(error)

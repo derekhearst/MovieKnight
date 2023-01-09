@@ -22,6 +22,7 @@ export default {
     async function getEventById(){
       try {
         await eventsService.getEventById(route.params.id)
+        
       } catch (error) {
         Pop.error(error)
         logger.log(error)
