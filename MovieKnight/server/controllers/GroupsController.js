@@ -14,6 +14,7 @@ export class GroupsController extends BaseController {
 			.get("/:id/movies", this.getMovies) //
 			.get("/:id/comments", this.getComments) //
 			.get("/:id/events", this.getEvents) //")
+			.get("/:id/membermovies", this.getMemberMovies) //
 			.use(Auth0Provider.getAuthorizedUserInfo) //
 
 			.post("", this.createGroup) //
@@ -178,6 +179,15 @@ export class GroupsController extends BaseController {
 		try {
 			const event = await eventsService.cancelEventById(req.params.id, req.params.eventId, req.userInfo.id)
 			res.send(event)
+		} catch (error) {
+			next(error)
+		}
+	}
+
+	async getMemberMovies(req, res, next) {
+		try {
+			const movies = await moviesService.getMemberMovies(req.params.id)
+			res.send(movies)
 		} catch (error) {
 			next(error)
 		}

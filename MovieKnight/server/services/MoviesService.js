@@ -2,6 +2,15 @@ import { dbContext } from "../db/DbContext.js"
 import { BadRequest } from "../utils/Errors.js"
 
 class MoviesService {
+	async getMemberMovies(groupId) {
+		let members = await dbContext.GroupMembers.find({ groupId: groupId })
+		let movies = []
+		for (let i = 0; i < members.length; i++) {
+			let memberMovies = await dbContext.AccountMovies.find({ accountId: members[i].accountId })
+			movies = movies.concat(memberMovies)
+		}
+		return movies
+	}
 	async removeGroupMovie(groupId, movieId, userId) {
 		// Checking to make sure the user is a member of the group
 		let members = await dbContext.GroupMembers.find({ groupId: groupId })

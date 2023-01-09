@@ -23,9 +23,23 @@ class GroupsService {
 		return "Successfully Removed"
 	}
 	async addMember(groupId, memberId) {
+		let group = await dbContext.Groups.findById(groupId)
+		if (!group) {
+			throw new BadRequest("No Group Found")
+		}
+		let members = await dbContext.GroupMembers.find({ groupId: groupId })
+		let member = members.find(m => m.accountId == memberId)
+		if (member) {
+			throw new BadRequest("Member already in group")
+		}
+
 		return await (await dbContext.GroupMembers.create({ groupId: groupId, accountId: memberId })).populate("account")
 	}
 	async getMembers(groupId) {
+		let group = await dbContext.Groups.findById(groupId)
+		if (!group) {
+			throw new BadRequest("No Group Found")
+		}
 		return await dbContext.GroupMembers.find({ groupId: groupId }).populate("account")
 	}
 	async delete(groupId, userID) {
