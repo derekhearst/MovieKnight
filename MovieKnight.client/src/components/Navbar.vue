@@ -1,27 +1,16 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-danger px-3">
-    <router-link class="navbar-brand d-flex selectable" :to="{ name: 'Home' }">
-      <div class="d-flex flex-column align-items-center">
-        <h1 class="text-warning">Movie Knight</h1>
-      </div>
-    </router-link>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarText"
-      aria-controls="navbarText"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <SearchBar/>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarText">
-      <!-- LOGIN COMPONENT HERE -->
-      <Login />
+
+  <div class="navBar">
+    <div>
+      <router-link class="" :to="{ name: 'Home' }">
+        <img src="../assets/img/logo.png" class="logoImage" />
+      </router-link>
     </div>
-  </nav>
+    <SearchBar />
+    <Login />
+
+  </div>
+
 </template>
 
 <script>
@@ -36,27 +25,16 @@ export default {
 </script>
 
 <style scoped>
-a:hover {
-  text-decoration: none;
+.logoImage {
+  height: 80px;
+  filter: sepia(100%) saturate(100000000%) hue-rotate(339deg) brightness(100%) contrast(100%)
 }
 
-.nav-link {
-  text-transform: uppercase;
-}
-
-.navbar-nav .router-link-exact-active {
-  border-bottom: 2px solid var(--bs-success);
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-@media screen and (min-width: 768px) {
-  nav {
-    height: 64px;
-  }
-}
-.maroon{
-  background-color: #fbcf33;
-  color: #8f1515;
+.navBar {
+  padding: .25rem;
+  display: flex;
+  justify-content: space-between;
+  background-color: maroon;
+  ;
 }
 </style>
