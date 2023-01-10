@@ -36,12 +36,16 @@ class EventsService{
  async addMyselfToEvent(id){
   const res = await api.post(`api/events/${id}/members`)
   AppState.activeEventMembers.push(res.data)
+  AppState.activeEventMembers = AppState.activeEventMembers
+  AppState.activeEvent.capacity -=1
+
   logger.log(res.data)
  }
  async removeMyselfFromEvent(id, accountId){
   const me = AppState.activeEventMembers.find(m => m.accountId == accountId)
   const res = await api.delete(`api/events/${id}/members/${me.id}`)
   AppState.activeEventMembers.filter(m=> m.accountId !== accountId)
+  AppState.activeEventMembers = AppState.activeEventMembers
   logger.log(res.data)
  }
  async getMembersByEventId(id){
