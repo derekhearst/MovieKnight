@@ -17,8 +17,22 @@ class EventsService{
   }
   async getEventById(id){
     const res = await api.get(`api/events/${id}`)
+    AppState.activeEvent = res.data
+    logger.log('event set to activeEvent',AppState.activeEvent)
+  }
+  setEventActive(id){
+    AppState.activeEventId = id
+    logger.log(id)
+  }
+  async addMovieToEvent(eventId, movieData){
+    const res = await api.post(`api/events/${eventId}/movies`, movieData)
     logger.log(res.data)
   }
+ async getMoviesByEventId(id){
+  const res = await api.get(`api/events/${id}/movies`)
+  AppState.activeEventMovie = res.data
+  logger.log('movie for this event',AppState.activeEventMovie)
+ }
 }
 
 export const eventsService = new EventsService()

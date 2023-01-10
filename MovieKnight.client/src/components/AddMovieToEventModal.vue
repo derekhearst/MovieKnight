@@ -1,23 +1,26 @@
 <template>
-  <div class="modal fade" id="movie" tabindex="-1" role="dialog" aria-labelledby="movie" aria-hidden="true">
+  <div class="modal fade" id="addmovietoevent" tabindex="-1" role="dialog" aria-labelledby="movie" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add Movie to Guild</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Which movie would you like to add?</h5>
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form action="" @submit.prevent="addMovieToGuild">
-          <h3>Which Guild?</h3>
-          <select name="" id="" v-model="editable">
-            <option  v-for="g in myGroups" :value="g.group.id">{{ g.group.title }}</option>
-          </select>
-          <div class="modal-footer">
-            <button class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">Add to Guild</button>
+        
+          <h3>Guild Movies</h3>
+          <div>
+            <section class="row align-items-evenly"  >
+              <div class="col-6 p-2" v-for="m in movies">
+                <NoRouterMovieCard :movie="m.movie"/>
+              </div>
+          </section>
           </div>
-        </form>
+          <div class="modal-footer">
+          </div>
+        
       </div>
     </div>
   </div>
@@ -32,27 +35,19 @@ import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";
 import { groupsService } from "../services/GroupsService.js";
 import { useRoute } from "vue-router";
-export default {
-  setup(){
-    const route = useRoute()
-    const editable = ref({})
-    // TODO get all guilds and get active movie
-  return {
-    myGroups: computed(()=> AppState.myGroups),
-    movie: computed(()=> AppState.activeMovie),
-    editable,
-    route,
-    async addMovieToGuild(){
-      try {
-        await groupsService.addMovieToGroup(editable.value, this.movie)
-      } catch (error) {
-        Pop.error(error)
-        logger.log(error)
-      }
+import NoRouterMovieCard from "./NoRouterMovieCard.vue";
 
-    }
-  }
-  }
+export default {
+    setup() {
+      const route = useRoute();
+      const editable = ref({});
+      // TODO get all guilds and get active movie
+      return {
+            movies: computed(() => AppState.groupMovies),
+            editable,
+            route,
+        };
+    },
 };
 </script>
 

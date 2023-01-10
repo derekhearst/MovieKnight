@@ -42,6 +42,10 @@ class GroupsService{
   const res = await api.post(`api/groups/${id}/members`)
   logger.log(res.data)
  }
+ async getGroupByGroupId(id){
+  const res = await api.get(`api/groups/${id}`)
+  logger.log('getting group with groupId',res.data)
+ }
 }
 
 export const groupsService = new GroupsService()
