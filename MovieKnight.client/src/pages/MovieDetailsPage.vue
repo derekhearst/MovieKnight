@@ -118,6 +118,7 @@ export default {
 <style lang="scss" scoped>
 .detailsPage {
   display: flex;
+  min-height: 100vh;
 
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.707);
   background-image: url("https://wallpaperaccess.com/full/4477464.jpg");
@@ -148,7 +149,7 @@ export default {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
-  padding-top: 5rem;
+  padding-top: 7rem;
   padding-bottom: 4rem;
   padding-left: 15rem;
   padding-right: 15rem;
