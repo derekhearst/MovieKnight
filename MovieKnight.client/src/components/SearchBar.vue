@@ -1,8 +1,8 @@
 <template>
 
-  <form class="input-group" @submit.prevent="searchMovies">
+  <form class="searchBar" @submit.prevent="searchMovies">
     <input class="form-control" placeholder="Find Movies" v-model="search.query" />
-    <button class="btn maroon">Search
+    <button class="searchButton">Search
       <i class="mdi mdi-movie-search fs-5"></i>
     </button>
   </form>
@@ -56,7 +56,24 @@ export default {
 }
 
 
-.input-group {
+.searchBar {
   width: clamp(100px, 50vw, 500px);
+  display: flex;
+  gap: .5rem
+}
+
+.searchButton {
+  background-image: url("../assets/img/goodbutton-removebg-preview.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  background-color: transparent;
+  width: 13rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  font-family: 'MedievalSharp', cursive;
+  font-weight: bold;
+
 }
 </style>
