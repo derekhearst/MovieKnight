@@ -1,12 +1,12 @@
 <template>
 
   <div class="navBar">
-    <div>
+    <div class="navLeft">
       <router-link class="" :to="{ name: 'Home' }">
         <img src="../assets/img/logo.png" class="logoImage" />
       </router-link>
+      <SearchBar />
     </div>
-    <SearchBar />
     <Login />
 
   </div>
@@ -26,7 +26,8 @@ export default {
 
 <style scoped>
 .logoImage {
-  height: 80px;
+  height: 90px;
+  width: 225px;
   filter: sepia(100%) saturate(100000000%) hue-rotate(339deg) brightness(100%) contrast(100%)
 }
 
@@ -36,5 +37,11 @@ export default {
   justify-content: space-between;
   background-color: maroon;
   ;
+}
+
+.navLeft {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 </style>

@@ -1,10 +1,12 @@
 <template>
-  <form class="input-group w-25" @submit.prevent="searchMovies">
-    <input id="search-input" type="search" class="form-control" placeholder="Find Movies" v-model="search.query"/>
-    <button id="search-button" type="submit" class="btn maroon w-25">Search
+
+  <form class="input-group" @submit.prevent="searchMovies">
+    <input class="form-control" placeholder="Find Movies" v-model="search.query" />
+    <button class="btn maroon">Search
       <i class="mdi mdi-movie-search fs-5"></i>
     </button>
-      </form>
+  </form>
+
 </template>
 
 
@@ -16,32 +18,45 @@ import { logger } from "../utils/Logger.js";
 import { moviesService } from "../services/MoviesService.js";
 import { useRouter } from "vue-router";
 export default {
-  setup(){
+  setup() {
     const router = useRouter()
     const search = reactive({
       query: ""
     })
-  return {
-    search,
-    async searchMovies(){
-      try {
-        await moviesService.searchMovies(search)
-        router.push({name: 'Search'})
-        search.query = ""
-      } catch (error) {
-        Pop.error(error)
-        logger.log(error)
+    return {
+      search,
+      async searchMovies() {
+        try {
+          await moviesService.searchMovies(search)
+          router.push({ name: 'Search' })
+          search.query = ""
+        } catch (error) {
+          Pop.error(error)
+          logger.log(error)
+        }
       }
     }
-  }
   }
 };
 </script>
 
 
 <style lang="scss" scoped>
-.maroon{
+.maroon {
   background-color: #fbcf33;
   color: #8f1515;
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+}
+
+.maroon:hover {
+  background-color: hsla(47, 100%, 60%, 0.726) !important;
+
+}
+
+
+.input-group {
+  width: clamp(100px, 50vw, 500px);
 }
 </style>
