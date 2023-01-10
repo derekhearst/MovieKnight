@@ -22,7 +22,8 @@ export default {
 .movieCard {
   width: 250px;
   object-fit: cover;
-  box-shadow: 3px 3px 2px 2px #ad8a0a;
+  // box-shadow: 3px 3px 2px 2px #fcc333c5;
+  border: 2px solid #fcc333c5;
 }
 
 .poster {
