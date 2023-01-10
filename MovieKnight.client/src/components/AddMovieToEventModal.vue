@@ -31,6 +31,7 @@ import { computed, reactive, onMounted, ref } from 'vue';
 import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";
 import { groupsService } from "../services/GroupsService.js";
+import { useRoute } from "vue-router";
 export default {
   setup(){
     const route = useRoute()
