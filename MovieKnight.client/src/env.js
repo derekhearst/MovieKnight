@@ -4,3 +4,5 @@ export const useSockets = false
 export const domain = "movieknight.us.auth0.com"
 export const clientId = "pQnFxvcyv5bYlxaSIjwkQwUdzLoKxHlq"
 export const audience = "https://auth.movieknight.uk"
+
+

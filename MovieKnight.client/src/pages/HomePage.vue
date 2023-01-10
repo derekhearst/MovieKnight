@@ -17,7 +17,7 @@
           <div class="col-10 d-flex justify-content-between">
             <h1 class="fw-bold">My Guilds</h1>
             <!-- TODO offcanvas form -->
-            <button v-if="account.id != null" class="btn maroon fw-bold fs-4"  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">Form Guild</button>
+            <button v-if="account" class="btn maroon fw-bold fs-4"  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">Form Guild</button>
           </div>
           <div v-if="myGroups" v-for="g in myGroups" class="col-11">
             <GroupCard :group="g.group"/>
