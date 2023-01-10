@@ -22,12 +22,11 @@
           <div>
             <h1 class="text-white">{{ event?.title }}</h1>
           </div>
-          <div v-if="isMember">
+          <div v-if="isMember.value">
             <i @click="removeMyselfFromEvent" class="mdi mdi-account-minus fs-2 text-white selectable px-3"></i>
           </div>
           <div v-else>
             <i @click="addMyselfToEvent" class="mdi mdi-account-plus fs-2 text-white selectable px-3"></i>
-
           </div>
         </div>
         <div class="bg-dark elevation-3 p-4 my-2">
@@ -36,6 +35,18 @@
           <h1>Date: {{ event?.startTime }}</h1>
           <h1>Capacity: {{ event?.capacity }}</h1>
           <h1 v-if="event?.items">Items: {{ event?.items }}</h1>
+        </div>
+        <div class="border my-3 rounded text-end">
+          <!-- TODO this is where we will draw comments -->
+          <section class="row px-5 py-2" v-for="c in comments">
+            <CommentCard :comment = "c"/>
+          </section>
+          <form @submit.prevent="postCommentToEvent">
+            <div class="d-flex">
+              <input v-model="editable.body" class="form-control" type="text" placeholder="comment here...">
+              <button class="btn btn-dark"><i class="mdi mdi-send fs-3"></i></button>
+            </div>
+          </form>
         </div>
       </div>
       <!-- SECTION right side -->
@@ -56,16 +67,36 @@ import { groupsService } from "../services/GroupsService.js";
 import GroupCard from "../components/GroupCard.vue";
 
 const route = useRoute()
+const editable = ref({})
 onMounted(() => {
   getEventById()
   getMoviesByEventId()
+  getCommentsByEventId()
 })
 watchEffect(()=> {
-  AppState.activeEventMembers
+AppState.activeEventMembers
 AppState.activeEvent})
 
 const isMember = ref(true)
 
+async function getCommentsByEventId(){
+  try {
+    await eventsService.getCommentsByEventId(route.params.id)
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+}
+
+async function postCommentToEvent(){
+  try {
+    await eventsService.postCommentToEvent(route.params.id ,editable.value)
+    editable.value = {}
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+}
 
 async function getEventById() {
   try {
@@ -119,7 +150,7 @@ async function removeMyselfFromEvent() {
   }
 }
 
-
+let comments = computed(()=> AppState.activeComments)
 let event = computed(() => AppState.activeEvent)
 let account = computed(() => AppState.account)
 let movie = computed(() => AppState.activeEventMovie)

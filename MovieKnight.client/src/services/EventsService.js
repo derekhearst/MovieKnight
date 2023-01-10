@@ -53,6 +53,14 @@ class EventsService{
   AppState.activeEventMembers = res.data
   logger.log('getting members by eventId', res.data)
  }
+ async postCommentToEvent(id, commentData){
+  const res = await api.post(`api/events/${id}/comments`, commentData)
+  AppState.activeComments.push(res.data)
+ }
+ async getCommentsByEventId(id){
+  const res = await api.get(`api/events/${id}/comments`)
+  AppState.activeComments = res.data
+ }
 }
 
 export const eventsService = new EventsService()
