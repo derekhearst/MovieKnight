@@ -1,1 +1,0 @@
-import{_ as s,d as n,e as r,P as a,l as c,a as p,u,o as d}from"./index.ccf1fc00.js";const _={setup(){const t=u();n(()=>{o()});async function o(){try{await r.getEventById(t.params.id)}catch(e){a.error(e),c.log(e)}}return{}}},i={class:"component"};function l(t,o,e,f,g,m){return d(),p("div",i)}const y=s(_,[["render",l]]);export{y as default};
