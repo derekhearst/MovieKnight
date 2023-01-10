@@ -22,10 +22,10 @@
           <div>
             <h1 class="text-white">{{ event?.title }}</h1>
           </div>
-          <div>
+          <div v-if="amIaMemberInThisEvent == false">
             <i @click="addMyselfToEvent" class="mdi mdi-account-plus fs-2 text-white selectable px-3"></i>
           </div>
-          <div >
+          <div v-else>
             <i @click="removeMyselfFromEvent" class="mdi mdi-account-minus fs-2 text-white selectable px-3"></i>
           </div>
         </div>
@@ -53,7 +53,6 @@ import { eventsService } from "../services/EventsService.js";
 import { useRoute } from "vue-router";
 import { groupsService } from "../services/GroupsService.js";
 import GroupCard from "../components/GroupCard.vue";
-import { is } from "@babel/types";
 
 export default {
   setup(){
@@ -62,6 +61,7 @@ export default {
       getEventById()
       getMoviesByEventId()
     })
+    let amIaMemberInThisEvent =null
     async function getEventById(){
       try {
         await eventsService.getEventById(route.params.id)
@@ -76,22 +76,18 @@ export default {
     async function getMembersByEventId(){
       try {
         await eventsService.getMembersByEventId(route.params.id)
-        amIaMember()
+       await amIaMember()
       } catch (error) {
         Pop.error(error)
         logger.log(error)
       }
     }
-    let isMember = null
     function amIaMember(){
-      for (let i = 0; i < AppState.activeEventMembers.length; i++) {
-        if(AppState.activeEventMembers[i].accountId == AppState.account.id){
-          isMember = true
-        } else{
-          isMember = false
-        }
-        
-      }
+        if(AppState.activeEventMembers.find(m=> m.accountId == AppState.account.id)){amIaMemberInThisEvent = true}
+        else{amIaMemberInThisEvent = false}
+        logger.log(AppState.activeEventMembers)
+        logger.log(AppState.account.id)
+        logger.log(amIaMemberInThisEvent)
     }
     async function getMoviesByEventId(){
       try {
@@ -119,7 +115,7 @@ export default {
         logger.log(error)
       }
     },
-    isMember,
+    amIaMemberInThisEvent,
     event: computed(()=> AppState.activeEvent),
     account: computed(()=> AppState.account),
     movie: computed(()=> AppState.activeEventMovie),
