@@ -1,13 +1,20 @@
 <template>
-  <router-link :to="{name: 'Event', params: {id: event.id}}">
-  <div class="d-flex justify-content-start bg-black text-white my-4 rounded elevation-7">
-      <img class="img-style" :src="event.coverImg" alt="">
-      <div class="pt-3 px-2">
-        <h4>{{event.title}}</h4>
-        <p>{{event.description.slice(0,200)}}</p>
+  <div class="col-10">
+
+    <router-link :to="{name: 'Event', params: {id: event.id}}">
+      <div class="d-flex justify-content-between bg-black text-white my-4 rounded elevation-7">
+        <img class="img-style" :src="event.coverImg" alt="">
+        <div class="pt-3 px-2">
+          <h4>{{event.title}}</h4>
+          <p>{{event.description.slice(0,200)}}</p>
+        </div>
       </div>
-    </div>
-  </router-link>
+    </router-link>
+  </div>
+  <div class="col-2">
+
+    <button class="btn bg-warning" data-bs-toggle="modal" data-bs-target="#movie" type="button"><i class="mdi mdi-plus text-danger fs-4 fw-bold"></i></button>
+  </div>
 </template>
 
 
@@ -21,6 +28,8 @@ export default {
   setup(){
     
   return {
+    groupMovies: computed(()=> AppState.groupMovies),
+
   }
   }
 };

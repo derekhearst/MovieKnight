@@ -1,6 +1,7 @@
 <template>
   <router-link :to="{ name: 'MovieDetails', params: {id: movie.mdId} }">
     <img :src="movie.posterImg" alt="" class="movie-elv">
+    <!-- <button v-if="group" class="btn"><i class="mdi mdi-plus"></i></button> -->
   </router-link>
 </template>
 
