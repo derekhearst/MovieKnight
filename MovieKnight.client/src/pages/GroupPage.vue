@@ -3,17 +3,17 @@
     <section class="row justify-content-evenly py-3 bg-smokey">
       <!-- SECTION left side -->
       <div class="col-3">
-        <img class="img-style rounded" :src="group.coverImg">
+        <img class="img-style rounded" :src="group?.coverImg">
         <div class="bg-dark my-2 rounded p-2">
           <h2>Description:</h2>
-          <h4>{{ group.description }}</h4>
+          <h4>{{ group?.description }}</h4>
         </div>
       </div>
       <!-- SECTION Center-->
       <div class="col-5">
         <div class="d-flex justify-content-between bg-dark elevation-3 p-4">
           <div>
-            <h1 class="text-white">{{ group.title }}</h1>
+            <h1 class="text-white">{{ group?.title }}</h1>
           </div>
           <div>
             <i @click="addMyselfToGroup" class="mdi mdi-account-plus fs-2 text-white selectable px-3"></i>

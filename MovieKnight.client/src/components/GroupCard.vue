@@ -10,8 +10,19 @@
 </template>
 
 
-<script setup>
-
+<script>
+import { AppState } from '../AppState';
+import { computed, reactive, onMounted } from 'vue';
+import { Group } from "../models/Group.js";
+// import { group } from "console";
+export default {
+  props: {group:{type: Object, required: true}},
+  setup(){
+    
+  return {
+  }
+  }
+};
 </script>
 
 

@@ -33,6 +33,22 @@ class EventsService{
   AppState.activeEventMovie = res.data
   logger.log('movie for this event',AppState.activeEventMovie)
  }
+ async addMyselfToEvent(id){
+  const res = await api.post(`api/events/${id}/members`)
+  AppState.activeEventMembers.push(res.data)
+  logger.log(res.data)
+ }
+ async removeMyselfFromEvent(id, accountId){
+  const me = AppState.activeEventMembers.find(m => m.accountId == accountId)
+  const res = await api.delete(`api/events/${id}/members/${me.id}`)
+  AppState.activeEventMembers.filter(m=> m.accountId !== accountId)
+  logger.log(res.data)
+ }
+ async getMembersByEventId(id){
+  const res = await api.get(`api/events/${id}/members`)
+  AppState.activeEventMembers = res.data
+  logger.log('getting members by eventId', res.data)
+ }
 }
 
 export const eventsService = new EventsService()
