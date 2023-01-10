@@ -35,8 +35,8 @@ export default {
   padding: .25rem;
   display: flex;
   justify-content: space-between;
+
   background-color: maroon;
-  ;
 }
 
 .navLeft {
