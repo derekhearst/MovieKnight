@@ -1,13 +1,13 @@
 <template>
   <div class="userSection">
-    <button v-if="user.id" @click="logout">
+    <button v-if="user.id" @click="logout" class="goodButton">
       Logout
     </button>
-    <button v-else @click="login">
+    <button v-else @click="login" class="goodButton">
       Login
     </button>
     <router-link to="Account" class="link" v-if="user.id">
-      <div>Account</div>
+      <div class="goodButton">Account</div>
     </router-link>
     <div v-if="account.picture || user.picture">
       <img :src="account.picture || user.picture" alt="account photo" class="accountPhoto" />
@@ -48,20 +48,25 @@ async function logout() {
   object-fit: cover;
 }
 
-button {
-  background-color: maroon;
-  color: #fbcf33;
+.goodButton {
+  background-image: url("../assets/img/goodsecondarybutton-removebg-preview.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  text-align: center;
+  height: 4rem;
+  width: 14rem;
   border: none;
-  border-radius: 5px;
-  padding: .5rem;
+  color: black;
   font-size: 1.5rem;
-  cursor: pointer;
-
-}
-
-.link {
-  color: #fbcf33;
+  font-weight: bold;
+  letter-spacing: .1rem;
+  background-color: transparent;
   text-decoration: none;
-  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: .5rem;
 }
 </style>
