@@ -3,11 +3,40 @@
     <section class="row justify-content-evenly py-3 bg-smokey">
       <!-- SECTION left side -->
       <div class="col-3">
-        {{ movie[0].posterImg }}
-        <img :src="movie.coverImg" alt="">
+        <img :src="event?.coverImg" alt="">
+        <div v-if="group" class="rounded w-75 text-center">
+          <router-link :to="{name: 'Group', params: {id: group.id}}">
+            <div class="d-flex justify-content-start bg-black text-white my-4 rounded elevation-7">
+              <img class="img-style" :src="group.coverImg" alt="">
+              <div class="pt-3 px-2">
+                <h4>{{group.title}}</h4>
+                <p>{{group.description.slice(0,200)}}</p>
+              </div>
+            </div>
+          </router-link>
+        </div>
       </div>
       <!-- SECTION center side -->
-      <div class="col-5"></div>
+      <div class="col-5">
+        <div class="d-flex justify-content-between bg-dark elevation-3 p-4">
+          <div>
+            <h1 class="text-white">{{ event?.title }}</h1>
+          </div>
+          <div>
+            <i @click="addMyselfToEvent" class="mdi mdi-account-plus fs-2 text-white selectable px-3"></i>
+          </div>
+          <div >
+            <i @click="removeMyselfFromEvent" class="mdi mdi-account-minus fs-2 text-white selectable px-3"></i>
+          </div>
+        </div>
+        <div class="bg-dark elevation-3 p-4 my-2">
+          <h1>Description: {{ event?.description }}</h1>
+          <h1>Location: {{ event?.location }}</h1>
+          <h1>Date: {{ event?.startTime }}</h1>
+          <h1>Capacity: {{ event?.capacity }}</h1>
+          <h1 v-if="event?.items">Items: {{ event?.items }}</h1>
+        </div>
+      </div>
       <!-- SECTION right side -->
       <div class="col-3"></div>
     </section>
@@ -23,21 +52,45 @@ import { logger } from "../utils/Logger.js";
 import { eventsService } from "../services/EventsService.js";
 import { useRoute } from "vue-router";
 import { groupsService } from "../services/GroupsService.js";
+import GroupCard from "../components/GroupCard.vue";
+import { is } from "@babel/types";
+
 export default {
   setup(){
     const route = useRoute()
     onMounted(()=>{
       getEventById()
       getMoviesByEventId()
-      getGroupByGroupId()
     })
     async function getEventById(){
       try {
         await eventsService.getEventById(route.params.id)
+      getGroupByGroupId()
+      getMembersByEventId()
         
       } catch (error) {
         Pop.error(error)
         logger.log(error)
+      }
+    }
+    async function getMembersByEventId(){
+      try {
+        await eventsService.getMembersByEventId(route.params.id)
+        amIaMember()
+      } catch (error) {
+        Pop.error(error)
+        logger.log(error)
+      }
+    }
+    let isMember = null
+    function amIaMember(){
+      for (let i = 0; i < AppState.activeEventMembers.length; i++) {
+        if(AppState.activeEventMembers[i].accountId == AppState.account.id){
+          isMember = true
+        } else{
+          isMember = false
+        }
+        
       }
     }
     async function getMoviesByEventId(){
@@ -58,8 +111,28 @@ export default {
       }
     }
   return {
+    async removeMyselfFromEvent(){
+      try {
+        await eventsService.removeMyselfFromEvent(route.params.id, AppState.account.id)
+      } catch (error) {
+        Pop.error(error)
+        logger.log(error)
+      }
+    },
+    isMember,
     event: computed(()=> AppState.activeEvent),
+    account: computed(()=> AppState.account),
     movie: computed(()=> AppState.activeEventMovie),
+    group: computed(()=> AppState.activeGroup),
+    members: computed(()=> AppState.activeEventMembers),
+    async addMyselfToEvent(){
+      try {
+        await eventsService.addMyselfToEvent(route.params.id)
+      } catch (error) {
+        Pop.error(error)
+        logger.log(error)
+      }
+    }
   }
   }
 };
@@ -93,5 +166,11 @@ export default {
 .bg-darkish {
   background-color: #1e1e1ea9;
 }
-
+.img-style{
+  height: 20vh;
+  width: 40%;
+  object-fit: cover;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
 </style>
