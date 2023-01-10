@@ -1,16 +1,16 @@
 <template>
-   <div class="container-fluid bg-style pt-5">
+  <div class="container-fluid bg-style pt-5">
     <section class="row justify-content-evenly py-3 bg-smokey">
       <!-- SECTION left side -->
       <div class="col-3">
         <img :src="event?.coverImg" alt="">
         <div v-if="group" class="rounded w-75 text-center">
-          <router-link :to="{name: 'Group', params: {id: group.id}}">
+          <router-link :to="{ name: 'Group', params: { id: group.id } }">
             <div class="d-flex justify-content-start bg-black text-white my-4 rounded elevation-7">
               <img class="img-style" :src="group.coverImg" alt="">
               <div class="pt-3 px-2">
-                <h4>{{group.title}}</h4>
-                <p>{{group.description.slice(0,200)}}</p>
+                <h4>{{ group.title }}</h4>
+                <p>{{ group.description.slice(0, 200) }}</p>
               </div>
             </div>
           </router-link>
@@ -22,11 +22,12 @@
           <div>
             <h1 class="text-white">{{ event?.title }}</h1>
           </div>
-          <div v-if="amIaMemberInThisEvent == false">
-            <i @click="addMyselfToEvent" class="mdi mdi-account-plus fs-2 text-white selectable px-3"></i>
+          <div v-if="isMember">
+            <i @click="removeMyselfFromEvent" class="mdi mdi-account-minus fs-2 text-white selectable px-3"></i>
           </div>
           <div v-else>
-            <i @click="removeMyselfFromEvent" class="mdi mdi-account-minus fs-2 text-white selectable px-3"></i>
+            <i @click="addMyselfToEvent" class="mdi mdi-account-plus fs-2 text-white selectable px-3"></i>
+
           </div>
         </div>
         <div class="bg-dark elevation-3 p-4 my-2">
@@ -40,13 +41,13 @@
       <!-- SECTION right side -->
       <div class="col-3"></div>
     </section>
-   </div>
+  </div>
 </template>
 
 
-<script>
+<script setup>
 import { AppState } from '../AppState';
-import { computed, reactive, onMounted } from 'vue';
+import { computed, reactive, onMounted, watchEffect, ref } from 'vue';
 import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";
 import { eventsService } from "../services/EventsService.js";
@@ -54,84 +55,86 @@ import { useRoute } from "vue-router";
 import { groupsService } from "../services/GroupsService.js";
 import GroupCard from "../components/GroupCard.vue";
 
-export default {
-  setup(){
-    const route = useRoute()
-    onMounted(()=>{
-      getEventById()
-      getMoviesByEventId()
-    })
-    let amIaMemberInThisEvent =null
-    async function getEventById(){
-      try {
-        await eventsService.getEventById(route.params.id)
-      getGroupByGroupId()
-      getMembersByEventId()
-        
-      } catch (error) {
-        Pop.error(error)
-        logger.log(error)
-      }
-    }
-    async function getMembersByEventId(){
-      try {
-        await eventsService.getMembersByEventId(route.params.id)
-       await amIaMember()
-      } catch (error) {
-        Pop.error(error)
-        logger.log(error)
-      }
-    }
-    function amIaMember(){
-        if(AppState.activeEventMembers.find(m=> m.accountId == AppState.account.id)){amIaMemberInThisEvent = true}
-        else{amIaMemberInThisEvent = false}
-        logger.log(AppState.activeEventMembers)
-        logger.log(AppState.account.id)
-        logger.log(amIaMemberInThisEvent)
-    }
-    async function getMoviesByEventId(){
-      try {
-        await eventsService.getMoviesByEventId(route.params.id)
-      } catch (error) {
-        Pop.error(error)
-        logger.log(error)
-      }
-    }
-    async function getGroupByGroupId(){
-      try {
-        const id = AppState.activeEvent.groupId
-        await groupsService.getGroupByGroupId(id)
-      } catch (error) {
-        Pop.error(error)
-        logger.log(error)
-      }
-    }
-  return {
-    async removeMyselfFromEvent(){
-      try {
-        await eventsService.removeMyselfFromEvent(route.params.id, AppState.account.id)
-      } catch (error) {
-        Pop.error(error)
-        logger.log(error)
-      }
-    },
-    amIaMemberInThisEvent,
-    event: computed(()=> AppState.activeEvent),
-    account: computed(()=> AppState.account),
-    movie: computed(()=> AppState.activeEventMovie),
-    group: computed(()=> AppState.activeGroup),
-    members: computed(()=> AppState.activeEventMembers),
-    async addMyselfToEvent(){
-      try {
-        await eventsService.addMyselfToEvent(route.params.id)
-      } catch (error) {
-        Pop.error(error)
-        logger.log(error)
-      }
-    }
+const route = useRoute()
+onMounted(() => {
+  getEventById()
+  getMoviesByEventId()
+})
+watchEffect(()=> {
+  AppState.activeEventMembers
+AppState.activeEvent})
+
+const isMember = ref(true)
+
+
+async function getEventById() {
+  try {
+    await eventsService.getEventById(route.params.id)
+    getGroupByGroupId()
+    getMembersByEventId()
+
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
   }
+}
+async function getMembersByEventId() {
+  try {
+    await eventsService.getMembersByEventId(route.params.id)
+    if(AppState.activeEventMembers.find(m=>m.accountId == account.id)){
+      isMember.value = true
+    }
+    else{isMember.value=false}
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
   }
-};
+}
+async function getMoviesByEventId() {
+  try {
+    await eventsService.getMoviesByEventId(route.params.id)
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+}
+async function getGroupByGroupId() {
+  try {
+    const id = AppState.activeEvent.groupId
+    await groupsService.getGroupByGroupId(id)
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+}
+
+
+async function removeMyselfFromEvent() {
+  try {
+    await eventsService.removeMyselfFromEvent(route.params.id, AppState.account.id)
+    isMember.value = false
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+}
+
+
+let event = computed(() => AppState.activeEvent)
+let account = computed(() => AppState.account)
+let movie = computed(() => AppState.activeEventMovie)
+let group = computed(() => AppState.activeGroup)
+let members = computed(() => AppState.activeEventMembers)
+async function addMyselfToEvent() {
+  try {
+    await eventsService.addMyselfToEvent(route.params.id)
+    isMember.value = true
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+}
+
 </script>
 
 
@@ -162,7 +165,8 @@ export default {
 .bg-darkish {
   background-color: #1e1e1ea9;
 }
-.img-style{
+
+.img-style {
   height: 20vh;
   width: 40%;
   object-fit: cover;
