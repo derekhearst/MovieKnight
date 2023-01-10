@@ -164,6 +164,5 @@ export default {
   background-color: transparent;
   margin-top: -.15rem;
   font-family: 'MedievalSharp', cursive;
-
 }
 </style>
