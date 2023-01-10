@@ -15,4 +15,7 @@ export const AppState = reactive({
   groupMovies: [],
   activeComments: [],
   activeGroupEvents: [],
+  avtiveEventId: null,
+  activeEvent: {},
+  activeEventMovie: [],
 })

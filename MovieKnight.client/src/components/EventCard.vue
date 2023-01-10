@@ -13,7 +13,7 @@
   </div>
   <div class="col-2">
 
-    <button class="btn bg-warning" data-bs-toggle="modal" data-bs-target="#movie" type="button"><i class="mdi mdi-plus text-danger fs-4 fw-bold"></i></button>
+    <button class="btn bg-warning" data-bs-toggle="modal" data-bs-target="#addmovietoevent" type="button"><i class="mdi mdi-plus text-danger fs-4 fw-bold" @click="setEventActive()"></i></button>
   </div>
 </template>
 
@@ -22,14 +22,25 @@
 import { AppState } from '../AppState';
 import { computed, reactive, onMounted } from 'vue';
 import { Group } from "../models/Group.js";
+import { eventsService } from "../services/EventsService.js";
+import Pop from "../utils/Pop.js";
+import { logger } from "../utils/Logger.js";
 // import { group } from "console";
 export default {
   props: {event:{type: Object, required: true}},
-  setup(){
+  setup(props){
     
   return {
+    props,
     groupMovies: computed(()=> AppState.groupMovies),
-
+    setEventActive(){
+    try {
+     eventsService.setEventActive(props.event.id)
+    } catch (error) {
+      Pop.error(error)
+      logger.log(error)
+    }
+    }
   }
   }
 };

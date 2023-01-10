@@ -110,9 +110,6 @@ export default {
       }
     }
   return {
-    async makeEvent(){
-
-    },
     async addMyselfToGroup(){
       try {
         await groupsService.addMyselfToGroup(route.params.id)
