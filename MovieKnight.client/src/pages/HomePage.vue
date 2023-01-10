@@ -13,8 +13,8 @@
         <h1 class="scrollCard">My Guilds</h1>
         <div class="banner">
           <button data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" class="createButton">Form Guild</button>
-          <div v-if="myGroups" v-for="g in myGroups" class="">
-            <GroupCard :group="g.group" />
+          <div v-if="myGroups" class="groupsContainer">
+            <GroupCard :group="g.group" v-for="g in myGroups" />
           </div>
         </div>
       </div>
@@ -99,7 +99,7 @@ export default {
 }
 
 .movies {
-  flex-basis: 80vw;
+  flex-basis: 75vw;
   padding: 1rem;
   display: flex;
   flex-wrap: wrap;
@@ -107,11 +107,21 @@ export default {
 }
 
 .info {
-  flex-basis: 20vw;
+  flex-basis: 25vw;
   padding: .25rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: .25rem;
+
+}
+
+.groupsContainer {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
 
 }
 
@@ -132,6 +142,10 @@ export default {
   height: 5rem;
   margin-bottom: -1rem;
   color: black;
+  font-family: 'MedievalSharp', cursive;
+  font-weight: bold;
+  padding-top: .25rem;
+
 
 }
 
@@ -148,7 +162,8 @@ export default {
   font-size: 1.5rem;
   font-weight: bold;
   background-color: transparent;
-  padding-bottom: .35rem;
   margin-top: -.15rem;
+  font-family: 'MedievalSharp', cursive;
+
 }
 </style>

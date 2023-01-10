@@ -9,7 +9,8 @@
     <router-link to="Account" class="link" v-if="user.id">
       <div class="goodButton">Account</div>
     </router-link>
-    <div v-if="account.picture || user.picture">
+    <div v-if="account.picture || user.picture" class="accountProfile">
+      <img src="../assets/img/profilecircle-removebg-preview.png" class="accountBorder" />
       <img :src="account.picture || user.picture" alt="account photo" class="accountPhoto" />
     </div>
 
@@ -42,11 +43,29 @@ async function logout() {
   gap: .75rem;
 }
 
+.accountProfile {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
 .accountPhoto {
-  height: 80px;
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  padding: .09rem;
   border-radius: 50%;
   object-fit: cover;
 }
+
+.accountBorder {
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+  z-index: 2;
+}
+
 
 .goodButton {
   background-image: url("../assets/img/goodsecondarybutton-removebg-preview.png");
@@ -59,7 +78,7 @@ async function logout() {
   border: none;
   color: black;
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 700;
   letter-spacing: .1rem;
   background-color: transparent;
   text-decoration: none;
@@ -67,6 +86,8 @@ async function logout() {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-bottom: .5rem;
+
+  font-family: 'MedievalSharp', cursive;
+
 }
 </style>
