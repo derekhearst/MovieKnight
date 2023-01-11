@@ -149,7 +149,7 @@ export default {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
-  padding-top: 7rem;
+  padding-top: 9rem;
   padding-bottom: 4rem;
   padding-left: 15rem;
   padding-right: 15rem;
