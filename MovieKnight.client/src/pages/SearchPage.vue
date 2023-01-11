@@ -8,9 +8,6 @@
           <div v-if="groups" class="col-2 m-1 p-3" v-for="g in groups">
             <GroupCard :group="g"/>
           </div>
-          <div v-else>
-            <h1 class="text-light">SEARCH Page</h1>
-          </div>
     </section>
   </div>
 </template>
@@ -18,13 +15,14 @@
 
 <script>
 import { AppState } from '../AppState';
-import { computed, reactive, onMounted } from 'vue';
+import { computed, reactive, onMounted, watchEffect } from 'vue';
 import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";
 import { moviesService } from "../services/MoviesService.js";
 import MovieCard from "../components/MovieCard.vue";
 import GroupCard from "../components/GroupCard.vue";
 import { useRoute, useRouter } from "vue-router";
+import { groupsService } from "../services/GroupsService.js";
 export default {
     setup() {
       const route = useRoute();
@@ -33,12 +31,20 @@ export default {
             handlePage()
             // getMovies()
         });
-       function handlePage(){
-         logger.log('re-routing')
-          if(AppState.movies == 0 && AppState.groups == 0){
-          router.push({ name: 'Home' })
-          }
+        watchEffect(()=>{
+          handlePage()
+        })
+        //  logger.log('re-routing')
+        //   if(AppState.movies == 0 && AppState.groups == 0){
+        //   router.push({ name: 'Home' })
+       async function handlePage(){
+        if(route.params.category == 'group'){
+          await groupsService.searchGroups(route.query)
+        } else {
+          await moviesService.searchMovies(route.query.search)
         }
+          }
+        
         async function getMovies(){
           try {
               await moviesService.getMovies()
@@ -54,7 +60,6 @@ export default {
             groups: computed(()=> AppState.groups)
         };
     },
-    components: { MovieCard, GroupCard }
 };
 </script>
 

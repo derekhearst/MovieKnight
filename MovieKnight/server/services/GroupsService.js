@@ -3,7 +3,8 @@ import { BadRequest, Forbidden } from "../utils/Errors.js"
 
 class GroupsService {
 	async getAll(query) {
-		const groups = await dbContext.Groups.find(query)
+		const groups = await dbContext.Groups.find(Groups)
+		// let newGroup = groups.filter(g=> g.title == query)
 		return groups
 	}
 	async getGroupsByUserId(id) {

@@ -62,9 +62,10 @@ class GroupsService {
 	}
 
 	async searchGroups(search) {
-		const res = await api.get("api/groups", { params: search })
+		const res = await api.get("api/groups", {params: search})
 		AppState.movies = []
 		AppState.groups = res.data
+		AppState.groups.filter(g=> g.title==search)
     logger.log('search groups',AppState.groups)
 	}
 }

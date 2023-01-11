@@ -15,7 +15,7 @@ class MoviesService{
    logger.log(AppState.movies)
  }
  async searchMovies(search){
-  const res = await movieApi.get('search/movie', {params:search})
+  const res = await movieApi.get('search/movie', {params:{query: search}})
   AppState.groups = []
   AppState.movies = res.data.results.map(m => new Movie(m))
  }
