@@ -56,8 +56,9 @@ class GroupsService {
 
 	async searchGroups(search) {
 		const res = await api.get("api/groups", { params: search })
-		AppState.searchMovies = []
+		AppState.movies = []
 		AppState.groups = res.data
+    logger.log('search groups',AppState.groups)
 	}
 }
 

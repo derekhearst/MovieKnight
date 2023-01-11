@@ -8,6 +8,9 @@
           <div v-if="groups" class="col-2 m-1 p-3" v-for="g in groups">
             <GroupCard :group="g"/>
           </div>
+          <div v-else>
+            <h1 class="text-light">SEARCH Page</h1>
+          </div>
     </section>
   </div>
 </template>
@@ -21,18 +24,24 @@ import { logger } from "../utils/Logger.js";
 import { moviesService } from "../services/MoviesService.js";
 import MovieCard from "../components/MovieCard.vue";
 import GroupCard from "../components/GroupCard.vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 export default {
     setup() {
-      const route = useRoute()
+      const route = useRoute();
+      const router = useRouter();
         onMounted(() => {
-            getMovies()
+            handlePage()
+            // getMovies()
         });
+       function handlePage(){
+         logger.log('re-routing')
+          if(AppState.movies == 0 && AppState.groups == 0){
+          router.push({ name: 'Home' })
+          }
+        }
         async function getMovies(){
           try {
-            if(route.name == 'Search' && AppState.searchMovies == []){
               await moviesService.getMovies()
-            }
           } catch (error) {
             Pop.error(error)
             logger.log(error)
@@ -40,7 +49,8 @@ export default {
         }
         return {
           route,
-            movies: computed(() => AppState.searchMovies),
+          router,
+            movies: computed(() => AppState.movies),
             groups: computed(()=> AppState.groups)
         };
     },
