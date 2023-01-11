@@ -21,13 +21,15 @@ class AccountService {
 		AppState.myGroups = res.data
 		logger.log("[my groups]", AppState.myGroups)
 	}
-	async addMovieToMyList(mDId){
-		const res = await api.post(`account/movies`, mDId)
-		AppState.myMovies.push(res.data)
+	async addMovieToMyList(body){
+		logger.log('adding this movie',body)
+		const res = await api.post(`account/movies`, body)
+		// AppState.myMovies.push(res.data)
 	}
 	async getMyMovies(){
 		const res = await api.get('account/movies')
 		AppState.myMovies = res.data
+		logger.log('[myMovies]',AppState.myMovies)
 	}
 }
 

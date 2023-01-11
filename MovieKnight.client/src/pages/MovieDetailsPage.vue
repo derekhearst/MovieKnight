@@ -100,6 +100,7 @@ export default {
     return {
       async addMovieToMyList(){
         try {
+          // logger.log('active movie',this.movie)
           await  accountService.addMovieToMyList(route.params.id)
         } catch (error) {
           Pop.error(error)
