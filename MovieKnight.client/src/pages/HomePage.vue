@@ -72,7 +72,7 @@ export default {
     return {
       movies: computed(() => AppState.movies),
       myGroups: computed(() => AppState.myGroups),
-      myEvents: computed(()=> AppState.myEvents),
+      myEvents: computed(() => AppState.myEvents),
       account: computed(() => AppState.account),
       async createGroup() {
         try {
@@ -97,6 +97,8 @@ export default {
   background-image: url("https://i.pinimg.com/originals/9a/d3/ec/9ad3ec7a8be2cbd9d1bc3cf8054c7e30.jpg");
   background-color: rgba(0, 0, 0, 0.821);
   background-blend-mode: color;
+  // flex-wrap: wrap-reverse;
+  // justify-content: center;
 }
 
 .movies {

@@ -11,8 +11,9 @@
 
     <div class="middleSection">
       <h1 class="title">{{ group?.title }}</h1>
-      <i @click="addMyselfToGroup" class="mdi mdi-account-plus fs-2 text-white selectable px-3"></i>
-      <i @click="removeMyselfFromGroup" class="mdi mdi-account-minus fs-2 text-white selectable px-3"></i>
+      <button v-if="isMember">
+        Join Guild
+      </button>
 
 
       <section class="commentsSection">
@@ -30,7 +31,6 @@
       </section>
 
       <section class="moviesSection">
-
         <div class="movies">
           <MovieCard :movie="m.movie" v-for="m in groupMovies" />
         </div>
@@ -56,7 +56,7 @@
 </template>
 
 
-<script>
+<script setup>
 import { AppState } from '../AppState';
 import { computed, reactive, onMounted, ref } from 'vue';
 import { useRoute } from "vue-router";
@@ -66,75 +66,84 @@ import { groupsService } from "../services/GroupsService.js";
 import CommentCard from "../components/CommentCard.vue";
 import EventCard from "../components/EventCard.vue";
 import { eventsService } from "../services/EventsService.js";
+import MovieCard from "../components/MovieCard.vue";
 
-export default {
-  setup() {
-    const editable = ref({})
-    const route = useRoute()
-    onMounted(() => {
-      getGroupById()
-      getMoviesByGroupId()
-      getCommentsByGroupId()
-      getEventsByGroupId()
-    })
-    async function getEventsByGroupId() {
-      try {
-        await eventsService.getEventsByGroupId(route.params.id)
-      } catch (error) {
-        Pop.error(error)
-        logger.log(error)
-      }
-    }
-    async function getCommentsByGroupId() {
-      try {
-        await groupsService.getCommentsByGroupId(route.params.id)
-      } catch (error) {
-        Pop.error(error)
-        logger.log(error)
-      }
-    }
-    async function getGroupById() {
-      try {
-        await groupsService.getGroupById(route.params.id)
-      } catch (error) {
-        Pop.error(error)
-        logger.log(error)
-      }
-    }
-    async function getMoviesByGroupId() {
-      try {
-        await groupsService.getMoviesByGroupId(route.params.id)
-      } catch (error) {
-        Pop.error(error)
-        logger.log(error)
-      }
-    }
-    return {
-      async addMyselfToGroup() {
-        try {
-          await groupsService.addMyselfToGroup(route.params.id)
-        } catch (error) {
-          Pop.error(error)
-          logger.log(error)
-        }
-      },
-      groupEvents: computed(() => AppState.activeGroupEvents),
-      comments: computed(() => AppState.activeComments),
-      editable,
-      group: computed(() => AppState.activeGroup),
-      groupMovies: computed(() => AppState.groupMovies),
-      async postComment() {
-        try {
-          await groupsService.postComment(route.params.id, editable.value)
-          editable.value = {}
-        } catch (error) {
-          Pop.error(error)
-          logger.log(error)
-        }
-      }
-    }
+const editable = ref({})
+const route = useRoute()
+let groupEvents = computed(() => AppState.activeGroupEvents)
+let comments = computed(() => AppState.activeComments)
+let group = computed(() => AppState.activeGroup)
+let groupMovies = computed(() => AppState.groupMovies)
+let isMember = ref(false)
+
+onMounted(() => {
+  getGroupById()
+  getMoviesByGroupId()
+  getCommentsByGroupId()
+  getEventsByGroupId()
+
+})
+async function getGroupById() {
+  try {
+    await groupsService.getGroupById(route.params.id)
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
   }
-};
+}
+async function getEventsByGroupId() {
+  try {
+    await eventsService.getEventsByGroupId(route.params.id)
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+}
+async function getCommentsByGroupId() {
+  try {
+    await groupsService.getCommentsByGroupId(route.params.id)
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+}
+async function getMoviesByGroupId() {
+  try {
+    await groupsService.getMoviesByGroupId(route.params.id)
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+}
+async function getGroupMembers() {
+  try {
+    await groupsService.getGroupMembers(route.params.id)
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+}
+
+
+async function addMyselfToGroup() {
+  try {
+    await groupsService.addMyselfToGroup(route.params.id)
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+}
+async function postComment() {
+  try {
+    await groupsService.postComment(route.params.id, editable.value)
+    editable.value = {}
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+}
+
+
 </script>
 
 
@@ -190,11 +199,7 @@ export default {
   color: black;
   font-family: 'MedievalSharp', cursive;
   align-self: center;
-
-
 }
-
-
 
 .groupDesc {
   padding: 1rem;
@@ -213,11 +218,11 @@ export default {
 }
 
 .middleSection {
+  display: flex;
+  flex-direction: column;
+
   flex: 1 0 auto;
 }
-
-
-
 
 .title {
   background-image: url("../assets/img/scrollsmall-removebg-preview.png");
@@ -233,7 +238,38 @@ export default {
   padding-top: 0rem;
   padding-bottom: 3rem;
   font-family: 'MedievalSharp', cursive;
+  margin-top: -2rem;
 
   text-align: center;
+}
+
+.joinButtons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.shieldButton {
+  background-image: url("../assets/img/sheildbutton.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  font-size: 2.7rem;
+  height: 5rem;
+  width: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: .8rem;
+  color: black;
+
+}
+
+.movies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
 }
 </style>
