@@ -1,13 +1,11 @@
 <template>
   <div class="homePage">
 
-    <!-- SECTION movies -->
     <div class="movies">
       <MovieCard :movie="m" v-for="m in movies" />
     </div>
 
-    <!-- SECTION groups and events -->
-    <div class="info">
+    <div class="myStuff">
 
       <div class="groups">
         <h1 class="scrollCard">My Guilds</h1>
@@ -22,7 +20,9 @@
       <div class="events">
         <h1 class="scrollCard">My Events</h1>
         <div class="banner">
-
+          <div class="eventsContainer">
+            <EventCard :event="e.event" v-for="e in myEvents" />
+          </div>
 
         </div>
       </div>
@@ -32,7 +32,7 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { AppState } from "../AppState.js";
 import { computed, reactive, onMounted, ref } from 'vue';
 import Pop from "../utils/Pop.js";
@@ -40,54 +40,44 @@ import { logger } from "../utils/Logger.js";
 import { moviesService } from "../services/MoviesService.js";
 import MovieCard from "../components/MovieCard.vue";
 import { groupsService } from "../services/GroupsService.js";
+
 import { useRouter } from "vue-router";
 import GroupCard from "../components/GroupCard.vue";
+import { accountService } from "../services/AccountService.js";
 
+const editable = ref({});
+const router = useRouter();
+let movies = computed(() => AppState.movies)
+let myGroups = computed(() => AppState.myGroups)
+let myEvents = computed(() => AppState.myEvents)
+let account = computed(() => AppState.account)
 
-export default {
-  setup() {
-    const editable = ref({});
-    const router = useRouter();
-    onMounted(() => {
-      getMovies();
-      // getMyGroups()
-    });
-    // async function getMyGroups(){
-    //   try {
-    //     await groupsService.getMyGroups()
-    //   } catch (error) {
-    //     Pop.error(error)
-    //     logger.log(error)
-    //   }
-    // }
-    async function getMovies() {
-      try {
-        await moviesService.getMovies();
-      }
-      catch (error) {
-        Pop.error(error);
-        logger.log(error);
-      }
-    }
-    return {
-      movies: computed(() => AppState.movies),
-      myGroups: computed(() => AppState.myGroups),
-      myEvents: computed(() => AppState.myEvents),
-      account: computed(() => AppState.account),
-      async createGroup() {
-        try {
-          await groupsService.createGroup(editable.value);
-          router.push({ name: "Group", params: { id: group.id } });
-        }
-        catch (error) {
-          Pop.error(error);
-          logger.log(error);
-        }
-      }
-    };
-  },
-  // components: { GroupCard }
+onMounted(async () => {
+  await getMovies();
+});
+
+async function getMovies() {
+  try {
+    await moviesService.getMovies();
+  }
+  catch (error) {
+    Pop.error(error);
+    logger.log(error);
+  }
 }
+
+async function createGroup() {
+  try {
+    await groupsService.createGroup(editable.value);
+    router.push({ name: "Group", params: { id: group.id } });
+  }
+  catch (error) {
+    Pop.error(error);
+    logger.log(error);
+  }
+}
+
+
 </script>
 
 <style scoped lang="scss">
@@ -109,23 +99,40 @@ export default {
   gap: 2rem;
 }
 
-.info {
+.myStuff {
   flex-basis: 25vw;
   padding: .25rem;
   display: flex;
   flex-direction: column;
   gap: .25rem;
+  max-width: 30vw;
 
 }
 
 .groupsContainer {
+
   padding-top: 1rem;
   padding-bottom: 1rem;
   display: flex;
+  padding-left: 5rem;
+  padding-right: 5rem;
   flex-direction: column;
   gap: 1rem;
   align-items: center;
 
+
+}
+
+.eventsContainer {
+
+  padding-top: 4rem;
+  padding-bottom: 1rem;
+  padding-left: 5rem;
+  padding-right: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
 }
 
 .banner {

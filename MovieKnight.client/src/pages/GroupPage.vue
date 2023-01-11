@@ -52,9 +52,11 @@
       <button class="joinLeaveButton" data-bs-toggle="offcanvas" data-bs-target="#event">
         New Guild Event
       </button>
+      <div class="banner">
 
-      <div class="events" v-if="groupEvents">
-        <EventCard :event="e" v-for="e in groupEvents" />
+        <div class="events" v-if="groupEvents">
+          <EventCard :event="e" v-for="e in groupEvents" />
+        </div>
       </div>
     </section>
   </div>
@@ -342,6 +344,7 @@ async function postComment() {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  max-width: 30vw;
 }
 
 .events {
@@ -349,5 +352,17 @@ async function postComment() {
   flex-direction: column;
   gap: 1rem;
   max-width: 30rem;
+}
+
+.banner {
+  background-image: url("../assets/img/bannerflaggood-removebg-preview.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  text-align: center;
+  min-height: 10rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  padding-left: 5rem;
+  padding-right: 5rem;
 }
 </style>

@@ -18,6 +18,9 @@
     <div class="middleSection">
       <h1 class="title">{{ event?.title }}</h1>
       <h1 class="infoBadge">Movies</h1>
+      <h3>
+        Add a movie
+      </h3>
       <select name="addMovieSelect">
         <option v-for="movie in groupMovies" :value="movies">{{ movie.movie.title }}</option>
       </select>
@@ -195,6 +198,8 @@ async function joinEvent() {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  max-width: 30vw;
+  overflow-x: hidden;
 
 }
 
