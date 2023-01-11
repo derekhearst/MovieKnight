@@ -21,6 +21,7 @@
 
       <section class="moviesSection">
         <h4 class="infoBadge">Guild Movies</h4>
+
         <div class="movies">
           <MovieCard :movie="m.movie" v-for="m in groupMovies" />
         </div>
@@ -47,19 +48,15 @@
     </div>
 
     <section class="eventSection">
-      <h1>Guild Events</h1>
-      <button data-bs-toggle="offcanvas" data-bs-target="#event">
-        <i class="mdi mdi-shield"></i>
-        <strong>New Guild Event</strong>
-        <i class="mdi mdi-shield"></i>
+      <h1 class="infoBadge">Guild Events</h1>
+      <button class="joinLeaveButton" data-bs-toggle="offcanvas" data-bs-target="#event">
+        New Guild Event
       </button>
 
       <div class="events" v-if="groupEvents">
         <EventCard :event="e" v-for="e in groupEvents" />
       </div>
     </section>
-
-
   </div>
 </template>
 
@@ -173,7 +170,8 @@ async function postComment() {
   padding: 2rem;
   align-items: flex-start;
   gap: 1rem;
-  flex-wrap: wrap;
+  max-width: 100vw;
+  overflow-x: hidden;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -237,7 +235,8 @@ async function postComment() {
 .middleSection {
   display: flex;
   flex-direction: column;
-  flex: 1 0 auto;
+  flex: 1 1 50vw;
+  max-width: 60vw;
 
 }
 
@@ -283,14 +282,18 @@ async function postComment() {
   flex-direction: column;
   align-items: flex-start;
   margin-bottom: 3rem;
-
 }
 
 .movies {
   display: flex;
-  flex-wrap: wrap;
   gap: 1rem;
-  overflow-x: auto;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+  max-height: 30rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid goldenrod;
+  padding: .5rem;
+  justify-content: center;
 }
 
 .commentBorder {
@@ -331,5 +334,20 @@ async function postComment() {
     color: goldenrod;
     font-size: 3rem;
   }
+}
+
+.eventSection {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.events {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 30rem;
 }
 </style>

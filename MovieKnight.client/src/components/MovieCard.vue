@@ -20,7 +20,9 @@ export default {
 
 <style lang="scss" scoped>
 .movieCard {
-  flex: 0 1 250px;
+  flex: 1 1 250px;
+  min-width: 200px;
+  max-width: 290px;
   // width: 250px;
   object-fit: cover;
   // box-shadow: 3px 3px 2px 2px #fcc333c5;

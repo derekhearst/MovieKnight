@@ -1,20 +1,14 @@
 <template>
-  <div class="col-10">
-
-    <router-link :to="{name: 'Event', params: {id: event.id}}">
-      <div class="d-flex justify-content-between bg-black text-white my-4 rounded elevation-7">
-        <img class="img-style" :src="event.coverImg" alt="">
-        <div class="pt-3 px-2">
-          <h4>{{event.title}}</h4>
-          <p>{{event.description.slice(0,200)}}</p>
-        </div>
+  <router-link :to="{ name: 'Event', params: { id: event.id } }" class="event">
+    <img class="eventImage" :src="event.coverImg" alt="">
+    <div class="eventBody">
+      <div class="eventHeader">
+        <h4>{{ event.title }}</h4>
+        <div>{{ new Date(event.startTime).toUTCString() }}</div>
       </div>
-    </router-link>
-  </div>
-  <div class="col-2">
-
-    <button class="btn bg-warning" data-bs-toggle="modal" data-bs-target="#addmovietoevent" type="button"><i class="mdi mdi-plus text-danger fs-4 fw-bold" @click="setEventActive()"></i></button>
-  </div>
+      <p>{{ event.description }}</p>
+    </div>
+  </router-link>
 </template>
 
 
@@ -27,43 +21,55 @@ import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";
 // import { group } from "console";
 export default {
-  props: {event:{type: Object, required: true}},
-  setup(props){
-    
-  return {
-    props,
-    groupMovies: computed(()=> AppState.groupMovies),
-    setEventActive(){
-    try {
-     eventsService.setEventActive(props.event.id)
-    } catch (error) {
-      Pop.error(error)
-      logger.log(error)
+  props: { event: { type: Object, required: true } },
+  setup(props) {
+
+    return {
+      props,
+      groupMovies: computed(() => AppState.groupMovies),
+      setEventActive() {
+        try {
+          eventsService.setEventActive(props.event.id)
+        } catch (error) {
+          Pop.error(error)
+          logger.log(error)
+        }
+      }
     }
-    }
-  }
   }
 };
 </script>
 
 
 <style lang="scss" scoped>
-.maroon{
-  background-color: #fbcf33;
-  color: #8f1515;
+.event {
+  display: flex;
+  border: 1px solid goldenrod;
+  padding: .5rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  overflow: hidden;
 }
-.border-style{
-  // border-color:#fbcf33;
-  border-left: 2px solid #fbcf33;
-}
-.img-style{
-  height: 20vh;
-  width: 40%;
+
+.eventImage {
+  width: 100px;
+  height: 100%;
   object-fit: cover;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
 }
-.elevation-7{
-  box-shadow: 3px 3px 3px #fbd033a2;
+
+.eventBody {
+  padding-left: .5rem;
+  color: white;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.eventHeader {
+  display: flex;
+  justify-content: space-between;
+
+  div {
+    color: rgba(255, 255, 255, 0.633);
+  }
 }
 </style>
