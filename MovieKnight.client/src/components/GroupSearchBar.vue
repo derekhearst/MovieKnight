@@ -27,8 +27,8 @@ export default {
       search,
       async searchGroups() {
         try {
-          await groupsService.searchGroups(search)
-          router.push({ name: 'Search' })
+          // await groupsService.searchGroups(search)
+          router.push({ name: `Search`,params: {category: 'group'}, query:  {search: search.query} })
           search.query = ""
         } catch (error) {
           Pop.error(error)

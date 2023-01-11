@@ -27,8 +27,8 @@ export default {
       search,
       async searchMovies() {
         try {
-          await moviesService.searchMovies(search)
-          router.push({ name: 'Search' })
+          // await moviesService.searchMovies(search)
+          router.push({ name: 'Search', params: {category: 'movie'}, query: {search: search.query} })
           search.query = ""
         } catch (error) {
           Pop.error(error)
