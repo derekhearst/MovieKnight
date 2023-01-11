@@ -23,7 +23,11 @@ class AccountService {
 	}
 	async addMovieToMyList(mDId){
 		const res = await api.post(`account/movies`, mDId)
-		logger.log(res.data)
+		AppState.myMovies.push(res.data)
+	}
+	async getMyMovies(){
+		const res = await api.get('account/movies')
+		AppState.myMovies = res.data
 	}
 }
 

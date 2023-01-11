@@ -27,6 +27,8 @@ AuthService.on(AuthService.AUTH_EVENTS.AUTHENTICATED, async function () {
 	// NOTE if there is something you want to do once the user is authenticated, place that here
 	await accountService.getMyGroups()
 	await accountService.getMyEvents()
+	await accountService.getMyMovies()
+
 })
 
 async function refreshAuthToken(config) {
