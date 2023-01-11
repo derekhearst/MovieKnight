@@ -53,6 +53,12 @@ class GroupsService {
 		AppState.groupMembers = res.data
 		logger.log("getting group members", res.data)
 	}
+
+	async searchGroups(search) {
+		const res = await api.get("api/groups", { params: search })
+		AppState.searchMovies = []
+		AppState.groups = res.data
+	}
 }
 
 export const groupsService = new GroupsService()
