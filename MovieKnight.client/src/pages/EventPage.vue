@@ -17,13 +17,13 @@
 
     <div class="middleSection">
       <h1 class="title">{{ event?.title }}</h1>
-      <h1 class="infoBadge">Movies</h1>
-      <h3>
-        Add a movie
-      </h3>
-      <select name="addMovieSelect">
-        <option v-for="movie in groupMovies" :value="movies">{{ movie.movie.title }}</option>
-      </select>
+      <div class="moviesHeader">
+        <h1 class="infoBadge">Movies</h1>
+        <select v-model="newMovie" name="addMovieSelect">
+          <option v-for="movie in groupMovies" :value="movie.movie.title">{{ movie.movie.title }}</option>
+        </select>
+        <button @click="addMovie" class="niceButton">Add Movie</button>
+      </div>
       <div class="movies">
         <MovieCard :movie="m.movie" v-for="m in movies" />
       </div>
@@ -78,6 +78,7 @@ onMounted(async () => {
   await getGroupMovies()
 })
 
+const newMovie = ref('')
 const isMember = ref(false)
 let account = computed(() => AppState.account)
 let event = computed(() => AppState.activeEvent)
@@ -87,6 +88,15 @@ let comments = computed(() => AppState.activeEventComments)
 let items = computed(() => AppState.activeEventItems)
 let members = computed(() => AppState.activeEventMembers)
 
+async function addMovie() {
+  try {
+    let movie = AppState.activeGroupMovies.find(m => m.movie.title == newMovie.value)
+    await eventsService.addMovieToEvent(route.params.id, movie.movie)
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+}
 async function getComments() {
   try {
     await eventsService.getCommentsByEventId(route.params.id)
@@ -198,7 +208,7 @@ async function joinEvent() {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  max-width: 30vw;
+  max-width: 23vw;
   overflow-x: hidden;
 
 }
@@ -233,6 +243,11 @@ async function joinEvent() {
   // text-shadow: 0 0 10px black;
 }
 
+.moviesHeader {
+  display: flex;
+  justify-content: space-between;
+}
+
 .eventImage {
   width: 100%;
   height: 300px;
@@ -254,7 +269,6 @@ async function joinEvent() {
   font-family: 'MedievalSharp', cursive;
   padding: 1rem;
   text-align: center;
-
 }
 
 .title {
@@ -334,6 +348,11 @@ async function joinEvent() {
   display: flex;
   flex-direction: column-reverse;
   gap: 1rem;
+}
 
+.movies {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 </style>

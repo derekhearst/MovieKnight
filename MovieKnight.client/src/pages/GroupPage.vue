@@ -230,6 +230,7 @@ async function postComment() {
   background-repeat: no-repeat;
   background-size: 100% 100%;
   min-height: 20rem;
+  max-width: 20rem;
 
   // text-shadow: 0 0 10px black;
 }
@@ -290,7 +291,7 @@ async function postComment() {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
-  overflow-y: scroll;
+  overflow-y: auto;
   max-height: 30rem;
   backdrop-filter: blur(10px);
   border: 1px solid goldenrod;

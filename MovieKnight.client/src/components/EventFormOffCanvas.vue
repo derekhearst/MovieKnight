@@ -31,24 +31,9 @@
           <input v-model="editable.capacity" type="number" class="form-control" aria-describedby="emailHelp"
             id="capacity" placeholder="Capacity">
         </div>
-        <div class="d-flex">
-
-          <div class="form-group my-2 p-2">
-            <label for="canceled">Canceled?</label>
-            <select v-model="editable.canceled" name="canceled" id="canceled">
-              <option value="false">No</option>
-              <option value="true">Yes</option>
-            </select>
-          </div>
-          <div class="form-group my-2 p-2">
-            <label for="group">Guild</label>
-            <select name="" id="" v-model="editable.groupId">
-              <option v-for="g in myGroups" :value="g.group.id">{{ g.group.title }}</option>
-            </select>
-          </div>
-        </div>
         <div>
-          <input v-model="editable.startTime" type="datetime-local">
+          <label for="startTime">Start Time</label>
+          <input v-model="editable.startTime" type="datetime-local" class="form-control mb-1">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
@@ -73,6 +58,8 @@ export default {
       editable,
       async makeEvent() {
         try {
+          editable.value.groupId = route.params.id
+          editable.value.canceled = false
           await eventsService.makeEvent(editable.value)
           // await eventsService.addMovieToEvent(editable.value)
           editable.value = {}
