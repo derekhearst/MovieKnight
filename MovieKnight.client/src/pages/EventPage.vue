@@ -2,9 +2,9 @@
   <div class="eventPage">
     <section class="leftSection">
       <img :src="event?.coverImg" alt="" class="eventImage" />
-      <button v-if="isMember.value" class="niceButton">Join Event </button>
-      <button v-else class="niceButton">Leave Event</button>
 
+      <button v-if="!isMember" class="niceButton" @click="joinEvent">Join Event </button>
+      <button v-else class="niceButton" @click="leaveEvent">Leave Event</button>
 
       <div class="eventDetails">
         <p>Description: {{ event?.description }}</p>
@@ -18,6 +18,9 @@
     <div class="middleSection">
       <h1 class="title">{{ event?.title }}</h1>
       <h1 class="infoBadge">Movies</h1>
+      <select name="addMovieSelect">
+        <option v-for="movie in groupMovies" :value="movies">{{ movie.movie.title }}</option>
+      </select>
       <div class="movies">
         <MovieCard :movie="m.movie" v-for="m in movies" />
       </div>
@@ -32,7 +35,7 @@
             <CommentCard :comment="c" v-for="c in comments" />
           </div>
           <form @submit.prevent="postComment" class="commentForm">
-            <input v-model="editable.body" class="form-control" type="text" placeholder="comment here...">
+            <input v-model="comment.body" class="form-control" type="text" placeholder="comment here...">
             <button class="btn btn-dark"><i class="mdi mdi-script-text"></i></button>
           </form>
         </div>
@@ -42,7 +45,7 @@
       <section class="itemsSection">
         <h1 class="infoBadge">Items</h1>
         <div class="items">
-          <ItemCard :item="i" v-for="i in items" />
+          <!-- <ItemCard :item="i" v-for="i in items" /> -->
         </div>
       </section>
     </div>
@@ -61,24 +64,22 @@ import { groupsService } from "../services/GroupsService.js";
 import GroupCard from "../components/GroupCard.vue";
 
 const route = useRoute()
-const editable = ref({})
-onMounted(() => {
-  getEvent()
-  getMovies()
-  getComments()
-  getMembers()
-  getGroup()
-  getItems()
-})
-watchEffect(() => {
-  AppState.activeEventMembers
-  AppState.activeEvent
+const comment = ref({})
+onMounted(async () => {
+  await getEvent()
+  await getMovies()
+  await getComments()
+  await getMembers()
+  await getGroup()
+  await getItems()
+  await getGroupMovies()
 })
 
-const isMember = ref(true)
+const isMember = ref(false)
 let account = computed(() => AppState.account)
 let event = computed(() => AppState.activeEvent)
 let movies = computed(() => AppState.activeEventMovies)
+let groupMovies = computed(() => AppState.activeGroupMovies)
 let comments = computed(() => AppState.activeEventComments)
 let items = computed(() => AppState.activeEventItems)
 let members = computed(() => AppState.activeEventMembers)
@@ -93,8 +94,8 @@ async function getComments() {
 }
 async function postComment() {
   try {
-    await eventsService.postCommentToEvent(route.params.id, editable.value)
-    editable.value = {}
+    await eventsService.postCommentToEvent(route.params.id, comment.value)
+    comment.value = {}
   } catch (error) {
     Pop.error(error)
     logger.log(error)
@@ -111,10 +112,9 @@ async function getEvent() {
 async function getMembers() {
   try {
     await eventsService.getMembersByEventId(route.params.id)
-    if (AppState.activeEventMembers.find(m => m.accountId == account.id)) {
+    if (AppState.activeEventMembers.find(m => m.accountId == AppState.account.id)) {
       isMember.value = true
     }
-    else { isMember.value = false }
   } catch (error) {
     Pop.error(error)
     logger.log(error)
@@ -136,6 +136,14 @@ async function getGroup() {
     logger.log(error)
   }
 }
+async function getGroupMovies() {
+  try {
+    await groupsService.getMoviesByGroupId(AppState.activeEvent.groupId)
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+}
 async function getItems() {
   try {
     await eventsService.getItemsByEventId(route.params.id)
@@ -144,21 +152,21 @@ async function getItems() {
     logger.log(error)
   }
 }
-
 async function leaveEvent() {
   try {
-    await eventsService.removeMyselfFromEvent(route.params.id, AppState.account.id)
+    await eventsService.removeMemberFromEvent(route.params.id, AppState.account.id)
     isMember.value = false
+    Pop.success("Left Event")
   } catch (error) {
-    Pop.error(error)
+    Pop.error("Error Leaving Event")
     logger.log(error)
   }
 }
-
 async function joinEvent() {
   try {
-    await eventsService.addMyselfToEvent(route.params.id)
+    await eventsService.addMemberToEvent(route.params.id, AppState.account.id)
     isMember.value = true
+    Pop.success("Joined Event")
   } catch (error) {
     Pop.error(error)
     logger.log(error)
@@ -263,11 +271,6 @@ async function joinEvent() {
   text-align: center;
 }
 
-.commentsSection {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
 .infoBadge {
   text-align: center;
@@ -313,6 +316,19 @@ async function joinEvent() {
   background-color: rgba(0, 0, 0, 0.623);
   color: white;
   padding: 1rem;
+
+}
+
+.commentsSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.comments {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 1rem;
 
 }
 </style>

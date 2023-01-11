@@ -21,6 +21,7 @@
 
       <section class="moviesSection">
         <h4 class="infoBadge">Guild Movies</h4>
+
         <div class="movies">
           <MovieCard :movie="m.movie" v-for="m in groupMovies" />
         </div>

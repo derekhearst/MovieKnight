@@ -35,27 +35,28 @@ class EventsService {
 		const res = await api.get(`api/events/${id}/items`)
 		AppState.activeEventItems = res.data
 	}
-	async addMyselfToEvent(id) {
+
+	async addMemberToEvent(id, accountId) {
 		const res = await api.post(`api/events/${id}/members`)
 		AppState.activeEventMembers.push(res.data)
 		AppState.activeEventMembers = AppState.activeEventMembers
-		AppState.activeEvent.capacity -= 1
-		logger.log(res.data)
+		AppState.activeEvent.capacity--
 	}
-	async removeMyselfFromEvent(id, accountId) {
+	async removeMemberFromEvent(id, accountId) {
 		const me = AppState.activeEventMembers.find(m => m.accountId == accountId)
-		const res = await api.delete(`api/events/${id}/members/${me.id}`)
-		AppState.activeEventMembers.filter(m => m.accountId !== accountId)
+		const res = await api.delete(`api/events/${id}/members/${me._id}`)
+		AppState.activeEventMembers.filter(m => m.accountId != accountId)
 		AppState.activeEventMembers = AppState.activeEventMembers
-		logger.log(res.data)
+		AppState.activeEvent.capacity++
 	}
+
 	async getMembersByEventId(id) {
 		const res = await api.get(`api/events/${id}/members`)
 		AppState.activeEventMembers = res.data
 	}
 	async postCommentToEvent(id, commentData) {
 		const res = await api.post(`api/events/${id}/comments`, commentData)
-		AppState.activeEventComments.push(res.data)
+		AppState.activeEventComments.unshift(res.data)
 		AppState.activeEventComments = AppState.activeEventComments
 	}
 	async getCommentsByEventId(id) {
