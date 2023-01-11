@@ -9,11 +9,11 @@
         <div class="d-flex gap-4">
 
           <button class="goodButton" data-bs-toggle="modal" data-bs-target="#movieModal">Add to guild</button>
-          <button class="goodButton">Save Movie</button>
+          <!-- TODO fix the button below me -->
+          <button @click="addMovieToMyList" class="goodButton">Save Movie</button>
         </div>
       </div>
       <div class="ratings">
-
         <div v-if="movie.rating >= 90">
           <h3>Rating: <i class="mdi mdi-star text-warning"></i>
             <i class="mdi mdi-star text-warning"></i>
@@ -71,6 +71,7 @@ import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";
 import { moviesService } from "../services/MoviesService.js";
 import { useRoute } from "vue-router";
+import { accountService } from "../services/AccountService.js";
 export default {
   setup() {
     const route = useRoute()
@@ -97,6 +98,14 @@ export default {
     //   }
     // }
     return {
+      async addMovieToMyList(){
+        try {
+          await  accountService.addMovieToMyList(route.params.id)
+        } catch (error) {
+          Pop.error(error)
+          logger.log(error)
+        }
+      },
       async addMovieToGroup() { },
       movie: computed(() => AppState.activeMovie),
       // TODO finish function
