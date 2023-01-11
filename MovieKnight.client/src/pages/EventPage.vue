@@ -1,57 +1,51 @@
 <template>
-  <div class="container-fluid bg-style pt-5">
-    <section class="row justify-content-evenly py-3 bg-smokey">
-      <!-- SECTION left side -->
-      <div class="col-3">
-        <img :src="event?.coverImg" alt="">
-        <div v-if="group" class="rounded w-75 text-center">
-          <router-link :to="{ name: 'Group', params: { id: group.id } }">
-            <div class="d-flex justify-content-start bg-black text-white my-4 rounded elevation-7">
-              <img class="img-style" :src="group.coverImg" alt="">
-              <div class="pt-3 px-2">
-                <h4>{{ group.title }}</h4>
-                <p>{{ group.description.slice(0, 200) }}</p>
-              </div>
-            </div>
-          </router-link>
-        </div>
+  <div class="eventPage">
+    <section class="leftSection">
+      <img :src="event?.coverImg" alt="" class="eventImage" />
+      <button v-if="isMember.value" class="niceButton">Join Event </button>
+      <button v-else class="niceButton">Leave Event</button>
+
+
+      <div class="eventDetails">
+        <p>Description: {{ event?.description }}</p>
+        <p>Location: {{ event?.location }}</p>
+        <p>Date: {{ event?.startTime }}</p>
+        <p>Capacity: {{ event?.capacity }}</p>
+        <p v-if="event?.items">Items: {{ event?.items }}</p>
       </div>
-      <!-- SECTION center side -->
-      <div class="col-5">
-        <div class="d-flex justify-content-between bg-dark elevation-3 p-4">
-          <div>
-            <h1 class="text-white">{{ event?.title }}</h1>
+    </section>
+
+    <div class="middleSection">
+      <h1 class="title">{{ event?.title }}</h1>
+      <h1 class="infoBadge">Movies</h1>
+      <div class="movies">
+        <MovieCard :movie="m.movie" v-for="m in movies" />
+      </div>
+    </div>
+
+    <div class="rightSection">
+      <section class="commentsSection">
+        <h1 class="infoBadge">Comments</h1>
+        <div class="commentBorder">
+
+          <div class="comments">
+            <CommentCard :comment="c" v-for="c in comments" />
           </div>
-          <div v-if="isMember.value">
-            <i @click="removeMyselfFromEvent" class="mdi mdi-account-minus fs-2 text-white selectable px-3"></i>
-          </div>
-          <div v-else>
-            <i @click="addMyselfToEvent" class="mdi mdi-account-plus fs-2 text-white selectable px-3"></i>
-          </div>
-        </div>
-        <div class="bg-dark elevation-3 p-4 my-2">
-          <h1>Description: {{ event?.description }}</h1>
-          <h1>Location: {{ event?.location }}</h1>
-          <h1>Date: {{ event?.startTime }}</h1>
-          <h1>Capacity: {{ event?.capacity }}</h1>
-          <h1 v-if="event?.items">Items: {{ event?.items }}</h1>
-        </div>
-        <div class="border my-3 rounded text-end">
-          <!-- TODO this is where we will draw comments -->
-          <section class="row px-5 py-2" v-for="c in comments">
-            <CommentCard :comment = "c"/>
-          </section>
-          <form @submit.prevent="postCommentToEvent">
-            <div class="d-flex">
-              <input v-model="editable.body" class="form-control" type="text" placeholder="comment here...">
-              <button class="btn btn-dark"><i class="mdi mdi-send fs-3"></i></button>
-            </div>
+          <form @submit.prevent="postComment" class="commentForm">
+            <input v-model="editable.body" class="form-control" type="text" placeholder="comment here...">
+            <button class="btn btn-dark"><i class="mdi mdi-script-text"></i></button>
           </form>
         </div>
-      </div>
-      <!-- SECTION right side -->
-      <div class="col-3"></div>
-    </section>
+
+      </section>
+
+      <section class="itemsSection">
+        <h1 class="infoBadge">Items</h1>
+        <div class="items">
+          <ItemCard :item="i" v-for="i in items" />
+        </div>
+      </section>
+    </div>
   </div>
 </template>
 
@@ -69,17 +63,27 @@ import GroupCard from "../components/GroupCard.vue";
 const route = useRoute()
 const editable = ref({})
 onMounted(() => {
-  getEventById()
-  getMoviesByEventId()
-  getCommentsByEventId()
+  getEvent()
+  getMovies()
+  getComments()
+  getMembers()
+  getGroup()
+  getItems()
 })
-watchEffect(()=> {
-AppState.activeEventMembers
-AppState.activeEvent})
+watchEffect(() => {
+  AppState.activeEventMembers
+  AppState.activeEvent
+})
 
 const isMember = ref(true)
+let account = computed(() => AppState.account)
+let event = computed(() => AppState.activeEvent)
+let movies = computed(() => AppState.activeEventMovies)
+let comments = computed(() => AppState.activeEventComments)
+let items = computed(() => AppState.activeEventItems)
+let members = computed(() => AppState.activeEventMembers)
 
-async function getCommentsByEventId(){
+async function getComments() {
   try {
     await eventsService.getCommentsByEventId(route.params.id)
   } catch (error) {
@@ -87,41 +91,36 @@ async function getCommentsByEventId(){
     logger.log(error)
   }
 }
-
-async function postCommentToEvent(){
+async function postComment() {
   try {
-    await eventsService.postCommentToEvent(route.params.id ,editable.value)
+    await eventsService.postCommentToEvent(route.params.id, editable.value)
     editable.value = {}
   } catch (error) {
     Pop.error(error)
     logger.log(error)
   }
 }
-
-async function getEventById() {
+async function getEvent() {
   try {
     await eventsService.getEventById(route.params.id)
-    getGroupByGroupId()
-    getMembersByEventId()
-
   } catch (error) {
     Pop.error(error)
     logger.log(error)
   }
 }
-async function getMembersByEventId() {
+async function getMembers() {
   try {
     await eventsService.getMembersByEventId(route.params.id)
-    if(AppState.activeEventMembers.find(m=>m.accountId == account.id)){
+    if (AppState.activeEventMembers.find(m => m.accountId == account.id)) {
       isMember.value = true
     }
-    else{isMember.value=false}
+    else { isMember.value = false }
   } catch (error) {
     Pop.error(error)
     logger.log(error)
   }
 }
-async function getMoviesByEventId() {
+async function getMovies() {
   try {
     await eventsService.getMoviesByEventId(route.params.id)
   } catch (error) {
@@ -129,18 +128,24 @@ async function getMoviesByEventId() {
     logger.log(error)
   }
 }
-async function getGroupByGroupId() {
+async function getGroup() {
   try {
-    const id = AppState.activeEvent.groupId
-    await groupsService.getGroupByGroupId(id)
+    await groupsService.getGroupByGroupId(AppState.activeEvent.groupId)
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+}
+async function getItems() {
+  try {
+    await eventsService.getItemsByEventId(route.params.id)
   } catch (error) {
     Pop.error(error)
     logger.log(error)
   }
 }
 
-
-async function removeMyselfFromEvent() {
+async function leaveEvent() {
   try {
     await eventsService.removeMyselfFromEvent(route.params.id, AppState.account.id)
     isMember.value = false
@@ -150,13 +155,7 @@ async function removeMyselfFromEvent() {
   }
 }
 
-let comments = computed(()=> AppState.activeComments)
-let event = computed(() => AppState.activeEvent)
-let account = computed(() => AppState.account)
-let movie = computed(() => AppState.activeEventMovie)
-let group = computed(() => AppState.activeGroup)
-let members = computed(() => AppState.activeEventMembers)
-async function addMyselfToEvent() {
+async function joinEvent() {
   try {
     await eventsService.addMyselfToEvent(route.params.id)
     isMember.value = true
@@ -166,42 +165,154 @@ async function addMyselfToEvent() {
   }
 }
 
+
+
 </script>
 
 
 <style lang="scss" scoped>
-.bg-style {
-  background-image: url('https://images.unsplash.com/photo-1618193319734-478296be37ad?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cHJvamVjdG9yfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60');
-  background-position: center;
+.eventPage {
+  display: flex;
+  padding: 1rem;
+  gap: 1rem;
+  background-image: url("https://img.freepik.com/premium-photo/stone-interior-ancient-armenian-church-highlands-dark-hall-rays-from-window_604704-26.jpg?w=1380");
   background-size: cover;
-  height: 100%;
-  min-height: 92vh;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-color: rgba(0, 0, 0, 0.734);
+  background-blend-mode: color;
 }
 
-.bg-smokey {
-  background-color: rgba(146, 146, 146, 0.418);
+.leftSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
 }
 
-.maroon {
-  background-color: #fbcf33;
-  color: #8f1515;
+.middleSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  flex-grow: 1;
 }
 
-.img-style {
-  // min-height: 35vh;
-  object-fit: contain;
+.rightSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+}
+
+.eventDetails {
+  padding: 1rem;
+  font-size: 1.5rem;
+  font-weight: normal;
+  color: white;
+  padding-left: 3.5rem;
+  padding-right: 3.5rem;
+  background-image: url("../assets/img/bannerflaggood-removebg-preview.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  min-height: 20rem;
+
+  // text-shadow: 0 0 10px black;
+}
+
+.eventImage {
   width: 100%;
-}
-
-.bg-darkish {
-  background-color: #1e1e1ea9;
-}
-
-.img-style {
-  height: 20vh;
-  width: 40%;
+  height: 300px;
   object-fit: cover;
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+  border: 2px solid goldenrod
+}
+
+.niceButton {
+  background-image: url("../assets/img/goodbutton-removebg-preview.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  color: black;
+  background-color: transparent;
+  border: none;
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: 'MedievalSharp', cursive;
+  padding: 1rem;
+  text-align: center;
+
+}
+
+.title {
+  background-image: url("../assets/img/scrollsmall-removebg-preview.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  color: black;
+  font-weight: bold;
+  font-size: 4rem;
+  padding-left: 5rem;
+  padding-right: 5rem;
+  padding-top: 1rem;
+  padding-bottom: 3rem;
+  font-family: 'MedievalSharp', cursive;
+
+
+  text-align: center;
+}
+
+.commentsSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.infoBadge {
+  text-align: center;
+  background-image: url("../assets/img/buttondots-removebg-preview.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 20rem;
+  height: 6rem;
+  font-weight: bold;
+  color: black;
+  font-family: 'MedievalSharp', cursive;
+}
+
+.commentForm {
+  display: flex;
+  align-items: center;
+
+  input {
+    flex: 1 0 10rem;
+    margin-right: 1rem;
+    border: 3px solid goldenrod;
+    font-size: 1.5rem;
+    padding: .5rem;
+    background-color: rgba(0, 0, 0, 0.623);
+    color: white;
+  }
+
+  button {
+    border: none;
+    background-color: transparent;
+    color: goldenrod;
+    font-size: 3rem;
+  }
+}
+
+.commentBorder {
+  border: 3px solid goldenrod;
+  background-color: rgba(0, 0, 0, 0.623);
+  color: white;
+  padding: 1rem;
+
 }
 </style>

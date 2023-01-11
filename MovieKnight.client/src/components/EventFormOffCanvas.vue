@@ -48,7 +48,7 @@
           </div>
         </div>
         <div>
-          <input v-model="editable.startTime" type="date">
+          <input v-model="editable.startTime" type="datetime-local">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
