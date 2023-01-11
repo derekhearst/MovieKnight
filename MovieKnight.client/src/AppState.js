@@ -8,6 +8,8 @@ export const AppState = reactive({
   /** @type {import('./models/Movie.js').Movie[]} */
   movies: [],
   /** @type {import('./models/Movie.js').Movie[]} */
+  searchMovies: [],
+  /** @type {import('./models/Movie.js').Movie[]} */
   activeMovie: {},
   // /** @type {import('./models/Group.js').Group[]} */
   myGroups: [],
@@ -20,4 +22,5 @@ export const AppState = reactive({
   activeEventMovie: [],
   activeEventMembers: [],
   myEvents: [],
+  groups: [],
 })

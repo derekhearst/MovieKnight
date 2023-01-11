@@ -4,6 +4,12 @@ import { logger } from "../utils/Logger.js"
 import { api } from "./AxiosService.js"
 
 class GroupsService{
+
+  async searchGroups(search){
+    const res = await api.get('api/groups', {params: search})
+    AppState.searchMovies = []
+    AppState.groups = res.data
+  }
  async createGroup(body){
   const res = await api.post('api/groups', body)
   AppState.myGroups.push(res.data)

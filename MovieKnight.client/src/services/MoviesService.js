@@ -14,7 +14,8 @@ class MoviesService{
  }
  async searchMovies(search){
   const res = await movieApi.get('search/movie', {params:search})
-  AppState.movies = res.data.results.map(m => new Movie(m))
+  AppState.groups = []
+  AppState.searchMovies = res.data.results.map(m => new Movie(m))
  }
  async getMovieById(id){
   const res = await movieApi.get('movie/' + id)
