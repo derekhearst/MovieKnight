@@ -30,8 +30,8 @@
 
     <section class="moviesSection">
 
-      <div class="movies">
-        <MovieCard :movie="m.movie" v-for="m in groupMovies" />
+      <div v-if="groupMovies" class="movies">
+        <MovieCard :movie="m.movie"  v-for="m in groupMovies" />
       </div>
     </section>
 

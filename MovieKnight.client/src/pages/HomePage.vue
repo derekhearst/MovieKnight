@@ -72,6 +72,7 @@ export default {
     return {
       movies: computed(() => AppState.movies),
       myGroups: computed(() => AppState.myGroups),
+      myEvents: computed(()=> AppState.myEvents),
       account: computed(() => AppState.account),
       async createGroup() {
         try {
