@@ -44,11 +44,12 @@ export default {
 <style lang="scss" scoped>
 .event {
   display: flex;
-  border: 1px solid goldenrod;
+  // border: 1px solid goldenrod;
   padding: .5rem;
   background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
   overflow: hidden;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.9);
 }
 
 .eventImage {

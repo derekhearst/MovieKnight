@@ -16,11 +16,11 @@ import { computed, reactive, onMounted } from 'vue';
 import { Group } from "../models/Group.js";
 // import { group } from "console";
 export default {
-  props: {group:{type: Object, required: true}},
-  setup(){
-    
-  return {
-  }
+  props: { group: { type: Object, required: true } },
+  setup() {
+
+    return {
+    }
   }
 };
 </script>
@@ -29,7 +29,7 @@ export default {
 <style lang="scss" scoped>
 .groupCard {
   display: flex;
-  width: 75%;
+  width: 100%;
   background-color: rgba(0, 0, 0, 0.458);
   color: white;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.9);
