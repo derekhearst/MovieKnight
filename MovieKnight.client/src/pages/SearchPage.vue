@@ -21,20 +21,25 @@ import { logger } from "../utils/Logger.js";
 import { moviesService } from "../services/MoviesService.js";
 import MovieCard from "../components/MovieCard.vue";
 import GroupCard from "../components/GroupCard.vue";
+import { useRoute } from "vue-router";
 export default {
     setup() {
+      const route = useRoute()
         onMounted(() => {
-            // getMovies()
+            getMovies()
         });
-        // async function getMovies(){
-        //   try {
-        //     await moviesService.getMovies()
-        //   } catch (error) {
-        //     Pop.error(error)
-        //     logger.log(error)
-        //   }
-        // }
+        async function getMovies(){
+          try {
+            if(route.name == 'Search' && AppState.searchMovies == []){
+              await moviesService.getMovies()
+            }
+          } catch (error) {
+            Pop.error(error)
+            logger.log(error)
+          }
+        }
         return {
+          route,
             movies: computed(() => AppState.searchMovies),
             groups: computed(()=> AppState.groups)
         };

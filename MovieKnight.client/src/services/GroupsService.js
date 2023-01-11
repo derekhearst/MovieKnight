@@ -6,7 +6,7 @@ import { api } from "./AxiosService.js"
 class GroupsService{
 
   async searchGroups(search){
-    const res = await api.get('api/groups', {params: search})
+    const res = await api.get(`api/groups?query=${search}`, {params: search})
     AppState.searchMovies = []
     AppState.groups = res.data
   }
