@@ -8,8 +8,11 @@ export const AppState = reactive({
 	myGroups: [],
 	myEvents: [],
 	myMovies: [],
+	myFavoriteMovies: [],
 	/** @type {import('./models/Movie.js').Movie[]} */
 	movies: [],
+	/** @type {import('./models/Movie.js').Movie[]} */
+	myMovies: [],
 	/** @type {import('./models/Movie.js').Movie[]} */
 	activeMovie: {},
 	groups: [],

@@ -1,9 +1,11 @@
 import { dbContext } from "../db/DbContext.js"
 import { BadRequest, Forbidden } from "../utils/Errors.js"
+import { logger } from "../utils/Logger.js"
 
 class GroupsService {
 	async getAll(query) {
-		const groups = await dbContext.Groups.find(Groups)
+		logger.log(query)
+		const groups = await dbContext.Groups.find({title:query.search})
 		// let newGroup = groups.filter(g=> g.title == query)
 		return groups
 	}
