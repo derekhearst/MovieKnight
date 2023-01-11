@@ -6,6 +6,7 @@
         <img src="../assets/img/logo.png" class="logoImage" />
       </router-link>
       <SearchBar />
+      <GroupSearchBar />
     </div>
     <Login />
 
@@ -14,13 +15,14 @@
 </template>
 
 <script>
+import GroupSearchBar from "./GroupSearchBar.vue";
 import Login from './Login.vue'
 import SearchBar from "./SearchBar.vue";
 export default {
   setup() {
     return {}
   },
-  components: { Login, SearchBar }
+  components: { Login, SearchBar, GroupSearchBar }
 }
 </script>
 

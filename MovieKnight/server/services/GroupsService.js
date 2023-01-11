@@ -2,6 +2,10 @@ import { dbContext } from "../db/DbContext.js"
 import { BadRequest, Forbidden } from "../utils/Errors.js"
 
 class GroupsService {
+	async getAll(query) {
+		const groups = await dbContext.Groups.find(query)
+		return groups
+	}
 	async getGroupsByUserId(id) {
 		return await dbContext.GroupMembers.find({ accountId: id }).populate("group")
 	}

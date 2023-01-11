@@ -4,6 +4,7 @@ import { audience, clientId, domain } from '../env'
 import { router } from '../router'
 import { accountService } from './AccountService'
 import { api } from './AxiosService'
+import { eventsService } from "./EventsService.js"
 import { groupsService } from "./GroupsService.js"
 import { socketService } from './SocketService'
 
@@ -29,6 +30,7 @@ AuthService.on(AuthService.AUTH_EVENTS.AUTHENTICATED, async function() {
   socketService.authenticate(AuthService.bearer)
   // NOTE if there is something you want to do once the user is authenticated, place that here
   await groupsService.getMyGroups()
+  await accountService.getMyEvents()
 })
 
 async function refreshAuthToken(config) {
