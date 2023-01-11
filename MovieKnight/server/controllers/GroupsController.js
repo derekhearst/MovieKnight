@@ -4,11 +4,12 @@ import { Auth0Provider } from "@bcwdev/auth0provider"
 import { moviesService } from "../services/MoviesService.js"
 import { commentsService } from "../services/CommentsService.js"
 import { eventsService } from "../services/EventsService.js"
+import { query } from "express"
 export class GroupsController extends BaseController {
 	constructor() {
 		super("api/groups")
 		this.router //
-
+			.get("", this.getAll)
 			.get("/:id", this.getById) //
 			.get("/:id/members", this.getMembers) //
 			.get("/:id/movies", this.getMovies) //
@@ -33,6 +34,15 @@ export class GroupsController extends BaseController {
 			.post("/:id/events", this.addEvent) //
 			.put("/:id/events/:eventId", this.editEvent) //
 			.delete("/:id/events/:eventId", this.removeEvent) //
+	}
+	async getAll(req, res, next) {
+		try {
+			const query = req.query
+			const groups = await groupsService.getAll(query)
+			return res.send(groups)
+		} catch (error) {
+			next(error)
+		}
 	}
 
 	async getById(req, res, next) {
