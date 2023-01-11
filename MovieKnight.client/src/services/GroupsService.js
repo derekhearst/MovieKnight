@@ -25,17 +25,18 @@ class GroupsService {
 	}
 	async getMoviesByGroupId(id) {
 		const res = await api.get(`api/groups/${id}/movies`)
-		AppState.groupMovies = res.data
+		AppState.activeGroupMovies = res.data
 		logger.log("getting movies", res.data)
 	}
-	async postComment(id, body) {
+	async postGroupComment(id, body) {
 		const res = await api.post(`api/groups/${id}/comments`, body)
-		AppState.activeComments.push(res.data)
+		AppState.activeGroupComments.unshift(res.data)
+		AppState.activeGroupComments = AppState.activeGroupComments
 		logger.log(AppState.activeComments)
 	}
 	async getCommentsByGroupId(id) {
 		const res = await api.get(`api/groups/${id}/comments`)
-		AppState.activeComments = res.data
+		AppState.activeGroupComments = res.data.reverse()
 		logger.log(res.data)
 	}
 	async addMyselfToGroup(id) {
@@ -56,7 +57,7 @@ class GroupsService {
 
 	async getGroupMembersByGroupId(id) {
 		const res = await api.get(`api/groups/${id}/members`)
-		AppState.groupMembers = res.data
+		AppState.activeGroupMembers = res.data
 		logger.log("getting group members", res.data)
 	}
 

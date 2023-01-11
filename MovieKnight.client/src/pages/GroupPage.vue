@@ -1,9 +1,16 @@
 <template>
   <div class="groupPage">
     <div class="groupInfo">
+      <button v-if="isMember" @click="joinGroup" class="joinLeaveButton">
+        Join Guild
+      </button>
+      <button v-else @click="leaveGroup" class="joinLeaveButton">
+        Leave Guild
+      </button>
       <img :src="group?.coverImg" class="groupPicture" />
 
-      <h1 class="guildInfo">Guild Info</h1>
+
+      <h1 class="infoBadge">Guild Info</h1>
       <p class="groupDesc">{{ group?.description }}</p>
 
     </div>
@@ -11,33 +18,32 @@
 
     <div class="middleSection">
       <h1 class="title">{{ group?.title }}</h1>
-      <button v-if="isMember" @click="joinGroup">
-        Join Guild
-      </button>
-      <button v-else @click="leaveGroup">
-        Leave Guild
-      </button>
-
-      <section class="commentsSection">
-
-        <div class="comments">
-          <CommentCard :comment="c" v-for="c in comments" />
-        </div>
-
-        <form @submit.prevent="postComment">
-          <div class="d-flex">
-            <input v-model="editable.body" class="form-control" type="text" placeholder="comment here...">
-            <button class="btn btn-dark"><i class="mdi mdi-send fs-3"></i></button>
-          </div>
-        </form>
-      </section>
 
       <section class="moviesSection">
+        <h4 class="infoBadge">Guild Movies</h4>
         <div class="movies">
           <MovieCard :movie="m.movie" v-for="m in groupMovies" />
         </div>
       </section>
 
+      <section class="commentsSection">
+
+        <h4 class="infoBadge">Guild Chat</h4>
+        <div class="commentBorder">
+
+
+          <div class="comments">
+            <CommentCard :comment="c" v-for="c in comments" />
+          </div>
+
+          <form @submit.prevent="postComment">
+            <div class="commentForm">
+              <input v-model="editable.body" class="" type="text" placeholder="comment here...">
+              <button class=""><i class="mdi mdi-script-text"></i></button>
+            </div>
+          </form>
+        </div>
+      </section>
     </div>
 
     <section class="eventSection">
@@ -72,10 +78,10 @@ import MovieCard from "../components/MovieCard.vue";
 
 const editable = ref({})
 const route = useRoute()
-let groupEvents = computed(() => AppState.activeGroupEvents)
-let comments = computed(() => AppState.activeComments)
 let group = computed(() => AppState.activeGroup)
-let groupMovies = computed(() => AppState.groupMovies)
+let groupMovies = computed(() => AppState.activeGroupMovies)
+let comments = computed(() => AppState.activeGroupComments)
+let groupEvents = computed(() => AppState.activeGroupEvents)
 let isMember = ref(false)
 
 onMounted(() => {
@@ -149,7 +155,7 @@ async function leaveGroup() {
 }
 async function postComment() {
   try {
-    await groupsService.postComment(route.params.id, editable.value)
+    await groupsService.postGroupComment(route.params.id, editable.value)
     editable.value = {}
   } catch (error) {
     Pop.error(error)
@@ -187,15 +193,15 @@ async function postComment() {
 }
 
 .groupPicture {
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
   object-fit: cover;
   object-position: center;
   margin-bottom: 1rem;
   border: 2px solid goldenrod;
 }
 
-.guildInfo {
+.infoBadge {
   text-align: center;
   background-image: url("../assets/img/buttondots-removebg-preview.png");
   background-size: cover;
@@ -210,7 +216,6 @@ async function postComment() {
   font-weight: bold;
   color: black;
   font-family: 'MedievalSharp', cursive;
-  align-self: center;
 }
 
 .groupDesc {
@@ -232,8 +237,8 @@ async function postComment() {
 .middleSection {
   display: flex;
   flex-direction: column;
-
   flex: 1 0 auto;
+
 }
 
 .title {
@@ -255,26 +260,29 @@ async function postComment() {
   text-align: center;
 }
 
-.joinButtons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.shieldButton {
-  background-image: url("../assets/img/sheildbutton.png");
+.joinLeaveButton {
+  background-image: url("../assets/img/goodbutton-removebg-preview.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100% 100%;
-  font-size: 2.7rem;
-  height: 5rem;
-  width: 5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: .8rem;
   color: black;
+  background-color: transparent;
+  border: none;
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: 'MedievalSharp', cursive;
+  padding: 1rem;
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+
+}
+
+.moviesSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 3rem;
 
 }
 
@@ -282,6 +290,46 @@ async function postComment() {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  justify-content: center;
+  overflow-x: auto;
+}
+
+.commentBorder {
+  border: 1px solid goldenrod;
+  padding: .5rem;
+  backdrop-filter: blur(10px);
+
+}
+
+.comments {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 1rem;
+  padding: .25rem;
+  max-height: 30rem;
+  overflow-y: auto;
+
+}
+
+.commentForm {
+  display: flex;
+  margin-top: 2rem;
+  align-items: center;
+
+  input {
+    flex: 1 0 10rem;
+    margin-right: 1rem;
+    border: 3px solid goldenrod;
+    font-size: 1.5rem;
+    padding: .5rem;
+    background-color: rgba(0, 0, 0, 0.623);
+    color: white;
+  }
+
+  button {
+    border: none;
+    background-color: transparent;
+    color: goldenrod;
+    font-size: 3rem;
+  }
 }
 </style>
