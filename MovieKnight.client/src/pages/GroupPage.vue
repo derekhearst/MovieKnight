@@ -11,10 +11,12 @@
 
     <div class="middleSection">
       <h1 class="title">{{ group?.title }}</h1>
-      <button v-if="isMember">
+      <button v-if="isMember" @click="joinGroup">
         Join Guild
       </button>
-
+      <button v-else @click="leaveGroup">
+        Leave Guild
+      </button>
 
       <section class="commentsSection">
 
@@ -77,13 +79,13 @@ let groupMovies = computed(() => AppState.groupMovies)
 let isMember = ref(false)
 
 onMounted(() => {
-  getGroupById()
-  getMoviesByGroupId()
-  getCommentsByGroupId()
-  getEventsByGroupId()
-
+  getGroup()
+  getGroupMovies()
+  getGroupComments()
+  getGroupEvents()
+  getGroupMembers()
 })
-async function getGroupById() {
+async function getGroup() {
   try {
     await groupsService.getGroupById(route.params.id)
   } catch (error) {
@@ -91,7 +93,7 @@ async function getGroupById() {
     logger.log(error)
   }
 }
-async function getEventsByGroupId() {
+async function getGroupEvents() {
   try {
     await eventsService.getEventsByGroupId(route.params.id)
   } catch (error) {
@@ -99,7 +101,7 @@ async function getEventsByGroupId() {
     logger.log(error)
   }
 }
-async function getCommentsByGroupId() {
+async function getGroupComments() {
   try {
     await groupsService.getCommentsByGroupId(route.params.id)
   } catch (error) {
@@ -107,7 +109,7 @@ async function getCommentsByGroupId() {
     logger.log(error)
   }
 }
-async function getMoviesByGroupId() {
+async function getGroupMovies() {
   try {
     await groupsService.getMoviesByGroupId(route.params.id)
   } catch (error) {
@@ -117,21 +119,33 @@ async function getMoviesByGroupId() {
 }
 async function getGroupMembers() {
   try {
-    await groupsService.getGroupMembers(route.params.id)
+    await groupsService.getGroupMembersByGroupId(route.params.id)
+    if (AppState.activeGroupMembers.find(m => m.id == AppState.account.id)) {
+      isMember.value = true
+    }
   } catch (error) {
     Pop.error(error)
     logger.log(error)
   }
 }
-
-
-async function addMyselfToGroup() {
+async function joinGroup() {
   try {
     await groupsService.addMyselfToGroup(route.params.id)
+    isMember.value = true
   } catch (error) {
     Pop.error(error)
     logger.log(error)
   }
+}
+async function leaveGroup() {
+  try {
+    await groupsService.removeMyselfFromGroup(route.params.id)
+    isMember.value = false
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+
 }
 async function postComment() {
   try {
@@ -142,8 +156,6 @@ async function postComment() {
     logger.log(error)
   }
 }
-
-
 </script>
 
 

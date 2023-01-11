@@ -42,6 +42,12 @@ class GroupsService {
 		const res = await api.post(`api/groups/${id}/members`)
 		logger.log(res.data)
 	}
+	async removeMyselfFromGroup(id) {
+		let me = AppState.activeGroupMembers.find(m => m.accountId == AppState.account.id)
+		const res = await api.delete(`api/groups/${id}/members/${me.id}}`)
+		logger.log(res.data)
+	}
+
 	async getGroupByGroupId(id) {
 		const res = await api.get(`api/groups/${id}`)
 		AppState.activeGroup = res.data
