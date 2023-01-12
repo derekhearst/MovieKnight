@@ -34,5 +34,17 @@ export default {
 
 html {
   min-height: 100vh;
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    background-color: maroon;
+    color: gold;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: goldenrod;
+    border-radius: 10px;
+    border: 3px solid maroon;
+  }
 }
 </style>

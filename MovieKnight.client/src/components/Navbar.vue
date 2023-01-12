@@ -28,9 +28,8 @@ export default {
 
 <style scoped>
 .logoImage {
-  height: 90px;
-  width: 225px;
-  filter: sepia(100%) saturate(100000000%) hue-rotate(343deg) brightness(97%) contrast(59%)
+
+  height: 6rem;
 }
 
 .navBar {
