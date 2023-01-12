@@ -1,10 +1,10 @@
 <template>
   <div class="groupPage">
     <div class="groupInfo">
-      <button v-if="!isMember" @click="joinGroup" class="joinLeaveButton">
+      <button v-if="!isMember" @click="joinGroup" class="button">
         Join Guild
       </button>
-      <button v-else @click="leaveGroup" class="joinLeaveButton">
+      <button v-else @click="leaveGroup" class="button">
         Leave Guild
       </button>
       <img :src="group?.coverImg" class="groupPicture" />
@@ -12,6 +12,7 @@
 
       <h1 class="infoBadge">Guild Info</h1>
       <p class="groupDesc">{{ group?.description }}</p>
+      <button class="button" v-if="account.id == group.creatorId" @click="archiveGroup">Archive Group</button>
 
     </div>
 
@@ -49,7 +50,7 @@
 
     <section class="eventSection">
       <h1 class="infoBadge">Guild Events</h1>
-      <button class="joinLeaveButton" data-bs-toggle="offcanvas" data-bs-target="#event">
+      <button class="button" data-bs-toggle="offcanvas" data-bs-target="#event">
         New Guild Event
       </button>
       <div class="banner">
@@ -82,6 +83,7 @@ let group = computed(() => AppState.activeGroup)
 let groupMovies = computed(() => AppState.activeGroupMovies)
 let comments = computed(() => AppState.activeGroupComments)
 let groupEvents = computed(() => AppState.activeGroupEvents)
+let account = computed(() => AppState.account)
 let isMember = ref(false)
 
 onMounted(() => {
@@ -157,6 +159,14 @@ async function postComment() {
   try {
     await groupsService.postGroupComment(route.params.id, editable.value)
     editable.value = {}
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+}
+async function archiveGroup() {
+  try {
+    await groupsService.archiveGroup(route.params.id)
   } catch (error) {
     Pop.error(error)
     logger.log(error)
@@ -266,7 +276,7 @@ async function postComment() {
   text-align: center;
 }
 
-.joinLeaveButton {
+.button {
   background-image: url("../assets/img/goodbutton-removebg-preview.png");
   background-size: cover;
   background-repeat: no-repeat;

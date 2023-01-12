@@ -50,13 +50,17 @@ img {
   margin-right: 10px;
 }
 
+h4 {
+  margin-top: 0;
+}
+
 .createdAt {
   color: rgba(255, 255, 255, 0.689);
 }
 
 .posterInfo {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: .25rem;
 }
 
@@ -75,6 +79,7 @@ img {
   align-self: flex-end;
   max-width: 50ch;
   word-break: break-all;
+  color: white;
 }
 
 .otherComment {
@@ -85,5 +90,7 @@ img {
   align-self: flex-start;
   max-width: 50ch;
   word-break: break-all;
+  color: white;
+
 }
 </style>
