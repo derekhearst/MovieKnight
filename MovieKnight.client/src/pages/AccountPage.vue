@@ -49,7 +49,7 @@ export default {
       favoriteMovies: computed(()=> AppState.myFavoriteMovies),
       events: computed(()=> AppState.myEvents),
       groups: computed(()=> AppState.myGroups),
-     async editAccount(){
+      async editAccount(){
       try {
         await accountService.editAccount(editable.value)
       } catch (error) {
