@@ -8,7 +8,7 @@
   <AddMovieModal />
   <ModalComponent />
   <EventFormOffCanvas />
-  <AddMovieToEventModal />
+  <ModalAddItemToEvent />
 </template>
 
 <script>
@@ -17,7 +17,7 @@ import { AppState } from './AppState'
 import AddMovieModal from "./components/AddMovieModal.vue"
 import EventFormOffCanvas from "./components/EventFormOffCanvas.vue"
 import ModalComponent from "./components/ModalComponent.vue"
-import AddMovieToEventModal from "./components/AddMovieToEventModal.vue"
+import ModalAddItemToEvent from "./components/ModalAddItemToEvent.vue"
 import Navbar from './components/Navbar.vue'
 
 export default {
@@ -26,7 +26,7 @@ export default {
       appState: computed(() => AppState)
     }
   },
-  components: { Navbar, ModalComponent, AddMovieModal, EventFormOffCanvas, AddMovieToEventModal }
+  components: { Navbar, ModalComponent, AddMovieModal, EventFormOffCanvas, ModalAddItemToEvent }
 }
 </script>
 <style lang="scss">

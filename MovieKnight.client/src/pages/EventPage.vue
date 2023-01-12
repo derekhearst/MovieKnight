@@ -55,6 +55,7 @@
 
       <section class="itemsSection">
         <h1 class="infoBadge">Items</h1>
+        <!-- NOTE add items button here -->
         <button class="niceButton">Add item</button>
         <div class="items">
           <div v-for="item in items">
