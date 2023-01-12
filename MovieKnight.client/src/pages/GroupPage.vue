@@ -77,6 +77,7 @@ import MovieCard from "../components/MovieCard.vue";
 
 const editable = ref({})
 const route = useRoute()
+let groupMembers = computed(()=> AppState.activeGroupMembers)
 let group = computed(() => AppState.activeGroup)
 let groupMovies = computed(() => AppState.activeGroupMovies)
 let comments = computed(() => AppState.activeGroupComments)
@@ -352,7 +353,7 @@ async function postComment() {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  max-width: 30rem;
+  max-width: 20rem;
 }
 
 .banner {

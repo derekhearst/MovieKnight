@@ -232,12 +232,17 @@ async function joinEvent() {
   font-size: 1.5rem;
   font-weight: normal;
   color: white;
-  padding-left: 3.5rem;
-  padding-right: 3.5rem;
+  padding-left: 4rem;
+  padding-right: 4rem;
+  margin-right: -1rem;
+  margin-left: -1rem;
+  padding-top: 3rem;
   background-image: url("../assets/img/bannerflaggood-removebg-preview.png");
   background-size: cover;
   background-repeat: no-repeat;
-  background-size: 100% 100%;
+  background-size: 100%;
+  word-break: break-all;
+
   min-height: 20rem;
 
   // text-shadow: 0 0 10px black;
@@ -246,6 +251,7 @@ async function joinEvent() {
 .moviesHeader {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .eventImage {
