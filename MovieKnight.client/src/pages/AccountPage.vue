@@ -32,9 +32,13 @@
     </section>
     <section class="row">
       <h1>My Favorites</h1>
-      <!-- <div v-if="myMovies" class="movies">
-      <MovieCard :movie="m.movie" v-for="m in myMovies" />
-    </div> -->
+      <div v-if="favoriteMovies" class="movies movie">
+        <div class="movie"  v-for="m in favoriteMovies" >
+          <MovieCard :movie="m.movie"/>
+          <i v-if="m.isFavorite" @click="switchFavorite(m.id)" class="mdi mdi-heart fs-2 text-danger selectable" title="UnFavorite"></i>
+          <i v-else @click="switchFavorite(m.id)" class="btn mdi mdi-heart-outline fs-2 selectable" title="Favorite"></i>
+        </div>
+      </div>
       <h1>My Movies</h1>
       <div v-if="myMovies" class="movies movie">
         <div class="movie"  v-for="m in myMovies" >
