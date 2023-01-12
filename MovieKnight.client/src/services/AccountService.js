@@ -31,8 +31,17 @@ class AccountService {
 	}
 	async getMyMovies() {
 		const res = await api.get("account/movies")
-		AppState.myMovies = res.data
-		logger.log("Getting my movies", AppState.myMovies)
+		let arr = res.data
+		logger.log(arr,'[temp array]')
+		for (let i = 0; i < arr.length; i++) {
+			if(arr[i].isFavorite == false){
+				AppState.myMovies.push(arr[i])
+			} else {AppState.myFavoriteMovies.push(arr[i])}
+		}
+		logger.log(AppState.myFavoriteMovies, 'my favorite array')
+		logger.log(AppState.myMovies,'my movies array')
+		// AppState.myMovies = res.data
+		// logger.log("Getting my movies", AppState.myMovies)
 	}
 	async editAccount(body) {
 		const res = await api.put(`account`, body)
@@ -41,8 +50,18 @@ class AccountService {
 	}
 	async switchFavorite(id){
 		const res = await api.post(`account/movies/${id}`)
-	let index =	AppState.myMovies.findIndex(m => m.id == id)
-	AppState.myMovies.splice(index, 1, new Movie(res.data))
+		if(res.data.isFavorite == true){
+			AppState.myMovies = AppState.myMovies.filter(m => m.id !== id)
+			AppState.myFavoriteMovies.push(res.data)
+			logger.log(AppState.myFavoriteMovies, 'logging favorites')
+		}else{
+		 AppState.myFavoriteMovies =	AppState.myFavoriteMovies.filter(m => m.id !== id)
+			AppState.myMovies.push(res.data)
+			logger.log(AppState.myMovies)
+
+		}
+		// let index =	AppState.myMovies.findIndex(m => m.id == id)
+	// AppState.myMovies.splice(index, 1, res.data)
 	}
 }
 
