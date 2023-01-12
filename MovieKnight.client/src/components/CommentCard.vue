@@ -3,7 +3,7 @@
     <div class="posterInfo">
       <img :src="comment.creator.picture" alt="">
       <h4>{{ comment.creator.name }}</h4>
-      <div class="createdAt">{{ new Date(comment.createdAt).toUTCString() }}</div>
+      <div class="createdAt">{{ new Date(comment.createdAt).toDateString() }}</div>
     </div>
     <p class="text-start">{{ comment.body }}</p>
   </div>
@@ -12,7 +12,7 @@
     <div class="posterInfo">
       <img :src="comment.creator.picture" alt="">
       <h4>{{ comment.creator.name }}</h4>
-      <div class="createdAt">{{ new Date(comment.createdAt).toUTCString() }}</div>
+      <div class="createdAt">{{ new Date(comment.createdAt).toDateString() }}</div>
     </div>
     <p class="text-start">{{ comment.body }}</p>
   </div>
