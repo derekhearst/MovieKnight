@@ -23,6 +23,7 @@ export class AccountController extends BaseController {
 	async editAccount(req, res, next) {
 		try {
 			const account = await accountService.editAccount(req.userInfo, req.body)
+			return res.send(account)
 		} catch (error) {
 			next(error)
 		}
