@@ -39,7 +39,8 @@
       <div v-if="myMovies" class="movies movie">
         <div class="movie"  v-for="m in myMovies" >
           <MovieCard :movie="m.movie"/>
-          <i class="mdi mdi-heart fs-2 text-danger"></i>
+          <i v-if="m.isFavorite" @click="switchFavorite(m.id)" class="mdi mdi-heart fs-2 text-danger selectable" title="UnFavorite"></i>
+          <i v-else @click="switchFavorite(m.id)" class="btn mdi mdi-heart-outline fs-2 selectable" title="Favorite"></i>
         </div>
       </div>
     </section>
@@ -73,6 +74,14 @@ export default {
         catch (error) {
           Pop.error(error);
           logger.log(error);
+        }
+      },
+      async switchFavorite(id){
+        try {
+          await accountService.switchFavorite(id)
+        } catch (error) {
+          Pop.error(error)
+          logger.log(error)
         }
       }
     };
