@@ -1,13 +1,13 @@
 <template>
   <router-link :to="{ name: 'Event', params: { id: event.id } }" class="event">
-    <img class="eventImage" :src="event.coverImg" alt="">
-    <div class="eventBody">
-      <div class="eventHeader">
+    <div class="eventHeader">
+      <img class="eventImage" :src="event.coverImg" alt="">
+      <div class="eventStack">
         <h4>{{ event.title }}</h4>
-        <div>{{ new Date(event.startTime).toUTCString() }}</div>
+        <div>{{ new Date(event.startTime).toDateString() }}</div>
       </div>
-      <p>{{ event.description }}</p>
     </div>
+    <p>{{ event.description }}</p>
   </router-link>
 </template>
 
@@ -44,11 +44,14 @@ export default {
 <style lang="scss" scoped>
 .event {
   display: flex;
-  // border: 1px solid goldenrod;
+  flex-direction: column;
   padding: .5rem;
   background-color: rgba(0, 0, 0, 0.5);
   width: 100%;
   overflow: hidden;
+  color: white;
+  align-items: flex-start;
+  word-break: break-all;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.9);
 }
 
@@ -58,19 +61,18 @@ export default {
   object-fit: cover;
 }
 
-.eventBody {
-  padding-left: .5rem;
+.eventStack {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin-left: 1rem;
   color: white;
-  text-overflow: ellipsis;
-  width: 100%;
 }
 
 .eventHeader {
   display: flex;
   justify-content: space-between;
 
-  div {
-    color: rgba(255, 255, 255, 0.633);
-  }
+
 }
 </style>
