@@ -17,7 +17,8 @@
       <div class="membersSection">
         <h1 class="infoBadge">Members</h1>
         <div class="members banner">
-          <img v-for="member in members" :src="member?.account?.picture" alt="NO Picture" class="memberPicture" />
+          <img v-for="member in members" :src="member?.account?.picture" :title="member?.account?.name" alt="NO Picture"
+            class="memberPicture" />
         </div>
 
       </div>
@@ -33,7 +34,10 @@
         <button @click="addMovie" class="niceButton">Add Movie</button>
       </div>
       <div class="movies">
-        <MovieCard :movie="m.movie" v-for="m in movies" />
+        <div v-for="m in movies" class="movie">
+          <i class="mdi mdi-trash-can" @click="removeMovie(m.id)"></i>
+          <MovieCard :movie="m.movie" />
+        </div>
       </div>
     </div>
 
@@ -59,7 +63,7 @@
         <button class="niceButton" @click="addItem">Add item</button>
         <div class="items">
           <div v-for="item in items" class="item">
-            <img :src="item?.creator?.picture" />
+            <img :src="item?.creator?.picture" :title="item?.creator?.name" />
             <i class="mdi mdi-arrow-right"></i>
             <p>{{ item?.item }}</p>
             <i class="mdi mdi-trash-can" v-if="item?.creator?.id == account.id" @click="removeItem(item?.id)"></i>
@@ -108,6 +112,17 @@ async function addMovie() {
   try {
     let movie = AppState.activeGroupMovies.find(m => m.movie.title == newMovie.value)
     await eventsService.addMovieToEvent(route.params.id, movie.movie)
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+}
+async function removeMovie(movieId) {
+  try {
+    let res = await Pop.confirm('Are you sure you want to remove this movie?', 'Remove Movie', 'Yes, remove it!', "question")
+    if (res) {
+      await eventsService.removeMovieFromEvent(route.params.id, movieId)
+    }
   } catch (error) {
     Pop.error(error)
     logger.log(error)
@@ -220,13 +235,13 @@ async function addItem() {
     }
   })
 }
-async function removeItem(item) {
-  let conf = await Pop.confirm("Are you sure you want to remove that item?", "Remove Item", "Yes, Remove", "Cancel")
+async function removeItem(itemId) {
+  let conf = await Pop.confirm("Are you sure you want to remove that item?", "Remove Item", "Yes, Remove", "question")
   if (conf) {
-
+    await eventsService.removeItemFromEvent(route.params.id, itemId)
+    Pop.success("Item Removed")
   }
 }
-
 
 
 </script>
@@ -409,6 +424,19 @@ async function removeItem(item) {
   flex-wrap: wrap;
 }
 
+.movie {
+  position: relative;
+
+  i {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 2.5rem;
+    color: maroon;
+    cursor: pointer;
+  }
+}
+
 .members {
   display: flex;
   flex-wrap: wrap;
@@ -482,6 +510,11 @@ async function removeItem(item) {
     font-family: 'MedievalSharp', cursive;
     color: white;
     font-weight: bold;
+  }
+
+  .mdi-trash-can {
+    cursor: pointer;
+    color: goldenrod;
   }
 }
 </style>

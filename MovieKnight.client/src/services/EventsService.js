@@ -61,7 +61,7 @@ class EventsService {
 	}
 	async getCommentsByEventId(id) {
 		const res = await api.get(`api/events/${id}/comments`)
-		AppState.activeEventComments = res.data
+		AppState.activeEventComments = res.data.reverse()
 	}
 
 	async addItemToEvent(eventId, itemData) {
@@ -69,6 +69,18 @@ class EventsService {
 		const res = await api.post(`api/events/${eventId}/items`, item)
 		AppState.activeEventItems.push(res.data)
 		AppState.activeEventItems = AppState.activeEventItems
+	}
+
+	async removeItemFromEvent(eventId, itemId) {
+		const res = await api.delete(`api/events/${eventId}/items/${itemId}`)
+		AppState.activeEventItems = AppState.activeEventItems.filter(i => i._id != itemId)
+		AppState.activeEventItems = AppState.activeEventItems
+	}
+
+	async removeMovieFromEvent(eventId, movieId) {
+		const res = await api.delete(`api/events/${eventId}/movies/${movieId}`)
+		AppState.activeEventMovies = AppState.activeEventMovies.filter(m => m._id != movieId)
+		AppState.activeEventMovies = AppState.activeEventMovies
 	}
 }
 
