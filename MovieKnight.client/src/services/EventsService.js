@@ -29,8 +29,7 @@ class EventsService {
 	}
 	async getMoviesByEventId(id) {
 		const res = await api.get(`api/events/${id}/movies`)
-		AppState.activeEventMovie = res.data
-		logger.log("movie for this event", AppState.activeEventMovie)
+		AppState.activeEventMovies = res.data
 	}
 	async getItemsByEventId(id) {
 		const res = await api.get(`api/events/${id}/items`)

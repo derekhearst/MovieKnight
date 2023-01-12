@@ -55,8 +55,11 @@
 
       <section class="itemsSection">
         <h1 class="infoBadge">Items</h1>
+        <button class="niceButton">Add item</button>
         <div class="items">
-          <!-- <ItemCard :item="i" v-for="i in items" /> -->
+          <div v-for="item in items">
+            <img :src="item?.creator?.picture" />
+          </div>
         </div>
       </section>
     </div>
@@ -218,8 +221,6 @@ async function joinEvent() {
   flex-direction: column;
   gap: 1rem;
   max-width: 23vw;
-  overflow-x: hidden;
-
 }
 
 .middleSection {
@@ -233,7 +234,8 @@ async function joinEvent() {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  align-items: center;
+  align-items: stretch;
+
 }
 
 .eventDetails {
@@ -363,7 +365,14 @@ async function joinEvent() {
   display: flex;
   flex-direction: column-reverse;
   gap: 1rem;
+  max-height: 50vh;
+  overflow-y: auto;
+
+  // scrollbar-color: goldenrod white;
+
 }
+
+
 
 .movies {
   display: flex;
@@ -384,5 +393,45 @@ async function joinEvent() {
   object-fit: cover;
   border-radius: 50%;
   border: 3px solid goldenrod;
+}
+
+.itemsSection {
+  display: flex;
+  flex-direction: column;
+
+  .infoBadge {
+    align-self: center;
+  }
+
+  button {
+    align-self: center;
+    margin-bottom: -4.5rem;
+    margin-top: -1rem;
+    z-index: 2;
+
+  }
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  font-size: 1.5rem;
+  font-weight: normal;
+  color: white;
+  padding-left: 4rem;
+  padding-right: 4rem;
+  margin-right: -1rem;
+  margin-left: -1rem;
+  padding-top: 3rem;
+  background-image: url("../assets/img/bannerflaggood-removebg-preview.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  word-break: break-all;
+
+  min-height: 20rem;
 }
 </style>

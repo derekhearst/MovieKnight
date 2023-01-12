@@ -77,7 +77,7 @@ import MovieCard from "../components/MovieCard.vue";
 
 const editable = ref({})
 const route = useRoute()
-let groupMembers = computed(()=> AppState.activeGroupMembers)
+let groupMembers = computed(() => AppState.activeGroupMembers)
 let group = computed(() => AppState.activeGroup)
 let groupMovies = computed(() => AppState.activeGroupMovies)
 let comments = computed(() => AppState.activeGroupComments)
@@ -126,8 +126,7 @@ async function getGroupMovies() {
 async function getGroupMembers() {
   try {
     await groupsService.getGroupMembersByGroupId(route.params.id)
-    if (AppState.activeGroupMembers.find(m => m.id == AppState.account.id)) {
-      logger.log("yo")
+    if (AppState.activeGroupMembers.find(m => m.account.id == AppState.account.id)) {
       isMember.value = true
     }
   } catch (error) {
@@ -171,7 +170,7 @@ async function postComment() {
   position: relative;
   min-height: 100vh;
   display: flex;
-  padding: 2rem;
+  padding: 1rem;
   align-items: flex-start;
   gap: 1rem;
   max-width: 100vw;
@@ -225,14 +224,17 @@ async function postComment() {
   font-size: 1.5rem;
   font-weight: normal;
   color: white;
-  padding-left: 3.5rem;
-  padding-right: 3.5rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  margin-right: -1rem;
+  margin-left: -1rem;
+  padding-top: 2rem;
   background-image: url("../assets/img/bannerflaggood-removebg-preview.png");
   background-size: cover;
   background-repeat: no-repeat;
-  background-size: 100% 100%;
+  background-size: 100%;
   min-height: 20rem;
-  max-width: 20rem;
+  word-break: break-all;
 
   // text-shadow: 0 0 10px black;
 }
@@ -259,7 +261,7 @@ async function postComment() {
   padding-top: 0rem;
   padding-bottom: 3rem;
   font-family: 'MedievalSharp', cursive;
-  margin-top: -2rem;
+
 
   text-align: center;
 }
@@ -277,9 +279,7 @@ async function postComment() {
   font-weight: bold;
   font-family: 'MedievalSharp', cursive;
   padding: 1rem;
-  margin-top: -1rem;
   margin-bottom: 1rem;
-
 }
 
 .moviesSection {
@@ -367,7 +367,7 @@ async function postComment() {
   padding-bottom: 3rem;
   margin-right: -2rem;
   margin-left: -2rem;
-  padding-left: 4rem;
-  padding-right: 4rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
 }
 </style>

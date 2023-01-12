@@ -2,8 +2,10 @@
   <div class="myComment" v-if="comment.creator.id == account.id">
     <div class="posterInfo">
       <img :src="comment.creator.picture" alt="">
-      <h4>{{ comment.creator.name }}</h4>
-      <div class="createdAt">{{ new Date(comment.createdAt).toDateString() }}</div>
+      <div class="posterName">
+        <h4 class="">{{ comment.creator.name }}</h4>
+        <sub class="createdAt">{{ new Date(comment.createdAt).toDateString() }}</sub>
+      </div>
     </div>
     <p class="text-start">{{ comment.body }}</p>
   </div>
@@ -11,8 +13,10 @@
   <div class="otherComment" v-else>
     <div class="posterInfo">
       <img :src="comment.creator.picture" alt="">
-      <h4>{{ comment.creator.name }}</h4>
-      <div class="createdAt">{{ new Date(comment.createdAt).toDateString() }}</div>
+      <div class="posterName">
+        <h4 class="">{{ comment.creator.name }}</h4>
+        <sub class="createdAt">{{ new Date(comment.createdAt).toDateString() }}</sub>
+      </div>
     </div>
     <p class="text-start">{{ comment.body }}</p>
   </div>
@@ -53,23 +57,33 @@ img {
 .posterInfo {
   display: flex;
   align-items: center;
-  gap: .5rem;
   margin-bottom: .25rem;
+}
+
+.posterName {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
 }
 
 .myComment {
   background-color: rgba(0, 0, 0, 0.581);
   backdrop-filter: blur(2px);
   border: 1px solid goldenrod;
-  padding: .5rem;
+  padding: .25rem;
   align-self: flex-end;
+  max-width: 50ch;
+  word-break: break-all;
 }
 
 .otherComment {
   background-color: rgba(0, 0, 0, 0.581);
   backdrop-filter: blur(2px);
-  border: 1px solid goldenrod;
+  border: 1px solid maroon;
   padding: .5rem;
   align-self: flex-start;
+  max-width: 50ch;
+  word-break: break-all;
 }
 </style>
