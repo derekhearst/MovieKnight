@@ -7,7 +7,11 @@ class ProfilesService{
     const res = await api.get(`api/profiles/${id}`)
     AppState.activeProfile = res.data
     logger.log('Active Profile', AppState.activeProfile)
-
+  }
+  async getProfileMovies(id){
+    const res = await api.get(`api/profiles/${id}/movies`)
+    AppState.profileMovies = res.data
+    logger.log('getting profile movies',AppState.profileMovies)
   }
 }
 

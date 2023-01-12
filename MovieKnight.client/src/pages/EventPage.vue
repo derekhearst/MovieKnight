@@ -17,8 +17,10 @@
       <div class="membersSection">
         <h1 class="infoBadge">Members</h1>
         <div class="members banner">
-          <img v-for="member in members" :src="member?.account?.picture" :title="member?.account?.name" alt="NO Picture"
+          <router-link  v-for="member in members" :to="{ name: 'Profile', params: { id: member.accountId } }">
+            <img :src="member?.account?.picture" :title="member?.account?.name" alt="NO Picture"
             class="memberPicture" />
+          </router-link>
         </div>
 
       </div>

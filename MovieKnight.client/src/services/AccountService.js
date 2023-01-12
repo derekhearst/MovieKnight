@@ -1,6 +1,7 @@
 import { AppState } from "../AppState"
 import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
+import { moviesService } from "../services/MoviesService.js";
 
 class AccountService {
 	async getAccount() {
@@ -21,10 +22,11 @@ class AccountService {
 		AppState.myGroups = res.data
 		logger.log("[my groups]", AppState.myGroups)
 	}
-	async addMovieToMyList(body){
-		logger.log('adding this movie',body)
-		const res = await api.post(`account/movies`, body)
-		// AppState.myMovies.push(res.data)
+	async addMovieToMyList(movieData){
+		// const movie = await moviesService.getMovieById(mdId)
+		const res = await api.post(`account/movies`, movieData)
+		logger.log(res.data)
+		AppState.myMovies.push(res.data)
 	}
 	async getMyMovies(){
 		const res = await api.get('account/movies')

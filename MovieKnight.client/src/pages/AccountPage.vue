@@ -43,6 +43,7 @@ export default {
     onMounted(()=>{
     })
     return {
+      // NOTE information brought to the page: my account, myMovie list, myEvents, and myGroups
       editable,
       account: computed(() => AppState.account),
       myMovies: computed(()=> AppState.myMovies),

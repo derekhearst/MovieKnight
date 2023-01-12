@@ -101,7 +101,8 @@ export default {
       async addMovieToMyList(){
         try {
           // logger.log('active movie',this.movie)
-          await  accountService.addMovieToMyList(route.params.id)
+          await  accountService.addMovieToMyList(this.movie)
+          Pop.toast(`${this.movie.title} has been added to your movie list`)
         } catch (error) {
           Pop.error(error)
           logger.log(error)

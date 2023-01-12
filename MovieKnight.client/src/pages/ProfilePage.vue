@@ -1,9 +1,9 @@
 <template>
   <div class="component">
 {{ profile }}
+{{ profileMovies }}
   </div>
 </template>
-
 
 <script>
 import { AppState } from '../AppState';
@@ -17,6 +17,7 @@ export default {
     const route = useRoute()
     onMounted(()=> {
       getProfile()
+      getProfileMovies()
     })
     async function getProfile(){
       try {
@@ -26,17 +27,17 @@ export default {
         logger.log(error)
       }
     }
-    // FIXME waiting for the backend to make a route to get movie by profile id
-    // async function getProfileMovies(){
-    //   try {
-    //     await
-    //   } catch (error) {
-    //     Pop.error(error)
-    //     logger.log(error)
-    //   }
-    // }
+    async function getProfileMovies(){
+      try {
+        await profilesService.getProfileMovies(route.params.id)
+      } catch (error) {
+        Pop.error(error)
+        logger.log(error)
+      }
+    }
   return {
     profile: computed(()=> AppState.activeProfile),
+    profileMovies: computed(()=> AppState.profileMovies),
     route,
 
   }

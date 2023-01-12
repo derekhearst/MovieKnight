@@ -2,6 +2,7 @@ import { dbContext } from "../db/DbContext.js"
 import { BadRequest } from "../utils/Errors.js"
 
 class MoviesService {
+
 	async getMemberMovies(groupId) {
 		let members = await dbContext.GroupMembers.find({ groupId: groupId })
 		let movies = []
@@ -47,6 +48,10 @@ class MoviesService {
 	}
 	async getGroupMovies(groupId) {
 		return await dbContext.GroupMovies.find({ groupId: groupId }).populate("movie")
+	}
+	async getMoviesByProfileId(id) {
+		const movies = await dbContext.AccountMovies.find({accountId: id}).populate('movie')
+		return movies
 	}
 
 	async removeEventMovie(movieId, userId) {
