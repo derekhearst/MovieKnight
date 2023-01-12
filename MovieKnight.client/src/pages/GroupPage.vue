@@ -352,7 +352,7 @@ async function postComment() {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  max-width: 30rem;
+  max-width: 20rem;
 }
 
 .banner {
