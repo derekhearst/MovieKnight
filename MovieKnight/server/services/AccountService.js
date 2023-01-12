@@ -44,12 +44,14 @@ function sanitizeBody(body) {
 }
 
 class AccountService {
-async	editAccount(userInfo, body) {
+	async editAccount(userInfo, body) {
 		const original = await dbContext.Account.findById(userInfo.id)
 		// @ts-ignore
-		if(!original) {throw new BadRequest('no account found', userInfo.id)}
-		original.name = body.name !== undefined? body.name : original.name
-		original.picture = body.picture !== undefined? body.picture : original.picture
+		if (!original) {
+			throw new BadRequest("no account found", userInfo.id)
+		}
+		original.name = body.name !== undefined ? body.name : original.name
+		original.picture = body.picture !== undefined ? body.picture : original.picture
 
 		await original.save()
 		return original
@@ -110,7 +112,7 @@ async	editAccount(userInfo, body) {
 export const accountService = new AccountService()
 
 async function getOrCreateMovie(body) {
-	let movie = await dbContext.Movies.findOne({ mDId: body.mDId })
+	let movie = await dbContext.Movies.findOne({ mdId: body.mdId })
 	if (!movie) {
 		movie = await dbContext.Movies.create(body)
 	}

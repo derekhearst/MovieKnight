@@ -56,10 +56,13 @@
       <section class="itemsSection">
         <h1 class="infoBadge">Items</h1>
         <!-- NOTE add items button here -->
-        <button class="niceButton">Add item</button>
+        <button class="niceButton" @click="addItem">Add item</button>
         <div class="items">
-          <div v-for="item in items">
+          <div v-for="item in items" class="item">
             <img :src="item?.creator?.picture" />
+            <i class="mdi mdi-arrow-right"></i>
+            <p>{{ item?.item }}</p>
+            <i class="mdi mdi-trash-can" v-if="item?.creator?.id == account.id" @click="removeItem(item?.id)"></i>
           </div>
         </div>
       </section>
@@ -77,6 +80,7 @@ import { eventsService } from "../services/EventsService.js";
 import { useRoute } from "vue-router";
 import { groupsService } from "../services/GroupsService.js";
 import GroupCard from "../components/GroupCard.vue";
+import Swal from 'sweetalert2';
 
 const route = useRoute()
 const comment = ref({})
@@ -140,7 +144,6 @@ async function getMembers() {
     if (AppState.activeEventMembers.find(m => m.accountId == AppState.account.id)) {
       isMember.value = true
     }
-    console.log("AGGHH!", AppState.activeEventMembers)
   } catch (error) {
     Pop.error(error)
     logger.log(error)
@@ -196,6 +199,31 @@ async function joinEvent() {
   } catch (error) {
     Pop.error(error)
     logger.log(error)
+  }
+}
+async function addItem() {
+  await Swal.fire({
+    title: 'Add Item',
+    input: 'text',
+    // inputLabel: 'Item Name',
+    inputPlaceholder: 'Enter Item Name',
+    showCancelButton: true,
+    inputValidator: (value) => {
+      if (!value) {
+        return 'You need to write something!'
+      }
+    }
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      await eventsService.addItemToEvent(route.params.id, result.value)
+      Pop.success("Item Added")
+    }
+  })
+}
+async function removeItem(item) {
+  let conf = await Pop.confirm("Are you sure you want to remove that item?", "Remove Item", "Yes, Remove", "Cancel")
+  if (conf) {
+
   }
 }
 
@@ -416,8 +444,9 @@ async function joinEvent() {
 .items {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  align-items: center;
+
+  gap: .5rem;
+  align-items: flex-start;
   padding: 1rem;
   font-size: 1.5rem;
   font-weight: normal;
@@ -426,13 +455,33 @@ async function joinEvent() {
   padding-right: 4rem;
   margin-right: -1rem;
   margin-left: -1rem;
-  padding-top: 3rem;
+  padding-top: 4rem;
   background-image: url("../assets/img/bannerflaggood-removebg-preview.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-size: 100%;
   word-break: break-all;
-
   min-height: 20rem;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  img {
+    width: 3rem;
+    height: 3rem;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid goldenrod;
+  }
+
+  p {
+    margin: 0;
+    font-family: 'MedievalSharp', cursive;
+    color: white;
+    font-weight: bold;
+  }
 }
 </style>

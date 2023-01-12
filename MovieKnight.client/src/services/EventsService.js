@@ -63,6 +63,13 @@ class EventsService {
 		const res = await api.get(`api/events/${id}/comments`)
 		AppState.activeEventComments = res.data
 	}
+
+	async addItemToEvent(eventId, itemData) {
+		const item = { item: itemData }
+		const res = await api.post(`api/events/${eventId}/items`, item)
+		AppState.activeEventItems.push(res.data)
+		AppState.activeEventItems = AppState.activeEventItems
+	}
 }
 
 export const eventsService = new EventsService()
