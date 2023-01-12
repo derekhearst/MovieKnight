@@ -2,6 +2,7 @@ import { AppState } from "../AppState"
 import { logger } from "../utils/Logger"
 import { api } from "./AxiosService"
 import { moviesService } from "../services/MoviesService.js"
+import { Movie } from "../models/Movie.js"
 
 class AccountService {
 	async getAccount() {
@@ -37,6 +38,11 @@ class AccountService {
 		const res = await api.put(`account`, body)
 		AppState.account = res.data
 		logger.log("Editing account", body)
+	}
+	async switchFavorite(id){
+		const res = await api.post(`account/movies/${id}`)
+	let index =	AppState.myMovies.findIndex(m => m.id == id)
+	AppState.myMovies.splice(index, 1, new Movie(res.data))
 	}
 }
 
