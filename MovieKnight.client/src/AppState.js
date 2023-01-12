@@ -27,4 +27,5 @@ export const AppState = reactive({
 	activeEventComments: [],
 	activeEventItems: [],
 	activeProfile: {},
+	profileMovies: [],
 })

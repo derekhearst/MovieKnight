@@ -1,8 +1,14 @@
+import { BadRequest } from "@bcwdev/auth0provider/lib/Errors.js"
 import { dbContext } from "../db/DbContext.js"
 
 // IMPORTANT profiles should not be updated or modified in any way here. Use the AccountService
 
 class ProfileService {
+//  async getMoviesByProfileId(id) {
+// 	const movies = await dbContext.AccountMovies.findById(id)
+// 	if(!movies) {throw new BadRequest('no movies at this id', id)}
+// 	return movies
+//   }
 	/**
 	 * Returns a user profile from its id
 	 * @param {string} id

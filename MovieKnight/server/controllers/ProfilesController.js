@@ -1,3 +1,4 @@
+import { moviesService } from "../services/MoviesService.js"
 import { profileService } from '../services/ProfileService.js'
 import BaseController from '../utils/BaseController'
 
@@ -7,6 +8,15 @@ export class ProfilesController extends BaseController {
     this.router
       .get('', this.getProfiles)
       .get('/:id', this.getProfile)
+      .get('/:id/movies', this.getProfileMovies)
+  }
+  async getProfileMovies(req, res, next) {
+    try {
+      const movies = await moviesService.getMoviesByProfileId(req.params.id)
+      res.send(movies)
+    } catch (error) {
+      next(error)
+    }
   }
 
   async getProfiles(req, res, next) {
