@@ -58,41 +58,7 @@ class GroupsService {
 			throw new Forbidden("You are not the creator of this group.")
 		}
 
-		let events = await dbContext.Events.find({ groupId: groupId })
-		events.forEach(async e => {
-			let eventComments = await dbContext.EventComments.find({ eventId: e._id })
-			eventComments.forEach(async c => {
-				await dbContext.EventComments.findByIdAndDelete(c._id)
-			})
-
-			let eventMovies = await dbContext.EventMovies.find({ eventId: e._id })
-			eventMovies.forEach(async m => {
-				await dbContext.EventMovies.findByIdAndDelete(m._id)
-			})
-
-			let eventMembers = await dbContext.EventMembers.find({ eventId: e._id })
-			eventMembers.forEach(async m => {
-				await dbContext.EventMembers.findByIdAndDelete(m._id)
-			})
-			await dbContext.Events.findByIdAndDelete(e._id)
-		})
-
-		let members = await dbContext.GroupMembers.find({ groupId: groupId })
-		members.forEach(async m => {
-			await dbContext.GroupMembers.findByIdAndDelete(m._id)
-		})
-
-		let comments = await dbContext.GroupComments.find({ groupId: groupId })
-		comments.forEach(async c => {
-			await dbContext.GroupComments.findByIdAndDelete(c._id)
-		})
-
-		let movies = await dbContext.GroupMovies.find({ groupId: groupId })
-		movies.forEach(async m => {
-			await dbContext.GroupMovies.findByIdAndDelete(m._id)
-		})
-
-		await dbContext.Groups.findByIdAndDelete(groupId)
+		await dbContext.Groups.findByIdAndUpdate(groupId, { archived: true })
 		return "Successfully Deleted"
 	}
 
@@ -104,7 +70,10 @@ class GroupsService {
 		if (foundGroup.creatorId != body.creatorId) {
 			throw new Forbidden("You are not the creator of this group.")
 		}
-		body.creatorId = foundGroup.creatorId
+		delete body.creatorId
+		delete body._id
+		delete body.archived
+
 		await foundGroup.update(body)
 		return await dbContext.Groups.findById(id)
 	}

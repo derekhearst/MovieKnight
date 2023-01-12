@@ -73,6 +73,11 @@ class GroupsService {
 		AppState.searchGroups = res.data
 		logger.log("Getting groups", res.data)
 	}
+	async archiveGroup(id) {
+		const res = await api.delete(`api/groups/${id}`)
+		AppState.myGroups = AppState.myGroups.filter(g => g.id != id)
+		logger.log("Archiving group")
+	}
 }
 
 export const groupsService = new GroupsService()
