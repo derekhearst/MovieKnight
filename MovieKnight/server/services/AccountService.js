@@ -1,4 +1,5 @@
 import { dbContext } from "../db/DbContext"
+import { BadRequest } from "../utils/Errors.js"
 
 // Private Methods
 
@@ -43,6 +44,16 @@ function sanitizeBody(body) {
 }
 
 class AccountService {
+async	editAccount(userInfo, body) {
+		const original = await dbContext.Account.findById(userInfo.id)
+		// @ts-ignore
+		if(!original) {throw new BadRequest('no account found', userInfo.id)}
+		original.name = body.name !== undefined? body.name : original.name
+		original.picture = body.picture !== undefined? body.picture : original.picture
+
+		await original.save()
+		return original
+	}
 	async favMovie(movieId, userId) {
 		let movie = await dbContext.AccountMovies.findOne({ _id: movieId, accountId: userId })
 		if (!movie) {

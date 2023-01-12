@@ -17,7 +17,16 @@ export class AccountController extends BaseController {
 			.get("/movies", this.getMyMovies)
 			.post("/movies", this.addMovie)
 			.post("/movies/:id", this.favMovie)
+			.put("", this.editAccount)
 			.delete("/movies/:movieId", this.removeMovie)
+	}
+	async editAccount(req, res, next) {
+		try {
+			const account = await accountService.editAccount(req.userInfo, req.body)
+			return res.send(account)
+		} catch (error) {
+			next(error)
+		}
 	}
 
 	async getUserAccount(req, res, next) {
