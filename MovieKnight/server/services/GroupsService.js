@@ -1,7 +1,14 @@
 import { dbContext } from "../db/DbContext.js"
 import { BadRequest, Forbidden } from "../utils/Errors.js"
+import { logger } from "../utils/Logger.js"
 
 class GroupsService {
+	async getAll(query) {
+		logger.log(query)
+		const groups = await dbContext.Groups.find({title:query.search})
+		// let newGroup = groups.filter(g=> g.title == query)
+		return groups
+	}
 	async getGroupsByUserId(id) {
 		return await dbContext.GroupMembers.find({ accountId: id }).populate("group")
 	}

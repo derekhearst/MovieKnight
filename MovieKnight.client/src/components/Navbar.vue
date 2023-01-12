@@ -1,62 +1,61 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-danger px-3">
-    <router-link class="navbar-brand d-flex selectable" :to="{ name: 'Home' }">
-      <div class="d-flex flex-column align-items-center">
-        <h1 class="text-warning">Movie Knight</h1>
-      </div>
-    </router-link>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarText"
-      aria-controls="navbarText"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <SearchBar/>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarText">
-      <!-- LOGIN COMPONENT HERE -->
-      <Login />
+
+  <div class="navBar">
+    <div class="navLeft">
+      <router-link class="" :to="{ name: 'Home' }">
+        <img src="../assets/img/logo.png" class="logoImage" />
+      </router-link>
+      <SearchBar />
+      <GroupSearchBar />
     </div>
-  </nav>
+    <Login />
+
+  </div>
+
 </template>
 
 <script>
+import GroupSearchBar from "./GroupSearchBar.vue";
 import Login from './Login.vue'
 import SearchBar from "./SearchBar.vue";
 export default {
   setup() {
     return {}
   },
-  components: { Login, SearchBar }
+  components: { Login, SearchBar, GroupSearchBar }
 }
 </script>
 
 <style scoped>
-a:hover {
-  text-decoration: none;
+.logoImage {
+  height: 90px;
+  width: 225px;
+  filter: sepia(100%) saturate(100000000%) hue-rotate(343deg) brightness(97%) contrast(59%)
 }
 
-.nav-link {
-  text-transform: uppercase;
+.navBar {
+  padding: .25rem;
+  display: flex;
+  justify-content: space-between;
+  background:
+    radial-gradient(hsl(0, 100%, 27%) 4%, hsl(0, 100%, 18%) 9%, hsla(0, 100%, 20%, 0) 9%) 0 0,
+    radial-gradient(hsl(0, 100%, 27%) 4%, hsl(0, 100%, 18%) 8%, hsla(0, 100%, 20%, 0) 10%) 50px 50px,
+    radial-gradient(hsla(0, 100%, 30%, 0.8) 20%, hsla(0, 100%, 20%, 0)) 50px 0,
+    radial-gradient(hsla(0, 100%, 30%, 0.8) 20%, hsla(0, 100%, 20%, 0)) 0 50px,
+    radial-gradient(hsla(0, 100%, 20%, 1) 35%, hsla(0, 100%, 20%, 0) 60%) 50px 0,
+    radial-gradient(hsla(0, 100%, 20%, 1) 35%, hsla(0, 100%, 20%, 0) 60%) 100px 50px,
+    radial-gradient(hsla(0, 100%, 15%, 0.7), hsla(0, 100%, 20%, 0)) 0 0,
+    radial-gradient(hsla(0, 100%, 15%, 0.7), hsla(0, 100%, 20%, 0)) 50px 50px,
+    linear-gradient(45deg, hsla(0, 100%, 20%, 0) 49%, hsla(0, 100%, 0%, 1) 50%, hsla(0, 100%, 20%, 0) 70%) 0 0,
+    linear-gradient(-45deg, hsla(0, 100%, 20%, 0) 49%, hsla(0, 100%, 0%, 1) 50%, hsla(0, 100%, 20%, 0) 70%) 0 0;
+  background-color: #300;
+  background-size: 100px 100px;
+  border-bottom: 1px solid #fbd03393;
 }
 
-.navbar-nav .router-link-exact-active {
-  border-bottom: 2px solid var(--bs-success);
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-@media screen and (min-width: 768px) {
-  nav {
-    height: 64px;
-  }
-}
-.maroon{
-  background-color: #fbcf33;
-  color: #8f1515;
+.navLeft {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 </style>

@@ -1,7 +1,6 @@
 <template>
-  <router-link :to="{ name: 'MovieDetails', params: {id: movie.mdId} }">
-    <img :src="movie.posterImg" alt="" class="movie-elv">
-    <!-- <button v-if="group" class="btn"><i class="mdi mdi-plus"></i></button> -->
+  <router-link :to="{ name: 'MovieDetails', params: { id: movie.mdId } }" class="movieCard">
+    <img :src="movie.posterImg" alt="" class="poster">
   </router-link>
 </template>
 
@@ -11,19 +10,28 @@ import { AppState } from '../AppState';
 import { computed, reactive, onMounted } from 'vue';
 import { Movie } from "../models/Movie.js";
 export default {
-  props: {movie: {type: Movie, required: true}},
-  setup(){
-  return {  }
+  props: { movie: { type: Movie, required: true } },
+  setup() {
+    return {}
   }
 };
 </script>
 
 
 <style lang="scss" scoped>
-.movie-elv{
-  box-shadow: 3pt 3pt 3pt whitesmoke;
-  height: 42vh;
+.movieCard {
+  flex: 1 1 250px;
+  min-width: 200px;
+  max-width: 290px;
+  // width: 250px;
+  object-fit: cover;
+  // box-shadow: 3px 3px 2px 2px #fcc333c5;
+  border: 2px solid #fcc333c5;
+}
+
+.poster {
   width: 100%;
+  height: 25rem;
   object-fit: cover;
 }
 </style>

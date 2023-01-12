@@ -1,54 +1,93 @@
 <template>
-  <span class="navbar-text">
-    <button class="btn selectable text-success lighten-30 text-uppercase my-2 my-lg-0" @click="login"
-      v-if="!user.isAuthenticated">
+  <div class="userSection">
+    <button v-if="user.id" @click="logout" class="goodButton">
+      Logout
+    </button>
+    <button v-else @click="login" class="goodButton">
       Login
     </button>
-    <div v-else>
-      <div class="dropdown dropstart my-2 my-lg-0">
-        <div type="button" class="bg-dark border-0 selectable no-select" data-bs-toggle="dropdown"
-          aria-expanded="false">
-          <div v-if="account.picture || user.picture">
-            <img :src="account.picture || user.picture" alt="account photo" height="40" class="rounded" />
-          </div>
-        </div>
-        <div class="dropdown-menu dropdown-menu-lg-left p-0" aria-labelledby="authDropdown">
-          <div class="list-group">
-            <router-link :to="{ name: 'Account' }">
-              <div class="list-group-item dropdown-item list-group-item-action">
-                Manage Account
-              </div>
-            </router-link>
-            <div class="list-group-item dropdown-item list-group-item-action text-danger selectable" @click="logout">
-              <i class="mdi mdi-logout"></i>
-              logout
-            </div>
-          </div>
-        </div>
-      </div>
+    <router-link to="Account" class="link" v-if="user.id">
+      <div class="goodButton">Account</div>
+    </router-link>
+    <div v-if="account.picture || user.picture" class="accountProfile">
+      <img src="../assets/img/profilecircle-removebg-preview.png" class="accountBorder" />
+      <img :src="account.picture || user.picture" alt="account photo" class="accountPhoto" />
     </div>
-  </span>
+
+
+  </div>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue'
 import { AppState } from '../AppState'
 import { AuthService } from '../services/AuthService'
-export default {
-  setup() {
-    return {
-      user: computed(() => AppState.user),
-      account: computed(() => AppState.account),
-      async login() {
-        AuthService.loginWithPopup()
-      },
-      async logout() {
-        AuthService.logout({ returnTo: window.location.origin })
-      }
-    }
-  }
+
+let user = computed(() => AppState.user)
+let account = computed(() => AppState.account)
+async function login() {
+  AuthService.loginWithPopup()
 }
+async function logout() {
+  AuthService.logout({ returnTo: window.location.origin })
+}
+
+
 </script>
 
 <style lang="scss" scoped>
+.userSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+}
+
+.accountProfile {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.accountPhoto {
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  padding: .09rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.accountBorder {
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+  z-index: 2;
+}
+
+
+.goodButton {
+  background-image: url("../assets/img/goodsecondarybutton-removebg-preview.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  text-align: center;
+  height: 4rem;
+  width: 14rem;
+  border: none;
+  color: black;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: .1rem;
+  background-color: transparent;
+  text-decoration: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family: 'MedievalSharp', cursive;
+
+}
 </style>

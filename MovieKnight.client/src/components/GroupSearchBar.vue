@@ -1,9 +1,9 @@
 <template>
 
-  <form class="searchBar" @submit.prevent="searchMovies">
-    <input class="form-control" placeholder="Find Movies" v-model="search.query" />
+  <form class="searchBar" @submit.prevent="searchGroups">
+    <input class="form-control" placeholder="Find Groups" v-model="search.query" />
     <button class="searchButton">Search
-      <i class="mdi mdi-movie-search fs-5"></i>
+      <i class="mdi mdi-group fs-5"></i>
     </button>
   </form>
 
@@ -15,8 +15,8 @@ import { AppState } from '../AppState';
 import { computed, reactive, onMounted } from 'vue';
 import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";
-import { moviesService } from "../services/MoviesService.js";
 import { useRouter } from "vue-router";
+import { groupsService } from "../services/GroupsService.js";
 export default {
   setup() {
     const router = useRouter()
@@ -25,10 +25,10 @@ export default {
     })
     return {
       search,
-      async searchMovies() {
+      async searchGroups() {
         try {
-          // await moviesService.searchMovies(search)
-          router.push({ name: 'Search', params: {category: 'movie'}, query: {search: search.query} })
+          // await groupsService.searchGroups(search)
+          router.push({ name: `Search`,params: {category: 'group'}, query:  {search: search.query} })
           search.query = ""
         } catch (error) {
           Pop.error(error)
