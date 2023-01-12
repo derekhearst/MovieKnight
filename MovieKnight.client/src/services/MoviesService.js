@@ -15,7 +15,9 @@ class MoviesService {
 		logger.log("Searching movies", AppState.searchMovies)
 	}
 	async getMovieById(id) {
+		logger.log("abobut to get movie", id)
 		const res = await movieApi.get("movie/" + id)
+		logger.log("Gotten Movie", res.data)
 		AppState.activeMovie = new Movie(res.data)
 		logger.log(AppState.activeMovie)
 	}

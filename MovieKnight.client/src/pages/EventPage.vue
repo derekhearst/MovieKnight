@@ -1,11 +1,11 @@
 <template>
   <div class="eventPage">
     <section class="leftSection">
-      <img :src="event?.coverImg" alt="" class="eventImage" />
 
       <button v-if="!isMember" class="niceButton" @click="joinEvent">Join Event </button>
       <button v-else class="niceButton" @click="leaveEvent">Leave Event</button>
 
+      <img :src="event?.coverImg" alt="" class="eventImage" />
       <div class="eventDetails">
         <p>Description: {{ event?.description }}</p>
         <p>Location: {{ event?.location }}</p>
@@ -17,9 +17,9 @@
       <div class="membersSection">
         <h1 class="infoBadge">Members</h1>
         <div class="members banner">
-          <router-link  v-for="member in members" :to="{ name: 'Profile', params: { id: member.accountId } }">
+          <router-link v-for="member in members" :to="{ name: 'Profile', params: { id: member.accountId } }">
             <img :src="member?.account?.picture" :title="member?.account?.name" alt="NO Picture"
-            class="memberPicture" />
+              class="memberPicture" />
           </router-link>
         </div>
 

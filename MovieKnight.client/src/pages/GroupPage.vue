@@ -23,7 +23,9 @@
         <h4 class="infoBadge">Guild Movies</h4>
 
         <div class="movies">
+
           <MovieCard :movie="m.movie" v-for="m in groupMovies" />
+
         </div>
       </section>
 
@@ -74,6 +76,7 @@ import CommentCard from "../components/CommentCard.vue";
 import EventCard from "../components/EventCard.vue";
 import { eventsService } from "../services/EventsService.js";
 import MovieCard from "../components/MovieCard.vue";
+import { Axios } from 'axios';
 
 const editable = ref({})
 const route = useRoute()
@@ -146,7 +149,10 @@ async function joinGroup() {
 }
 async function leaveGroup() {
   try {
-    await groupsService.removeMyselfFromGroup(route.params.id)
+    let res = await Pop.confirm("Are you sure you want to leave this group?", "", "Yes", "warning")
+    if (res) {
+      await groupsService.removeMyselfFromGroup(route.params.id)
+    }
     isMember.value = false
   } catch (error) {
     Pop.error(error)
@@ -198,6 +204,7 @@ async function archiveGroup() {
 .groupInfo {
   display: flex;
   flex-direction: column;
+  align-items: center;
 
   // border: 2px solid goldenrod;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
@@ -246,6 +253,7 @@ async function archiveGroup() {
   background-repeat: no-repeat;
   background-size: 100%;
   min-height: 20rem;
+  width: 30ch;
   word-break: break-all;
 
   // text-shadow: 0 0 10px black;
@@ -291,7 +299,9 @@ async function archiveGroup() {
   font-weight: bold;
   font-family: 'MedievalSharp', cursive;
   padding: 1rem;
-  margin-bottom: 1rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+
 }
 
 .moviesSection {
@@ -300,6 +310,7 @@ async function archiveGroup() {
   align-items: flex-start;
   margin-bottom: 3rem;
 }
+
 
 .movies {
   display: flex;

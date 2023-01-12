@@ -7,9 +7,8 @@
           {{ movie.title }}
         </h1>
         <div class="d-flex gap-4">
-
           <button class="goodButton" data-bs-toggle="modal" data-bs-target="#movieModal">Add to guild</button>
-          <!-- TODO fix the button below me -->
+
           <button @click="addMovieToMyList" class="goodButton">Save Movie</button>
         </div>
       </div>
@@ -64,7 +63,7 @@
 </template>
 
 
-<script>
+<script setup>
 import { AppState } from '../AppState';
 import { computed, reactive, onMounted } from 'vue';
 import Pop from "../utils/Pop.js";
@@ -72,57 +71,36 @@ import { logger } from "../utils/Logger.js";
 import { moviesService } from "../services/MoviesService.js";
 import { useRoute } from "vue-router";
 import { accountService } from "../services/AccountService.js";
-export default {
-  setup() {
-    const route = useRoute()
-    onMounted(() => {
-      getMovieById()
-      // getStreams()
-    })
-    async function getMovieById() {
-      try {
-        const id = route.params.id
-        await moviesService.getMovieById(id)
-      } catch (error) {
-        Pop.error(error)
-        logger.log(error)
-      }
-    }
-    // async function getStreams(){
-    //   try {
-    //     const id = route.params.id
-    //     await moviesService.getStreams(id)
-    //   } catch (error) {
-    //     Pop.error(error)
-    //     logger.log(error)
-    //   }
-    // }
-    return {
-      async addMovieToMyList(){
-        try {
-          // logger.log('active movie',this.movie)
-          await  accountService.addMovieToMyList(this.movie)
-          Pop.toast(`${this.movie.title} has been added to your movie list`)
-        } catch (error) {
-          Pop.error(error)
-          logger.log(error)
-        }
-      },
-      async addMovieToGroup() { },
-      movie: computed(() => AppState.activeMovie),
-      // TODO finish function
-      // FIXME button must choose guild before posting
-      // async postMovieToGroup(){
-      //   try {
-      //     await moviesService.postMovieToGroup()
-      //   } catch (error) {
-      //     Pop.error(error)
-      //     logger.log(error)
-      //   }
-      // }
-    }
+
+let movie = computed(() => AppState.activeMovie)
+
+const route = useRoute()
+onMounted(async () => {
+  await getMovieById()
+})
+async function getMovieById() {
+  try {
+    await moviesService.getMovieById(route.params.id)
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
   }
-};
+}
+
+async function addMovieToMyList() {
+  try {
+    logger.log(movie.value, "aahh")
+    await accountService.addMovieToMyList(movie.value)
+    Pop.success(`${movie.value.title} has been added to your movie list`)
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+}
+
+
+
+
 </script>
 
 
@@ -140,7 +118,7 @@ export default {
   padding: 1rem;
   padding-left: 3rem;
   padding-right: 3rem;
-
+  color: white;
 }
 
 .detailsBody {
@@ -173,7 +151,7 @@ export default {
   gap: 1rem;
   align-items: center;
   font-family: 'MedievalSharp', cursive;
-
+  color: WHITE;
   justify-content: space-between;
 }
 
