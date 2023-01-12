@@ -31,6 +31,11 @@ class AccountService {
 		AppState.myMovies = res.data
 		logger.log('[myMovies]',AppState.myMovies)
 	}
+	async editAccount(body){
+		const res = await api.put(`account`, body)
+		AppState.account = res.data
+		logger.log(res.data)
+	}
 }
 
 export const accountService = new AccountService()
