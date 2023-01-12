@@ -10,7 +10,7 @@ import { AppState } from '../AppState';
 import { computed, reactive, onMounted } from 'vue';
 import { Movie } from "../models/Movie.js";
 export default {
-  props: { movie: { type: Movie, required: true } },
+  props: { movie: { type: Object, required: true } },
   setup() {
     return {}
   }

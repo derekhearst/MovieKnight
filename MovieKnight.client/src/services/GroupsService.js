@@ -1,6 +1,7 @@
 import { AppState } from "../AppState.js"
 // import { Group } from "../models/Group.js"
 import { logger } from "../utils/Logger.js"
+import Pop from "../utils/Pop.js"
 import { api } from "./AxiosService.js"
 
 class GroupsService {
@@ -41,11 +42,16 @@ class GroupsService {
 	}
 	async addMyselfToGroup(id) {
 		const res = await api.post(`api/groups/${id}/members`)
+		AppState.activeGroupMembers.push(res.data)
+		AppState.activeGroupMembers = AppState.activeGroupMembers
 		logger.log(res.data)
 	}
 	async removeMyselfFromGroup(id) {
 		let me = AppState.activeGroupMembers.find(m => m.accountId == AppState.account.id)
-		const res = await api.delete(`api/groups/${id}/members/${me.id}}`)
+		logger.log(me.id)
+		const res = await api.delete(`api/groups/${id}/members/${me.id}`)
+		AppState.activeGroupMembers = AppState.activeGroupMembers.filter(m => m.id != me.id)
+
 		logger.log(res.data)
 	}
 
@@ -62,11 +68,11 @@ class GroupsService {
 	}
 
 	async searchGroups(search) {
-		const res = await api.get("api/groups", {params: search})
+		const res = await api.get("api/groups", { params: search })
 		AppState.movies = []
 		AppState.groups = res.data
-		AppState.groups.filter(g=> g.title==search)
-    logger.log('search groups',AppState.groups)
+		AppState.groups.filter(g => g.title == search)
+		logger.log("search groups", AppState.groups)
 	}
 }
 

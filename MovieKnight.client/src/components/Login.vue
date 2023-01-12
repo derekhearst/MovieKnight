@@ -6,7 +6,7 @@
     <button v-else @click="login" class="goodButton">
       Login
     </button>
-    <router-link to="Account" class="link" v-if="user.id">
+    <router-link to="/Account" class="link" v-if="user.id">
       <div class="goodButton">Account</div>
     </router-link>
     <div v-if="account.picture || user.picture" class="accountProfile">

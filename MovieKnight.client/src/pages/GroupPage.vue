@@ -1,7 +1,7 @@
 <template>
   <div class="groupPage">
     <div class="groupInfo">
-      <button v-if="isMember" @click="joinGroup" class="joinLeaveButton">
+      <button v-if="!isMember" @click="joinGroup" class="joinLeaveButton">
         Join Guild
       </button>
       <button v-else @click="leaveGroup" class="joinLeaveButton">
@@ -127,6 +127,7 @@ async function getGroupMembers() {
   try {
     await groupsService.getGroupMembersByGroupId(route.params.id)
     if (AppState.activeGroupMembers.find(m => m.id == AppState.account.id)) {
+      logger.log("yo")
       isMember.value = true
     }
   } catch (error) {
@@ -364,7 +365,9 @@ async function postComment() {
   min-height: 10rem;
   padding-top: 3rem;
   padding-bottom: 3rem;
-  padding-left: 5rem;
-  padding-right: 5rem;
+  margin-right: -2rem;
+  margin-left: -2rem;
+  padding-left: 4rem;
+  padding-right: 4rem;
 }
 </style>
