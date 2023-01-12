@@ -13,6 +13,14 @@
         <p>Capacity: {{ event?.capacity }}</p>
         <p v-if="event?.items">Items: {{ event?.items }}</p>
       </div>
+
+      <div class="membersSection">
+        <h1 class="infoBadge">Members</h1>
+        <div class="members banner">
+          <img v-for="member in members" :src="member?.account?.picture" alt="NO Picture" class="memberPicture" />
+        </div>
+
+      </div>
     </section>
 
     <div class="middleSection">
@@ -128,6 +136,7 @@ async function getMembers() {
     if (AppState.activeEventMembers.find(m => m.accountId == AppState.account.id)) {
       isMember.value = true
     }
+    console.log("AGGHH!", AppState.activeEventMembers)
   } catch (error) {
     Pop.error(error)
     logger.log(error)
@@ -360,5 +369,20 @@ async function joinEvent() {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+}
+
+.members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.memberPicture {
+  width: 5rem;
+  height: 5rem;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid goldenrod;
 }
 </style>
