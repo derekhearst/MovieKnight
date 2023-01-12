@@ -77,6 +77,7 @@ import MovieCard from "../components/MovieCard.vue";
 
 const editable = ref({})
 const route = useRoute()
+let groupMembers = computed(()=> AppState.activeGroupMembers)
 let group = computed(() => AppState.activeGroup)
 let groupMovies = computed(() => AppState.activeGroupMovies)
 let comments = computed(() => AppState.activeGroupComments)
