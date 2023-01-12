@@ -34,23 +34,21 @@
 
 <script setup>
 import { AppState } from "../AppState.js";
-import { computed, reactive, onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";
 import { moviesService } from "../services/MoviesService.js";
 import MovieCard from "../components/MovieCard.vue";
 import { groupsService } from "../services/GroupsService.js";
-
 import { useRouter } from "vue-router";
 import GroupCard from "../components/GroupCard.vue";
-import { accountService } from "../services/AccountService.js";
 
 const editable = ref({});
 const router = useRouter();
-let movies = computed(() => AppState.movies)
+let movies = computed(() => AppState.searchMovies)
 let myGroups = computed(() => AppState.myGroups)
 let myEvents = computed(() => AppState.myEvents)
-let account = computed(() => AppState.account)
+
 
 onMounted(async () => {
   await getMovies();
@@ -77,7 +75,6 @@ async function createGroup() {
   }
 }
 
-
 </script>
 
 <style scoped lang="scss">
@@ -87,8 +84,7 @@ async function createGroup() {
   background-image: url("https://i.pinimg.com/originals/9a/d3/ec/9ad3ec7a8be2cbd9d1bc3cf8054c7e30.jpg");
   background-color: rgba(0, 0, 0, 0.821);
   background-blend-mode: color;
-  // flex-wrap: wrap-reverse;
-  // justify-content: center;
+
 }
 
 .movies {

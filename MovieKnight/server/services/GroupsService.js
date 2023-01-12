@@ -5,8 +5,8 @@ import { logger } from "../utils/Logger.js"
 class GroupsService {
 	async getAll(query) {
 		logger.log(query)
-		const groups = await dbContext.Groups.find({title:query.search})
-		// let newGroup = groups.filter(g=> g.title == query)
+		const groups = await dbContext.Groups.find({ title: query.search, visibility: true, archived: false })
+
 		return groups
 	}
 	async getGroupsByUserId(id) {

@@ -2,7 +2,7 @@
   <header>
     <Navbar />
   </header>
-  <main class="bg-dark">
+  <main>
     <router-view />
   </main>
   <AddMovieModal />
