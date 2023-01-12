@@ -41,6 +41,12 @@ const routes = [
     component: loadPage('MovieDetailsPage'),
     beforeEnter: authGuard
   },
+  {
+    path: '/profile/:id',
+    name: 'Profile',
+    component: loadPage('ProfilePage'),
+    beforeEnter: authGuard
+  },
 ]
 
 export const router = createRouter({
