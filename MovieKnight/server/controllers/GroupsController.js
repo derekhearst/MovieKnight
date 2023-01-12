@@ -55,7 +55,6 @@ export class GroupsController extends BaseController {
 	}
 	async createGroup(req, res, next) {
 		try {
-			console.log(req.userInfo)
 			req.body.creatorId = req.userInfo.id
 			const group = await groupsService.create(req.body)
 			res.send(group)
