@@ -23,8 +23,8 @@ class GroupsService {
 			throw new BadRequest("No Group Found")
 		}
 
-		if (groupMember.accountId != userId || group.creatorId != userId) {
-			throw new Forbidden("You cannot remove this member.")
+		if (groupMember.accountId != userId) {
+			throw new Forbidden(`You are not allowed to remove this member ${userId}, ${groupMember.accountId}, ${group.creatorId}`)
 		}
 		await dbContext.GroupMembers.findByIdAndDelete(groupMemberId)
 		return "Successfully Removed"

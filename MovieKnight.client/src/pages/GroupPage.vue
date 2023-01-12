@@ -1,18 +1,17 @@
 <template>
   <div class="groupPage">
     <div class="groupInfo">
-      <button v-if="!isMember" @click="joinGroup" class="button">
+      <button v-if="!isMember && account.id != group.creatorId" @click="joinGroup" class="button">
         Join Guild
       </button>
-      <button v-else @click="leaveGroup" class="button">
+      <button v-else-if="account.id != group.creatorId" @click="leaveGroup" class="button">
         Leave Guild
       </button>
+      <button class="button" v-if="account.id == group.creatorId" @click="archiveGroup">Archive Group</button>
+
       <img :src="group?.coverImg" class="groupPicture" />
-
-
       <h1 class="infoBadge">Guild Info</h1>
       <p class="groupDesc">{{ group?.description }}</p>
-      <button class="button" v-if="account.id == group.creatorId" @click="archiveGroup">Archive Group</button>
 
     </div>
 
@@ -128,7 +127,7 @@ async function getGroupMovies() {
 async function getGroupMembers() {
   try {
     await groupsService.getGroupMembersByGroupId(route.params.id)
-    if (AppState.activeGroupMembers.find(m => m.account.id == AppState.account.id)) {
+    if (AppState.activeGroupMembers.find(m => m.accountId == AppState.account.id)) {
       isMember.value = true
     }
   } catch (error) {
@@ -166,7 +165,10 @@ async function postComment() {
 }
 async function archiveGroup() {
   try {
-    await groupsService.archiveGroup(route.params.id)
+    let res = await Pop.confirm("Are you sure you want to archive this group?", "Archive Group", "Yes", "warning")
+    if (res) {
+      await groupsService.archiveGroup(route.params.id)
+    }
   } catch (error) {
     Pop.error(error)
     logger.log(error)
