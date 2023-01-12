@@ -29,7 +29,7 @@ export class Startup {
 	}
 
 	static configureCors(app) {
-		const allowedDomains = []
+		const allowedDomains = ["https://api.movieknight.uk", "https://movieknight.uk"]
 		const corsOptions = {
 			origin(origin, callback) {
 				if (process.env.NODE_ENV === "dev") {
