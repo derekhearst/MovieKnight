@@ -29,14 +29,14 @@ export class Startup {
 	}
 
 	static configureCors(app) {
-		const allowedDomains = ["https://api.movieknight.uk", "https://movieknight.uk"]
+		const allowedDomains = ["https://movieknight.uk"]
 		const corsOptions = {
 			origin(origin, callback) {
+				origin = origin || ""
 				if (process.env.NODE_ENV === "dev") {
 					return callback(null, true)
 				}
-				const originIsWhitelisted = allowedDomains.indexOf(origin) !== -1
-				callback(null, originIsWhitelisted)
+				callback(null, origin.endsWith("movieknight.uk"))
 			},
 			credentials: true,
 		}
