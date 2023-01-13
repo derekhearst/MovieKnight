@@ -3,7 +3,7 @@ import { AppState } from "../AppState.js"
 import { logger } from "../utils/Logger.js"
 import Pop from "../utils/Pop.js"
 import { api } from "./AxiosService.js"
-import{eventsService} from "../services/EventsService.js"
+import { eventsService } from "../services/EventsService.js"
 
 class GroupsService {
 	async createGroup(body) {
@@ -14,7 +14,7 @@ class GroupsService {
 		const res = await api.get("account/groups")
 		let allGroups = res.data
 		AppState.myGroups = allGroups.filter(g => g.group.archived == true)
-		
+
 		logger.log("Getting my groups", AppState.myGroups)
 	}
 	async getGroupById(id) {
@@ -77,12 +77,8 @@ class GroupsService {
 	}
 	async archiveGroup(id) {
 		const res = await api.delete(`api/groups/${id}`)
-		const index = AppState.myGroups.findIndex(g => g.id == id)
-		AppState.myGroups.splice(index, 1)
-		// AppState.myGroups = AppState.myGroups.filter(g => g.id !== id)
-		logger.log("Archiving group")
-		// let events = AppState.myEvents.filter(e=> e.groupId == id)
-		eventsService.getEventsByGroupId(id)
+		AppState.myGroups = AppState.myGroups.filter(g => g.id != id)
+		AppState.myEvents = AppState.myEvents.filter(e => e.groupId != id)
 	}
 }
 
