@@ -63,7 +63,7 @@
 
 <script setup>
 import { AppState } from '../AppState';
-import { computed, reactive, onMounted, ref } from 'vue';
+import { computed, reactive, onMounted, ref, onUnmounted } from 'vue';
 import { onBeforeRouteLeave, useRoute, useRouter } from "vue-router";
 import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";

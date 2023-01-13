@@ -4,6 +4,7 @@ import { logger } from "../utils/Logger.js"
 import Pop from "../utils/Pop.js"
 import { api } from "./AxiosService.js"
 import{eventsService} from "../services/EventsService.js"
+import { accountService } from "./AccountService.js"
 
 class GroupsService {
 	async createGroup(body) {
@@ -56,6 +57,7 @@ class GroupsService {
 		const res = await api.delete(`api/groups/${id}/members/${me.id}`)
 		AppState.activeGroupMembers = AppState.activeGroupMembers.filter(m => m.id != me.id)
 		logger.log("Removing myself from group")
+		accountService.getMyGroups()
 	}
 
 	async getGroupByGroupId(id) {
