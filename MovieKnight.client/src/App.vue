@@ -64,7 +64,7 @@ html {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
-  background-clip: content-box;
+  background-clip: border-box;
   display: flex;
   flex-direction: column;
   width: 100%;

@@ -2,11 +2,11 @@
   <div class="eventPage">
     <section class="leftSection">
 
-      <button v-if="!isMember" class="niceButton" @click="joinEvent">Join Event </button>
-      <button v-else class="niceButton" @click="leaveEvent">Leave Event</button>
+      <button v-if="!isMember" class="button" @click="joinEvent">Join Event </button>
+      <button v-else class="button" @click="leaveEvent">Leave Event</button>
 
       <img :src="event?.coverImg" alt="" class="eventImage" />
-      <div class="eventDetails">
+      <div class="desc banner">
         <p>Description: {{ event?.description }}</p>
         <p>Location: {{ event?.location }}</p>
         <p>Date: {{ event?.startTime }}</p>
@@ -14,64 +14,51 @@
         <p v-if="event?.items">Items: {{ event?.items }}</p>
       </div>
 
-      <div class="membersSection">
-        <h1 class="infoBadge">Members</h1>
-        <div class="members banner">
-          <router-link v-for="member in members" :to="{ name: 'Profile', params: { id: member.accountId } }">
-            <img :src="member?.account?.picture" :title="member?.account?.name" alt="NO Picture"
-              class="memberPicture" />
-          </router-link>
-        </div>
-
+      <h1 class="badge">Members</h1>
+      <div class="members banner">
+        <router-link v-for="member in members" :to="{ name: 'Profile', params: { id: member.accountId } }">
+          <img :src="member?.account?.picture" :title="member?.account?.name" alt="NO Picture" class="memberPicture" />
+        </router-link>
       </div>
     </section>
 
     <div class="middleSection">
-      <h1 class="title">{{ event?.title }}</h1>
-      <div class="moviesHeader">
-        <h1 class="infoBadge">Movies</h1>
-        <select v-model="newMovie" name="addMovieSelect">
-          <option v-for="movie in groupMovies" :value="movie.movie.title">{{ movie.movie.title }}</option>
-        </select>
-        <button @click="addMovie" class="niceButton">Add Movie</button>
-      </div>
+      <h1 class="scrollTitle">{{ event?.title }}</h1>
+      <div class="badge me-3">Movies</div>
+      <button @click="addMovie" class="button">Add Movie</button>
       <div class="movies">
         <div v-for="m in movies" class="movie">
           <i class="mdi mdi-trash-can" @click="removeMovie(m.id)"></i>
           <MovieCard :movie="m.movie" />
         </div>
       </div>
+
+      <div class="badge">Comments</div>
+      <div class="commentBorder">
+
+        <div class="comments">
+          <CommentCard :comment="c" v-for="c in comments" />
+        </div>
+        <form @submit.prevent="postComment" class="commentForm">
+          <input v-model="comment.body" class="form-control" type="text" placeholder="comment here...">
+          <button class="btn btn-dark"><i class="mdi mdi-script-text"></i></button>
+        </form>
+      </div>
+
+
     </div>
 
     <div class="rightSection">
-      <section class="commentsSection">
-        <h1 class="infoBadge">Comments</h1>
-        <div class="commentBorder">
-
-          <div class="comments">
-            <CommentCard :comment="c" v-for="c in comments" />
-          </div>
-          <form @submit.prevent="postComment" class="commentForm">
-            <input v-model="comment.body" class="form-control" type="text" placeholder="comment here...">
-            <button class="btn btn-dark"><i class="mdi mdi-script-text"></i></button>
-          </form>
+      <h1 class="badge">Items</h1>
+      <div class="items banner">
+        <button class="button" @click="addItem" id="addItem">Add item</button>
+        <div v-for="item in items" class="item">
+          <img :src="item?.creator?.picture" :title="item?.creator?.name" />
+          <i class="mdi mdi-arrow-right"></i>
+          <p>{{ item?.item }}</p>
+          <i class="mdi mdi-trash-can" v-if="item?.creator?.id == account.id" @click="removeItem(item?.id)"></i>
         </div>
-
-      </section>
-
-      <section class="itemsSection">
-        <h1 class="infoBadge">Items</h1>
-        <!-- NOTE add items button here -->
-        <button class="niceButton" @click="addItem">Add item</button>
-        <div class="items">
-          <div v-for="item in items" class="item">
-            <img :src="item?.creator?.picture" :title="item?.creator?.name" />
-            <i class="mdi mdi-arrow-right"></i>
-            <p>{{ item?.item }}</p>
-            <i class="mdi mdi-trash-can" v-if="item?.creator?.id == account.id" @click="removeItem(item?.id)"></i>
-          </div>
-        </div>
-      </section>
+      </div>
     </div>
   </div>
 </template>
@@ -101,7 +88,7 @@ onMounted(async () => {
   await getItems()
   await getGroupMovies()
 })
-onBeforeRouteLeave(()=>{
+onBeforeRouteLeave(() => {
   EventsHandler.LeaveEvent(route.params.id)
 })
 
@@ -116,13 +103,25 @@ let items = computed(() => AppState.activeEventItems)
 let members = computed(() => AppState.activeEventMembers)
 
 async function addMovie() {
-  try {
-    let movie = AppState.activeGroupMovies.find(m => m.movie.title == newMovie.value)
-    await eventsService.addMovieToEvent(route.params.id, movie.movie)
-  } catch (error) {
-    Pop.error(error)
-    logger.log(error)
-  }
+  await Swal.fire({
+    title: 'Add Movie',
+    input: 'select',
+    inputOptions: groupMovies.value.map(m => {
+      return m.movie.title
+    }),
+    inputPlaceholder: 'Select a movie',
+    showCancelButton: true,
+    inputValidator: (value) => {
+      if (!value) {
+        return 'You need to select a movie!'
+      }
+    }
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      let movie = groupMovies.value[result.value]
+      await eventsService.addMovieToEvent(route.params.id, movie.movie)
+    }
+  })
 }
 async function removeMovie(movieId) {
   try {
@@ -258,6 +257,7 @@ async function removeItem(itemId) {
 .eventPage {
   display: flex;
   padding: 1rem;
+  flex-wrap: wrap;
   gap: 1rem;
   background-image: url("https://img.freepik.com/premium-photo/stone-interior-ancient-armenian-church-highlands-dark-hall-rays-from-window_604704-26.jpg?w=1380");
   background-size: cover;
@@ -271,258 +271,210 @@ async function removeItem(itemId) {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  max-width: 23vw;
+  flex: 0 1 20vw;
+  width: clamp(100px, 20vw, 500px);
+  align-items: center;
+
+
+  .eventImage {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border: 2px solid goldenrod
+  }
+
+  .desc {
+    font-size: 1.5rem;
+    font-weight: normal;
+    color: white;
+    padding: 1rem;
+    display: flex;
+
+
+  }
+
+  .members {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    padding: 1rem;
+    gap: 1rem;
+
+
+    img {
+      width: 75px;
+      height: 75px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid goldenrod;
+    }
+  }
 }
 
 .middleSection {
   display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  flex-grow: 1;
+  flex-wrap: wrap;
+  gap: .25rem;
+  flex: 1 1 50vw;
+  width: clamp(100px, 50vw, 1000px);
+
+  align-items: center;
+  align-content: flex-start;
+  justify-content: center;
+
+
+  .scrollTitle {
+    font-size: 4rem;
+    width: 100%;
+    height: min-content;
+  }
+
+  .commentBorder {
+    border: 3px solid goldenrod;
+    background-color: rgba(0, 0, 0, 0.623);
+    color: white;
+    padding: 1rem;
+    width: 100%;
+  }
+
+  .commentForm {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    input {
+      flex: 1 0 10rem;
+      margin-right: 1rem;
+      border: 3px solid goldenrod;
+      font-size: 1.5rem;
+      padding: .5rem;
+      background-color: rgba(0, 0, 0, 0.623);
+      color: white;
+    }
+
+    button {
+      border: none;
+      background-color: transparent;
+      color: goldenrod;
+      font-size: 3rem;
+    }
+
+  }
+
+  .comments {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 1rem;
+    max-height: 50vh;
+    overflow-y: auto;
+    padding: 1rem;
+  }
+
+
+
+  .movies {
+    display: flex;
+    gap: 1rem;
+    overflow-x: scroll;
+    padding: 1rem;
+    border: 2px solid goldenrod;
+    width: 100%;
+
+  }
+
+  .movie {
+    position: relative;
+    display: flex;
+
+    i {
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 2.5rem;
+      color: maroon;
+      cursor: pointer;
+    }
+  }
+
+
+
+
 }
 
 .rightSection {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  align-items: stretch;
-
-}
-
-.eventDetails {
-  padding: 1rem;
-  font-size: 1.5rem;
-  font-weight: normal;
-  color: white;
-  padding-left: 4rem;
-  padding-right: 4rem;
-  margin-right: -1rem;
-  margin-left: -1rem;
-  padding-top: 3rem;
-  background-image: url("../assets/img/bannerflaggood-removebg-preview.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-size: 100%;
-  word-break: break-all;
-
-  min-height: 20rem;
-
-  // text-shadow: 0 0 10px black;
-}
-
-.moviesHeader {
-  display: flex;
-  justify-content: space-between;
+  flex: 0 1 auto;
   align-items: center;
-}
-
-.eventImage {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-  border: 2px solid goldenrod
-}
+  gap: 1rem;
 
 
-.niceButton {
-  background-image: url("../assets/img/goodbutton-removebg-preview.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100% 100%;
-  color: black;
-  background-color: transparent;
-  border: none;
-  font-size: 2rem;
-  font-weight: bold;
-  font-family: 'MedievalSharp', cursive;
-  padding: 1rem;
-  text-align: center;
-}
 
-.title {
-  background-image: url("../assets/img/scrollsmall-removebg-preview.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100% 100%;
-  color: black;
-  font-weight: bold;
-  font-size: 4rem;
-  padding-left: 5rem;
-  padding-right: 5rem;
-  padding-top: 1rem;
-  padding-bottom: 3rem;
-  font-family: 'MedievalSharp', cursive;
+  .items {
+    button {
+      align-self: center;
+      margin-top: -2.5rem;
+      margin-bottom: -.5rem;
+    }
 
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+  }
 
-  text-align: center;
-}
-
-
-.infoBadge {
-  text-align: center;
-  background-image: url("../assets/img/buttondots-removebg-preview.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100% 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 20rem;
-  height: 6rem;
-  font-weight: bold;
-  color: black;
-  font-family: 'MedievalSharp', cursive;
-}
-
-.commentForm {
-  display: flex;
-  align-items: center;
-
-  input {
-    flex: 1 0 10rem;
-    margin-right: 1rem;
-    border: 3px solid goldenrod;
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     font-size: 1.5rem;
-    padding: .5rem;
-    background-color: rgba(0, 0, 0, 0.623);
     color: white;
+
+    img {
+      width: 3rem;
+      height: 3rem;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid goldenrod;
+    }
+
+    p {
+      margin: 0;
+      font-family: 'MedievalSharp', cursive;
+      color: white;
+      font-weight: bold;
+    }
+
+    .mdi-trash-can {
+      cursor: pointer;
+      color: goldenrod;
+    }
   }
 
-  button {
-    border: none;
-    background-color: transparent;
-    color: goldenrod;
-    font-size: 3rem;
-  }
 }
 
-.commentBorder {
-  border: 3px solid goldenrod;
-  background-color: rgba(0, 0, 0, 0.623);
-  color: white;
-  padding: 1rem;
-
-}
-
-.commentsSection {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.comments {
-  display: flex;
-  flex-direction: column-reverse;
-  gap: 1rem;
-  max-height: 50vh;
-  overflow-y: auto;
-
-  // scrollbar-color: goldenrod white;
-
-}
-
-
-
-.movies {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.movie {
-  position: relative;
-
-  i {
-    position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 2.5rem;
-    color: maroon;
-    cursor: pointer;
-  }
-}
-
-.members {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: center;
-}
-
-.memberPicture {
-  width: 5rem;
-  height: 5rem;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 3px solid goldenrod;
-}
-
-.itemsSection {
-  display: flex;
-  flex-direction: column;
-
-  .infoBadge {
-    align-self: center;
+@media (max-width:1000px) {
+  .eventPage {
+    flex-direction: column;
+    align-items: center;
   }
 
-  button {
-    align-self: center;
-    margin-bottom: -4.5rem;
-    margin-top: -1rem;
-    z-index: 2;
-
-  }
-}
-
-.items {
-  display: flex;
-  flex-direction: column;
-
-  gap: .5rem;
-  align-items: flex-start;
-  padding: 1rem;
-  font-size: 1.5rem;
-  font-weight: normal;
-  color: white;
-  padding-left: 4rem;
-  padding-right: 4rem;
-  margin-right: -1rem;
-  margin-left: -1rem;
-  padding-top: 4rem;
-  background-image: url("../assets/img/bannerflaggood-removebg-preview.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-size: 100%;
-  word-break: break-all;
-  min-height: 20rem;
-}
-
-.item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-
-  img {
-    width: 3rem;
-    height: 3rem;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid goldenrod;
+  .leftSection {
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    order: 1;
   }
 
-  p {
-    margin: 0;
-    font-family: 'MedievalSharp', cursive;
-    color: white;
-    font-weight: bold;
+  .middleSection {
+    width: 100%;
+    order: 0;
   }
 
-  .mdi-trash-can {
-    cursor: pointer;
-    color: goldenrod;
+  .rightSection {
+    width: 100%;
   }
+
 }
 </style>
