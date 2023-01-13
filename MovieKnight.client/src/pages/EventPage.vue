@@ -83,14 +83,16 @@ import { computed, reactive, onMounted, watchEffect, ref } from 'vue';
 import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";
 import { eventsService } from "../services/EventsService.js";
-import { useRoute } from "vue-router";
+import { onBeforeRouteLeave, useRoute } from "vue-router";
 import { groupsService } from "../services/GroupsService.js";
 import GroupCard from "../components/GroupCard.vue";
 import Swal from 'sweetalert2';
+import { EventsHandler } from '../handlers/EventsHandler.js';
 
 const route = useRoute()
 const comment = ref({})
 onMounted(async () => {
+  EventsHandler.EnterEvent(route.params.id)
   await getEvent()
   await getMovies()
   await getComments()
@@ -98,6 +100,9 @@ onMounted(async () => {
   await getGroup()
   await getItems()
   await getGroupMovies()
+})
+onBeforeRouteLeave(()=>{
+  EventsHandler.LeaveEvent(route.params.id)
 })
 
 const newMovie = ref('')
