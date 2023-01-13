@@ -254,6 +254,9 @@ async function archiveGroup() {
 
   width: clamp(30ch, 40vw, 100vw);
 
+  .scrollTitle {
+    font-size: 4rem;
+  }
 
   .movies {
     display: flex;
