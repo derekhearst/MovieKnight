@@ -7,15 +7,25 @@ class SocketService extends SocketHandler {
     super()
     this
       .on('error', this.onError)
-      .on('COMMENT_ADDED', this.addComment)
+      .on('GROUP_COMMENT_ADDED', this.addGroupComment)
+      .on('COMMENT_ADDED', this.addEventComment)
   }
 
   onError(e) {
     Pop.toast(e.message, 'error')
   }
-  addComment(comment){
-    AppState.activeEventComments.push(comment)
+  addEventComment(comment){
+    // let found = AppState.activeEventComments.find(c => c.id == comment.id)
+    // if (!found) {
+      AppState.activeEventComments.unshift(comment)
+    }
+  
+  addGroupComment(comment){
+    // let found = AppState.activeEventComments.find(c => c.id == comment.id)
+    // if (!found) {
+      AppState.activeGroupComments.unshift(comment)
+    }
   }
-}
+
 
 export const socketService = new SocketService()

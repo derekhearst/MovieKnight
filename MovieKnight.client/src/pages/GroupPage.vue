@@ -62,7 +62,7 @@
 <script setup>
 import { AppState } from '../AppState';
 import { computed, reactive, onMounted, ref } from 'vue';
-import { useRoute } from "vue-router";
+import { onBeforeRouteLeave, useRoute } from "vue-router";
 import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";
 import { groupsService } from "../services/GroupsService.js";
@@ -70,6 +70,7 @@ import CommentCard from "../components/CommentCard.vue";
 import EventCard from "../components/EventCard.vue";
 import { eventsService } from "../services/EventsService.js";
 import MovieCard from "../components/MovieCard.vue";
+import { GroupsHandler } from "../handlers/GroupsHandler.js";
 
 
 const editable = ref({})
@@ -83,11 +84,15 @@ let account = computed(() => AppState.account)
 let isMember = ref(false)
 
 onMounted(() => {
+  GroupsHandler.EnterGroup(route.params.id)
   getGroup()
   getGroupMovies()
   getGroupComments()
   getGroupEvents()
   getGroupMembers()
+})
+onBeforeRouteLeave(()=> {
+  GroupsHandler.LeaveGroup(route.params.id)
 })
 async function getGroup() {
   try {

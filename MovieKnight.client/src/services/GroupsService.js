@@ -7,7 +7,8 @@ import { api } from "./AxiosService.js"
 class GroupsService {
 	async createGroup(body) {
 		const res = await api.post("api/groups", body)
-		AppState.myGroups.push(res.data)
+		AppState.myGroups= AppState.myGroups.unshift(res.data)
+		
 		return res.data
 	}
 	async getMyGroups() {
@@ -34,7 +35,7 @@ class GroupsService {
 	}
 	async postGroupComment(id, body) {
 		const res = await api.post(`api/groups/${id}/comments`, body)
-		AppState.activeGroupComments.unshift(res.data)
+		// AppState.activeGroupComments.unshift(res.data)
 		AppState.activeGroupComments = AppState.activeGroupComments
 		logger.log("Posting group comment")
 	}
