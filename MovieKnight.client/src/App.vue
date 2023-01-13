@@ -9,6 +9,17 @@
   <ModalComponent />
   <EventFormOffCanvas />
   <ModalAddItemToEvent />
+  <footer>
+    <h1>Created By :</h1>
+    <a href="https://derekhearst.com" target="_blank">
+      <h1>Derek Hearst</h1>
+    </a>
+    <a href="https://github.com/jon-cron" target="_blank">
+      <h1>John Cron</h1>
+    </a>
+    <h1>Kendall Powell</h1>
+    <h1>Calvin Thurston</h1>
+  </footer>
 </template>
 
 <script>
@@ -31,6 +42,20 @@ export default {
 </script>
 <style lang="scss">
 @import "./assets/scss/main.scss";
+
+footer {
+  background-color: black;
+  color: rgba(255, 255, 255, 0.49);
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+
+  h1 {
+    padding: 0;
+    font-size: 1.5rem;
+    text-decoration: none;
+  }
+}
 
 html {
   min-height: 100vh;
