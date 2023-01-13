@@ -129,6 +129,9 @@ async function addMovieToMyList() {
 
 .posterImage {
   padding: 1rem;
+  height: 80vh;
+  width: auto;
+
 }
 
 .desc {
@@ -190,8 +193,10 @@ async function addMovieToMyList() {
   }
 
   .posterImage {
-    width: 100%;
+    margin: auto;
   }
+
+
 
 }
 </style>
