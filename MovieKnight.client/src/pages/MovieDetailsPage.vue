@@ -6,10 +6,10 @@
         <h1>
           {{ movie.title }}
         </h1>
-        <div class="d-flex gap-4">
-          <button class="goodButton" data-bs-toggle="modal" data-bs-target="#movieModal">Add to guild</button>
+        <div class="headerButtons">
+          <button class="button" data-bs-toggle="modal" data-bs-target="#movieModal">Add to guild</button>
 
-          <button @click="addMovieToMyList" class="goodButton">Save Movie</button>
+          <button @click="addMovieToMyList" class="button">Save Movie</button>
         </div>
       </div>
       <div class="ratings">
@@ -108,6 +108,7 @@ async function addMovieToMyList() {
 .detailsPage {
   display: flex;
   min-height: 100vh;
+  ;
 
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.707);
   background-image: url("https://wallpaperaccess.com/full/4477464.jpg");
@@ -138,7 +139,7 @@ async function addMovieToMyList() {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
-  padding-top: 9rem;
+  padding-top: 12rem;
   padding-bottom: 4rem;
   padding-left: 15rem;
   padding-right: 15rem;
@@ -155,20 +156,42 @@ async function addMovieToMyList() {
   justify-content: space-between;
 }
 
-.goodButton {
-  background-image: url("../assets/img/goodbutton-removebg-preview.png");
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-position: center;
-  text-align: center;
-  height: 5rem;
-  width: 17rem;
-  border: none;
-  color: black;
-  font-size: 2rem;
-  font-weight: bold;
-  background-color: transparent;
-  margin-top: -.15rem;
-  font-family: 'MedievalSharp', cursive;
+.headerButtons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (max-width:1440px) {
+  .detailsPage {
+    flex-wrap: wrap;
+    background-repeat: repeat;
+    background-size: 200%;
+  }
+
+  .ratings {
+    padding-left: 5rem;
+  }
+
+  .desc {
+    background-image: none;
+    background-color: rgba(0, 0, 0, 0.811);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: center;
+
+  }
+
+  .posterImage {
+    width: 100%;
+  }
+
 }
 </style>
