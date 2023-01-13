@@ -15,9 +15,9 @@
         <p class="groupDesc">{{ group?.description }}</p>
       </div>
       <div class="badge">Members</div>
-      <div class="members">
-        <router-link v-for="m in groupMembers" :to="{name: 'Profile', params: {id: m.accountId}}">
-          <img :src="m.account?.picture" class="memberPicture" :title="m.account?.name"/>
+      <div class="members banner">
+        <router-link v-for="m in groupMembers" :to="{ name: 'Profile', params: { id: m.accountId } }">
+          <img :src="m.account?.picture" class="memberPicture" :title="m.account?.name" />
         </router-link>
       </div>
 
@@ -94,7 +94,7 @@ onMounted(() => {
   getGroupEvents()
   getGroupMembers()
 })
-onBeforeRouteLeave(()=> {
+onBeforeRouteLeave(() => {
   GroupsHandler.LeaveGroup(route.params.id)
 })
 async function getGroup() {
@@ -176,7 +176,7 @@ async function archiveGroup() {
     let res = await Pop.confirm("Are you sure you want to archive this group?", "Archive Group", "Yes", "warning")
     if (res) {
       await groupsService.archiveGroup(route.params.id)
-      router.push({name: 'Home'})
+      router.push({ name: 'Home' })
     }
   } catch (error) {
     Pop.error(error)
@@ -218,6 +218,7 @@ async function archiveGroup() {
 
   .members {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
     gap: 1rem;
