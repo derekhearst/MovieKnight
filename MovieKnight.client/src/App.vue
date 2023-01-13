@@ -47,4 +47,85 @@ html {
     border: 3px solid maroon;
   }
 }
+
+.bannerBorder {
+  border-image-slice: 37 39 148 37;
+  border-image-width: 30px 20px 144px 20px;
+  border-image-outset: 0px 0px 0px 0px;
+  border-top: 20px;
+  border-bottom: 144px;
+  border-right: 20px;
+  border-left: 20px;
+  border-image-repeat: stretch stretch;
+  border-image-source: url("./assets/img/bannerflaggood-removebg-preview.png");
+  border-style: solid;
+  background-image: url("./assets/img/bannerborderbg.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-clip: content-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.button {
+  background-image: url("./assets/img/goodbutton-removebg-preview.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  text-align: center;
+  border: none;
+  color: black;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background-color: transparent;
+  font-family: 'MedievalSharp', cursive;
+  padding: 1rem;
+  padding-right: 2rem;
+  padding-left: 2rem;
+  user-select: none;
+}
+
+.button:hover {
+  scale: 1.05;
+}
+
+.button:active {
+  scale: 0.95;
+}
+
+.badge {
+  text-align: center;
+  background-image: url("./assets/img/buttondots-removebg-preview.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-weight: bold;
+  color: black;
+  font-size: 2rem;
+  padding: 1.5rem;
+  padding-right: 2rem;
+  padding-left: 2rem;
+  width: min-content;
+  height: min-content;
+  font-family: 'MedievalSharp', cursive;
+}
+
+.scrollTitle {
+  background-image: url("./assets/img/scrollsmall-removebg-preview.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  text-align: center;
+  padding-top: .25rem;
+  padding-bottom: 1.75rem;
+  color: black;
+  font-family: 'MedievalSharp', cursive;
+  font-weight: bold;
+  margin-bottom: -1rem;
+}
 </style>

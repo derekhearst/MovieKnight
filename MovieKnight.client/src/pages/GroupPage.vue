@@ -10,7 +10,7 @@
       <button class="button" v-if="account.id == group.creatorId" @click="archiveGroup">Archive Group</button>
 
       <img :src="group?.coverImg" class="groupPicture" />
-      <h1 class="infoBadge">Guild Info</h1>
+      <h1 class="badge">Guild Info</h1>
       <p class="groupDesc">{{ group?.description }}</p>
 
     </div>
@@ -20,7 +20,7 @@
       <h1 class="title">{{ group?.title }}</h1>
 
       <section class="moviesSection">
-        <h4 class="infoBadge">Guild Movies</h4>
+        <h4 class="badge">Guild Movies</h4>
 
         <div class="movies">
 
@@ -31,7 +31,7 @@
 
       <section class="commentsSection">
 
-        <h4 class="infoBadge">Guild Chat</h4>
+        <h4 class="badge">Guild Chat</h4>
         <div class="commentBorder">
 
 
@@ -50,7 +50,7 @@
     </div>
 
     <section class="eventSection">
-      <h1 class="infoBadge">Guild Events</h1>
+      <h1 class="badge">Guild Events</h1>
       <button class="button" data-bs-toggle="offcanvas" data-bs-target="#event">
         New Guild Event
       </button>
@@ -221,22 +221,6 @@ async function archiveGroup() {
   border: 2px solid goldenrod;
 }
 
-.infoBadge {
-  text-align: center;
-  background-image: url("../assets/img/buttondots-removebg-preview.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100% 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 20rem;
-  height: 6rem;
-  font-weight: bold;
-  color: black;
-  font-family: 'MedievalSharp', cursive;
-}
 
 .groupDesc {
   padding: 1rem;
