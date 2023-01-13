@@ -3,6 +3,7 @@ import { Auth0Provider } from "@bcwdev/auth0provider"
 import { eventsService } from "../services/EventsService.js"
 import { moviesService } from "../services/MoviesService.js"
 import { commentsService } from "../services/CommentsService.js"
+import { socketProvider } from "../SocketProvider.js"
 export class EventsController extends BaseController {
 	constructor() {
 		super("api/events")
@@ -95,6 +96,7 @@ export class EventsController extends BaseController {
 		try {
 			req.body.creatorId = req.userInfo.id
 			const comment = await commentsService.addEventComment(req.params.id, req.body)
+			socketProvider.messageRoom(req.params.id, 'COMMENT_ADDED', comment)
 			res.send(comment)
 		} catch (error) {
 			next(error)
