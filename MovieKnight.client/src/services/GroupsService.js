@@ -34,7 +34,7 @@ class GroupsService {
 	}
 	async postGroupComment(id, body) {
 		const res = await api.post(`api/groups/${id}/comments`, body)
-		AppState.activeGroupComments.unshift(res.data)
+		// AppState.activeGroupComments.unshift(res.data)
 		AppState.activeGroupComments = AppState.activeGroupComments
 		logger.log("Posting group comment")
 	}

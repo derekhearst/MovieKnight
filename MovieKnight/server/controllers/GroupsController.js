@@ -5,6 +5,7 @@ import { moviesService } from "../services/MoviesService.js"
 import { commentsService } from "../services/CommentsService.js"
 import { eventsService } from "../services/EventsService.js"
 import { query } from "express"
+import { socketProvider } from "../SocketProvider.js"
 export class GroupsController extends BaseController {
 	constructor() {
 		super("api/groups")
@@ -139,6 +140,7 @@ export class GroupsController extends BaseController {
 		try {
 			req.body.creatorId = req.userInfo.id
 			const comment = await commentsService.addGroupComment(req.params.id, req.body)
+			socketProvider.messageRoom(req.params.id, 'GROUP_COMMENT_ADDED', comment)
 			res.send(comment)
 		} catch (error) {
 			next(error)
