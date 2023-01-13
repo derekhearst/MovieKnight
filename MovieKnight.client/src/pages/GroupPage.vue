@@ -33,7 +33,7 @@
       </div>
 
       <div class="badge">Guild Chat</div>
-      <div class="commentBorder">
+      <div v-if="isMember"  class="commentBorder">
         <div class="comments">
           <CommentCard :comment="c" v-for="c in comments" />
         </div>
@@ -49,7 +49,7 @@
     <section class="eventSection">
       <div class="badge">Guild Events</div>
       <div class="banner">
-        <button class="button" data-bs-toggle="offcanvas" data-bs-target="#event">
+        <button v-if="isMember"  class="button" data-bs-toggle="offcanvas" data-bs-target="#event">
           New Guild Event
         </button>
         <div class="events" v-if="groupEvents">
@@ -63,7 +63,7 @@
 
 <script setup>
 import { AppState } from '../AppState';
-import { computed, reactive, onMounted, ref } from 'vue';
+import { computed, reactive, onMounted, ref, onUnmounted } from 'vue';
 import { onBeforeRouteLeave, useRoute, useRouter } from "vue-router";
 import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";
@@ -87,12 +87,12 @@ let account = computed(() => AppState.account)
 let isMember = ref(false)
 
 onMounted(() => {
-  GroupsHandler.EnterGroup(route.params.id)
   getGroup()
   getGroupMovies()
   getGroupComments()
   getGroupEvents()
   getGroupMembers()
+  GroupsHandler.EnterGroup(route.params.id)
 })
 onBeforeRouteLeave(() => {
   GroupsHandler.LeaveGroup(route.params.id)
