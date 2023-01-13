@@ -35,7 +35,7 @@
 
 <script setup>
 import { AppState } from "../AppState.js";
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watchEffect } from 'vue';
 import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";
 import { moviesService } from "../services/MoviesService.js";
@@ -54,6 +54,9 @@ let myEvents = computed(() => AppState.myEvents)
 onMounted(async () => {
   await getMovies();
 });
+watchEffect(()=>{
+  AppState.myGroups
+})
 
 async function getMovies() {
   try {

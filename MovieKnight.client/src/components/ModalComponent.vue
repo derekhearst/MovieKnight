@@ -26,7 +26,7 @@
         </select>
         
       </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary" >Submit</button>
     </form>
   </div>
 </div>
@@ -39,14 +39,21 @@ import { computed, reactive, onMounted, ref } from 'vue';
 import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";
 import { groupsService } from "../services/GroupsService.js";
+import { Offcanvas } from "bootstrap";
+import { useRouter } from "vue-router";
 export default {
   setup(){
+    const router = useRouter()
     const editable = ref({})
   return {
     editable,
     async createGroup(){
       try {
-        await groupsService.createGroup(editable.value)
+       const newGroup =  await groupsService.createGroup(editable.value)
+        Offcanvas.getOrCreateInstance('#offcanvasExample').hide()
+        // if(await Pop.confirm('Would you like to see your new guild')){
+        router.push({name: 'Group', params: { id: newGroup.id}})
+        editable.value={}
       } catch (error) {
         Pop.error(error)
         logger.log(error)
