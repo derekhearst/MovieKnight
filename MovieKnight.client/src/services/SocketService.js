@@ -14,8 +14,11 @@ class SocketService extends SocketHandler {
     Pop.toast(e.message, 'error')
   }
   addComment(comment){
-    AppState.activeEventComments.push(comment)
+    // let found = AppState.activeEventComments.find(c => c.id == comment.id)
+    // if (!found) {
+      AppState.activeEventComments.unshift(comment)
+    }
   }
-}
+
 
 export const socketService = new SocketService()

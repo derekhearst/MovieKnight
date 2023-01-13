@@ -56,7 +56,7 @@ class EventsService {
 	}
 	async postCommentToEvent(id, commentData) {
 		const res = await api.post(`api/events/${id}/comments`, commentData)
-		AppState.activeEventComments.unshift(res.data)
+		// AppState.activeEventComments.unshift(res.data)
 		AppState.activeEventComments = AppState.activeEventComments
 	}
 	async getCommentsByEventId(id) {
