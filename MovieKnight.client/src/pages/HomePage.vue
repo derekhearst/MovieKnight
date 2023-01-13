@@ -88,7 +88,7 @@ async function getMovies() {
   padding: 1rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .myStuff {

@@ -19,17 +19,15 @@ let props = defineProps({
 <style lang="scss" scoped>
 .movieCard {
   flex: 1 1 250px;
-  min-width: 200px;
-  max-width: 290px;
-
-  // width: 250px;
+  max-width: 280px;
+  min-width: 240px;
+  height: 24rem;
   object-fit: cover;
-  // box-shadow: 3px 3px 2px 2px #fcc333c5;
 }
 
 .poster {
   width: 100%;
-  height: 25rem;
+  height: 100%;
   object-fit: cover;
   border: 2px solid #fcc333c5;
 }

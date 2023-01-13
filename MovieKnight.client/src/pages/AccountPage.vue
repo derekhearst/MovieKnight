@@ -1,114 +1,171 @@
 <template>
-  <div class="container-fluid">
-    <section class="row justify-content-center">
-      <div class="about text-center col-8">
-        <h1>Welcome {{ account.name }}</h1>
-        <img class="rounded" :src="account.picture" alt="" />
-        <p>{{ account.email }}</p>
-      </div>
-      <div class="about text-center col-5">
-        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
-          aria-expanded="false" aria-controls="collapseExample">
-          Edit Account
-        </button>
-        <div class="collapse" id="collapseExample">
-          <div class="bg-dark text-center">
-            <form @submit.prevent="editAccount">
-              <div class="form-group">
-                <label for="exampleInputEmail1">Name</label>
-                <input v-model="editable.name" type="text" class="form-control" id="exampleInputEmail1"
-                  aria-describedby="emailHelp" :placeholder=account.name>
-              </div>
-              <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input v-model="editable.picture" type="text" class="form-control" id="exampleInputPassword1"
-                  :placeholder=account.picture>
-              </div>
-              <button type="submit" class="btn btn-success">Save Changes</button>
-            </form>
+  <div class="page">
+    <div class="scrollTitle">{{ account.name }}</div>
+    <!-- <img class="rounded" :src="account.picture" alt="" /> -->
+    <button class="button" @click="editAccountPop">Edit Account</button>
+    <section class="mainSection">
+      <div class="container">
+
+        <div class="badge">My Favorites</div>
+        <div v-if="favoriteMovies" class="movies">
+          <div class="movie" v-for="m in favoriteMovies">
+            <MovieCard :movie="m.movie" />
+            <i class="mdi mdi-trash-can" @click="removeMovie(m.id)"></i>
+            <i @click="switchFavorite(m.id)" class="mdi mdi-heart" title="UnFavorite"></i>
+
           </div>
         </div>
       </div>
-    </section>
-    <section class="row">
-      <h1>My Favorites</h1>
-      <div v-if="favoriteMovies" class="movies movie">
-        <div class="movie"  v-for="m in favoriteMovies" >
-          <MovieCard :movie="m.movie"/>
-          <i v-if="m.isFavorite" @click="switchFavorite(m.id)" class="mdi mdi-heart fs-2 text-danger selectable" title="UnFavorite"></i>
-          <i v-else @click="switchFavorite(m.id)" class="btn mdi mdi-heart-outline fs-2 selectable" title="Favorite"></i>
+      <div class="container">
+        <div class="badge">My Movies</div>
+
+        <div v-if="myMovies" class="movies">
+          <div class="movie" v-for="m in myMovies">
+            <MovieCard :movie="m.movie" />
+            <i class="mdi mdi-trash-can" @click="removeMovie(m.id)"></i>
+            <i @click="switchFavorite(m.id)" class="btn mdi mdi-heart-outline" title="Favorite"></i>
+          </div>
         </div>
+
       </div>
-      <h1>My Movies</h1>
-      <div v-if="myMovies" class="movies movie">
-        <div class="movie"  v-for="m in myMovies" >
-          <MovieCard :movie="m.movie"/>
-          <i v-if="m.isFavorite" @click="switchFavorite(m.id)" class="mdi mdi-heart fs-2 text-danger selectable" title="UnFavorite"></i>
-          <i v-else @click="switchFavorite(m.id)" class="btn mdi mdi-heart-outline fs-2 selectable" title="Favorite"></i>
-        </div>
-      </div>
+
+
+
     </section>
   </div>
+
+
 </template>
 
-<script>
+<script setup>
+import Swal from 'sweetalert2'
 import { computed, onMounted, ref } from 'vue'
 import { AppState } from '../AppState'
 import MovieCard from "../components/MovieCard.vue"
 import { accountService } from "../services/AccountService.js"
 import { logger } from "../utils/Logger.js"
 import Pop from "../utils/Pop.js"
-export default {
-  setup() {
-    const editable = ref({});
-    onMounted(() => {
-    });
-    return {
-      // NOTE information brought to the page: my account, myMovie list, myEvents, and myGroups
-      editable,
-      account: computed(() => AppState.account),
-      myMovies: computed(() => AppState.myMovies),
-      favoriteMovies: computed(() => AppState.myFavoriteMovies),
-      events: computed(() => AppState.myEvents),
-      groups: computed(() => AppState.myGroups),
-      async editAccount() {
-        try {
-          await accountService.editAccount(editable.value);
-        }
-        catch (error) {
-          Pop.error(error);
-          logger.log(error);
-        }
-      },
-      async switchFavorite(id){
-        try {
-          await accountService.switchFavorite(id)
-        } catch (error) {
-          Pop.error(error)
-          logger.log(error)
-        }
-      }
-    };
-  },
+
+const editable = ref({});
+let account = computed(() => AppState.account)
+let myMovies = computed(() => AppState.myMovies)
+let favoriteMovies = computed(() => AppState.myFavoriteMovies)
+
+async function switchFavorite(id) {
+  try {
+    await accountService.switchFavorite(id)
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
 }
+async function editAccountPop() {
+  await Swal.fire({
+    title: 'Edit Account',
+    html: `
+    <label for="swal-input1" class="swal2-label">Name</label>
+    <input id="swal-input1" class="swal2-input" placeholder="Name" value="${AppState.account.name}">
+    <label for="swal-input2" class="swal2-label">Picture</label>
+    <input id="swal-input2" class="swal2-input" placeholder="Picture" value="${AppState.account.picture}">
+    `,
+    showCancelButton: true,
+    cancelButtonText: 'Cancel',
+    focusConfirm: false,
+    preConfirm: () => {
+      return [
+        document.getElementById('swal-input1').value,
+        document.getElementById('swal-input2').value
+      ]
+    }
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      editable.value.name = result.value[0]
+      editable.value.picture = result.value[1]
+      try {
+        await accountService.editAccount(editable.value);
+        Pop.toast('Account Updated', 'success')
+      }
+      catch (error) {
+        Pop.error(error);
+        logger.log(error);
+      }
+    }
+  })
+}
+
+async function removeMovie(id) {
+  try {
+    await accountService.deleteMovieFromMyList(id)
+  } catch (error) {
+    Pop.error(error)
+    logger.log(error)
+  }
+}
+
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  width: 100%;
+  background-image: url("../assets/img/stone-texture-background.jpg");
+  background-size: cover;
+  // background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(0, 0, 0, 0.842);
+  background-blend-mode: color;
+  color: white;
+}
+
+.mainSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.scrollTitle {
+  font-size: 3rem;
+  padding-left: 4rem;
+  padding-right: 4rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+}
+
 .movies {
-  flex-basis: 75vw;
   padding: 1rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .movie {
   position: relative;
-i{
-  position: absolute;
-  top: 0;
-  right:0;
-  z-index: 3;
-}
+  display: flex;
+
+  i {
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    z-index: 3;
+    color: red;
+    font-size: 2rem;
+    cursor: pointer;
+  }
+
+  .mdi-trash-can {
+
+    left: .5rem;
+    right: auto;
+  }
 }
 </style>

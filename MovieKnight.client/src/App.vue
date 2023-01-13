@@ -126,6 +126,9 @@ html {
   text-align: center;
   padding-top: .25rem;
   padding-bottom: 1.75rem;
+  padding-right: 2rem;
+  padding-left: 2rem;
+  font-size: 1.5rem;
   color: black;
   font-family: 'MedievalSharp', cursive;
   font-weight: bold;

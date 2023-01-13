@@ -317,7 +317,7 @@ async function archiveGroup() {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding: .5rem;
+    padding: 1rem;
     padding-top: .25rem;
   }
 }

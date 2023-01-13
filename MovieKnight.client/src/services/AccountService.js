@@ -29,17 +29,26 @@ class AccountService {
 		logger.log(res.data)
 		AppState.myMovies.push(res.data)
 	}
+
+	async deleteMovieFromMyList(movieId) {
+		const res = await api.delete(`account/movies/${movieId}`)
+		AppState.myMovies = AppState.myMovies.filter(m => m.id !== movieId)
+		AppState.myFavoriteMovies = AppState.myFavoriteMovies.filter(m => m.id !== movieId)
+	}
+
 	async getMyMovies() {
 		const res = await api.get("account/movies")
 		let arr = res.data
-		logger.log(arr,'[temp array]')
+		logger.log(arr, "[temp array]")
 		for (let i = 0; i < arr.length; i++) {
-			if(arr[i].isFavorite == false){
+			if (arr[i].isFavorite == false) {
 				AppState.myMovies.push(arr[i])
-			} else {AppState.myFavoriteMovies.push(arr[i])}
+			} else {
+				AppState.myFavoriteMovies.push(arr[i])
+			}
 		}
-		logger.log(AppState.myFavoriteMovies, 'my favorite array')
-		logger.log(AppState.myMovies,'my movies array')
+		logger.log(AppState.myFavoriteMovies, "my favorite array")
+		logger.log(AppState.myMovies, "my movies array")
 		// AppState.myMovies = res.data
 		// logger.log("Getting my movies", AppState.myMovies)
 	}
@@ -48,20 +57,19 @@ class AccountService {
 		AppState.account = res.data
 		logger.log("Editing account", body)
 	}
-	async switchFavorite(id){
+	async switchFavorite(id) {
 		const res = await api.post(`account/movies/${id}`)
-		if(res.data.isFavorite == true){
+		if (res.data.isFavorite == true) {
 			AppState.myMovies = AppState.myMovies.filter(m => m.id !== id)
 			AppState.myFavoriteMovies.push(res.data)
-			logger.log(AppState.myFavoriteMovies, 'logging favorites')
-		}else{
-		 AppState.myFavoriteMovies =	AppState.myFavoriteMovies.filter(m => m.id !== id)
+			logger.log(AppState.myFavoriteMovies, "logging favorites")
+		} else {
+			AppState.myFavoriteMovies = AppState.myFavoriteMovies.filter(m => m.id !== id)
 			AppState.myMovies.push(res.data)
 			logger.log(AppState.myMovies)
-
 		}
 		// let index =	AppState.myMovies.findIndex(m => m.id == id)
-	// AppState.myMovies.splice(index, 1, res.data)
+		// AppState.myMovies.splice(index, 1, res.data)
 	}
 }
 
