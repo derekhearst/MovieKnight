@@ -183,6 +183,7 @@ async function archiveGroup() {
   padding: 1rem;
   padding-top: .5rem;
   gap: 1rem;
+  flex-wrap: wrap;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -238,14 +239,16 @@ async function archiveGroup() {
 .mainSection {
   display: flex;
   flex-direction: column;
-  flex: 1 1 60vw;
+  flex: 1 1 40vw;
   gap: 1rem;
+
+  width: clamp(30ch, 40vw, 100vw);
 
 
   .movies {
     display: flex;
     gap: 1rem;
-    width: 60vw;
+    width: 100%;
     overflow-x: auto;
     backdrop-filter: blur(10px);
     border: 1px solid goldenrod;
@@ -256,7 +259,6 @@ async function archiveGroup() {
     border: 1px solid goldenrod;
     padding: .5rem;
     backdrop-filter: blur(10px);
-
   }
 
   .comments {
@@ -273,9 +275,13 @@ async function archiveGroup() {
     display: flex;
     margin-top: 2rem;
     align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
 
     input {
       flex: 1 0 10rem;
+      max-width: 100%;
+
       margin-right: 1rem;
       border: 3px solid goldenrod;
       font-size: 1.5rem;
@@ -294,7 +300,7 @@ async function archiveGroup() {
 }
 
 .eventSection {
-  flex: 1 1 20vw;
+  flex: 1 1 10vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -313,6 +319,28 @@ async function archiveGroup() {
     gap: 1rem;
     padding: .5rem;
     padding-top: .25rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .groupPage {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+
+  .infoSection {
+    width: auto;
+    order: 1;
+  }
+
+  .mainSection {
+    width: 100%;
+    order: 0;
+  }
+
+  .eventSection {
+    order: 2;
   }
 }
 </style>
