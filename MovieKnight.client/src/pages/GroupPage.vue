@@ -16,7 +16,9 @@
       </div>
       <div class="badge">Members</div>
       <div class="members">
-        <img :src="m.account?.picture" class="memberPicture" :title="m.account?.name" v-for="m in groupMembers" />
+        <router-link v-for="m in groupMembers" :to="{name: 'Profile', params: {id: m.accountId}}">
+          <img :src="m.account?.picture" class="memberPicture" :title="m.account?.name"/>
+        </router-link>
       </div>
 
     </div>
