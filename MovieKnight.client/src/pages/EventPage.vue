@@ -6,7 +6,7 @@
       <button v-else class="button" @click="leaveEvent">Leave Event</button>
 
       <img :src="event?.coverImg" alt="" class="eventImage" />
-      <div class="desc banner">
+      <div v-if="isMember" class="desc banner">
         <p>Description: {{ event?.description }}</p>
         <p>Location: {{ event?.location }}</p>
         <p>Date: {{ event?.startTime }}</p>
@@ -25,7 +25,7 @@
     <div class="middleSection">
       <h1 class="scrollTitle">{{ event?.title }}</h1>
       <div class="badge me-3">Movies</div>
-      <button @click="addMovie" class="button">Add Movie</button>
+      <button v-if="isMember"  @click="addMovie" class="button">Add Movie</button>
       <div class="movies">
         <div v-for="m in movies" class="movie">
           <i class="mdi mdi-trash-can" @click="removeMovie(m.id)"></i>
@@ -34,7 +34,7 @@
       </div>
 
       <div class="badge">Comments</div>
-      <div class="commentBorder">
+      <div v-if="isMember" class="commentBorder">
 
         <div class="comments">
           <CommentCard :comment="c" v-for="c in comments" />
@@ -51,7 +51,7 @@
     <div class="rightSection">
       <h1 class="badge">Items</h1>
       <div class="items banner">
-        <button class="button" @click="addItem" id="addItem">Add item</button>
+        <button v-if="isMember" class="button" @click="addItem" id="addItem">Add item</button>
         <div v-for="item in items" class="item">
           <img :src="item?.creator?.picture" :title="item?.creator?.name" />
           <i class="mdi mdi-arrow-right"></i>

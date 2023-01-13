@@ -33,7 +33,7 @@
       </div>
 
       <div class="badge">Guild Chat</div>
-      <div class="commentBorder">
+      <div v-if="isMember"  class="commentBorder">
         <div class="comments">
           <CommentCard :comment="c" v-for="c in comments" />
         </div>
@@ -49,7 +49,7 @@
     <section class="eventSection">
       <div class="badge">Guild Events</div>
       <div class="banner">
-        <button class="button" data-bs-toggle="offcanvas" data-bs-target="#event">
+        <button v-if="isMember"  class="button" data-bs-toggle="offcanvas" data-bs-target="#event">
           New Guild Event
         </button>
         <div class="events" v-if="groupEvents">
