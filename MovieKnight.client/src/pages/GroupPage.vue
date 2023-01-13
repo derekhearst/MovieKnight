@@ -87,12 +87,12 @@ let account = computed(() => AppState.account)
 let isMember = ref(false)
 
 onMounted(() => {
-  GroupsHandler.EnterGroup(route.params.id)
   getGroup()
   getGroupMovies()
   getGroupComments()
   getGroupEvents()
   getGroupMembers()
+  GroupsHandler.EnterGroup(route.params.id)
 })
 onBeforeRouteLeave(() => {
   GroupsHandler.LeaveGroup(route.params.id)
