@@ -1,6 +1,7 @@
 import { dbContext } from "../db/DbContext.js"
 import { BadRequest, Forbidden } from "../utils/Errors.js"
 import { logger } from "../utils/Logger.js"
+import { eventsService } from "./EventsService.js"
 
 class GroupsService {
 	async getAll(query) {
@@ -57,7 +58,10 @@ class GroupsService {
 		if (group.creatorId != userID) {
 			throw new Forbidden("You are not the creator of this group.")
 		}
-
+		let events = await dbContext.Events.find({groupId: group.id})
+		for(let event of events){
+		 await	event.delete()
+		}
 		await dbContext.Groups.findByIdAndUpdate(groupId, { archived: true })
 		return "Successfully Deleted"
 	}

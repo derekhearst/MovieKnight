@@ -64,7 +64,7 @@
 <script setup>
 import { AppState } from '../AppState';
 import { computed, reactive, onMounted, ref } from 'vue';
-import { onBeforeRouteLeave, useRoute } from "vue-router";
+import { onBeforeRouteLeave, useRoute, useRouter } from "vue-router";
 import Pop from "../utils/Pop.js";
 import { logger } from "../utils/Logger.js";
 import { groupsService } from "../services/GroupsService.js";
@@ -73,8 +73,9 @@ import EventCard from "../components/EventCard.vue";
 import { eventsService } from "../services/EventsService.js";
 import MovieCard from "../components/MovieCard.vue";
 import { GroupsHandler } from "../handlers/GroupsHandler.js";
+// import { router } from "../router.js";
 
-
+const router = useRouter()
 const editable = ref({})
 const route = useRoute()
 let groupMembers = computed(() => AppState.activeGroupMembers)
@@ -175,6 +176,7 @@ async function archiveGroup() {
     let res = await Pop.confirm("Are you sure you want to archive this group?", "Archive Group", "Yes", "warning")
     if (res) {
       await groupsService.archiveGroup(route.params.id)
+      router.push({name: 'Home'})
     }
   } catch (error) {
     Pop.error(error)

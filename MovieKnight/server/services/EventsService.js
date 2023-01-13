@@ -2,6 +2,9 @@ import { dbContext } from "../db/DbContext.js"
 import { BadRequest, UnAuthorized } from "../utils/Errors.js"
 
 class EventsService {
+	deleteAllEventsByGroupId(groupId) {
+		
+	}
 	async getEventById(eventId, userId) {
 		let event = await dbContext.Events.findById(eventId)
 		if (!event) {
@@ -29,6 +32,7 @@ class EventsService {
 		if (group.creatorId != userId || event.creatorId != userId || member.accountId != userId) {
 			throw new UnAuthorized("You are not the creator of this group.")
 		}
+		// @ts-ignore
 		event.capacity += 1
 		await event.save()
 		await member.delete()
@@ -48,6 +52,7 @@ class EventsService {
 			throw new BadRequest("This member is already in this event")
 		}
 
+		// @ts-ignore
 		event.capacity -= 1
 		await event.save()
 

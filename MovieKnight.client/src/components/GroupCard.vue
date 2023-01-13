@@ -1,6 +1,6 @@
 <template>
 
-  <router-link :to="{ name: 'Group', params: { id: group.id } }" class="groupCard">
+  <router-link v-if="group.archived == false" :to="{ name: 'Group', params: { id: group.id } }" class="groupCard">
     <img class="groupImage" :src="group.coverImg" alt="">
     <div>
       <h4>{{ group.title }}</h4>

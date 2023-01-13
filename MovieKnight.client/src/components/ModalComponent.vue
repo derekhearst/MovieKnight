@@ -49,10 +49,10 @@ export default {
     editable,
     async createGroup(){
       try {
-       const newGroup =  await groupsService.createGroup(editable.value)
+       await groupsService.createGroup(editable.value)
         Offcanvas.getOrCreateInstance('#offcanvasExample').hide()
         // if(await Pop.confirm('Would you like to see your new guild')){
-        router.push({name: 'Group', params: { id: newGroup.id}})
+        // router.push({name: 'Group', params: { id: newGroup.id}})
         editable.value={}
       } catch (error) {
         Pop.error(error)
