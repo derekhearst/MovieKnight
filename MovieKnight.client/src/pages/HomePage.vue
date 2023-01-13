@@ -10,7 +10,7 @@
       <div class="groups">
         <h1 class="scrollTitle">My Guilds</h1>
         <div class="banner">
-          <button data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" id="formGuild" class="button">Form
+          <button v-if="account.id" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" id="formGuild" class="button">Form
             Guild</button>
           <div v-if="myGroups" class="groupsContainer">
             <GroupCard :group="g.group" v-for="g in myGroups" />
@@ -49,6 +49,7 @@ const router = useRouter();
 let movies = computed(() => AppState.searchMovies)
 let myGroups = computed(() => AppState.myGroups)
 let myEvents = computed(() => AppState.myEvents)
+let account = computed(()=> AppState.account)
 
 
 onMounted(async () => {
