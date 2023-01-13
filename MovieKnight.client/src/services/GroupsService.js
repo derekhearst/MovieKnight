@@ -7,9 +7,7 @@ import { api } from "./AxiosService.js"
 class GroupsService {
 	async createGroup(body) {
 		const res = await api.post("api/groups", body)
-		AppState.myGroups= AppState.myGroups.unshift(res.data)
-		
-		return res.data
+		this.getMyGroups()
 	}
 	async getMyGroups() {
 		const res = await api.get("account/groups")
