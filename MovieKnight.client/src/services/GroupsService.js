@@ -57,7 +57,6 @@ class GroupsService {
 		const res = await api.delete(`api/groups/${id}/members/${me.id}`)
 		AppState.activeGroupMembers = AppState.activeGroupMembers.filter(m => m.id != me.id)
 		logger.log("Removing myself from group")
-		accountService.getMyGroups()
 	}
 
 	async getGroupByGroupId(id) {
