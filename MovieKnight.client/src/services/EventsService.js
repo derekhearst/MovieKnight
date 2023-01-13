@@ -1,6 +1,8 @@
 import { AppState } from "../AppState.js"
 import { logger } from "../utils/Logger.js"
 import { api } from "./AxiosService.js"
+import { accountService } from "./AccountService"
+
 
 class EventsService {
 	async makeEvent(eventData) {
@@ -41,6 +43,7 @@ class EventsService {
 		AppState.activeEventMembers.push(res.data)
 		AppState.activeEventMembers = AppState.activeEventMembers
 		AppState.activeEvent.capacity--
+		accountService.getMyEvents()
 	}
 	async removeMemberFromEvent(id, accountId) {
 		const me = AppState.activeEventMembers.find(m => m.accountId == accountId)
@@ -48,6 +51,7 @@ class EventsService {
 		AppState.activeEventMembers.filter(m => m.accountId != accountId)
 		AppState.activeEventMembers = AppState.activeEventMembers
 		AppState.activeEvent.capacity++
+		accountService.getMyEvents()
 	}
 
 	async getMembersByEventId(id) {
