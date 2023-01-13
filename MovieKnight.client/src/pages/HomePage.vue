@@ -9,7 +9,7 @@
 
       <div class="groups">
         <h1 class="scrollTitle">My Guilds</h1>
-        <div class="bannerBorder">
+        <div class="banner">
           <button data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" id="formGuild" class="button">Form
             Guild</button>
           <div v-if="myGroups" class="groupsContainer">
@@ -20,7 +20,7 @@
 
       <div class="events">
         <h1 class="scrollTitle">My Events</h1>
-        <div class="bannerBorder">
+        <div class="banner">
           <div class="eventsContainer">
             <EventCard :event="e.event" v-for="e in myEvents" />
           </div>

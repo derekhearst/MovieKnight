@@ -48,7 +48,7 @@ html {
   }
 }
 
-.bannerBorder {
+.banner {
   border-image-slice: 37 39 148 37;
   border-image-width: 30px 20px 144px 20px;
   border-image-outset: 0px 0px 0px 0px;
@@ -56,6 +56,7 @@ html {
   border-bottom: 144px;
   border-right: 20px;
   border-left: 20px;
+  margin-top: -5px;
   border-image-repeat: stretch stretch;
   border-image-source: url("./assets/img/bannerflaggood-removebg-preview.png");
   border-style: solid;
@@ -66,6 +67,7 @@ html {
   background-clip: content-box;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .button {
@@ -84,6 +86,7 @@ html {
   padding-right: 2rem;
   padding-left: 2rem;
   user-select: none;
+  width: max-content;
 }
 
 .button:hover {
