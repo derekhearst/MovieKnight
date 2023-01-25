@@ -47,6 +47,7 @@ footer {
   background-color: black;
   color: rgba(255, 255, 255, 0.49);
   display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
   justify-content: center;
 
