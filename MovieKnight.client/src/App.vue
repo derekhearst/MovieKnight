@@ -17,10 +17,10 @@
 		<a href="https://github.com/jon-cron" target="_blank">
 			<h1>John Cron</h1>
 		</a>
-		<a href="https://github.com/KendallPowell">
+		<a href="https://github.com/KendallPowell" target="_blank">
 			<h1>Kendall Powell</h1>
 		</a>
-		<a href="https://github.com/calvinthurst">
+		<a href="https://github.com/calvinthurst" target="_blank">
 			<h1>Calvin Thurston</h1>
 		</a>
 	</footer>
